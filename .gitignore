@@ -21,3 +21,13 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+#Added delard-linux for STS projects
+**/.classpath
+**/.project
+**/.settings/
+**/target/
+**/.mvn/
+**/mvnw
+**/mvnw.cmd
