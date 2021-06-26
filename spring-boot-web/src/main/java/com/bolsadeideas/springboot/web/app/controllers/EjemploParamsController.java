@@ -1,5 +1,7 @@
 package com.bolsadeideas.springboot.web.app.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +12,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/params")
 public class EjemploParamsController {
 
+	
+	@GetMapping(value = {"/index", "/", ""})
+	public String params(Model model) {
+
+		return "params/index";
+		
+	}
+
+	
 	@GetMapping("/string")
-	public String params(@RequestParam(name = "texto", required = false, defaultValue = "VALOR POR DEFECTO") String texto, 
+	public String param(@RequestParam(name = "texto", required = false, defaultValue = "VALOR POR DEFECTO") String texto, 
 						Model model) {
 
 		model.addAttribute("resultado", "El texto enviado es: "+ texto);
@@ -20,11 +31,35 @@ public class EjemploParamsController {
 		
 	}
 	
-	@GetMapping(value = {"/index", "/", ""})
-	public String params(Model model) {
+	@GetMapping("/mix-params")
+	public String param(@RequestParam String saludo,
+						@RequestParam Integer numero,
+						Model model) {
 
-		return "params/index";
+		model.addAttribute("resultado", "El texto enviado es: '"+ saludo + "' y el número es '" + numero + "'");
+
+		return "params/ver";
 		
 	}
+
+	@GetMapping("/mix-params-request")
+	public String param(HttpServletRequest request,
+						Model model) {
+		
+		String saludo = request.getParameter("saludo");
+		Integer numero = null;
+		try {
+			numero = Integer.parseInt(request.getParameter("numero"));
+		} catch (NumberFormatException e) {
+			numero = 0;
+		} 
+					 
+		model.addAttribute("resultado", "El texto enviado es: '"+ saludo + "' y el número es '" + numero + "'");
+
+		return "params/ver";
+		
+	}
+	
+	
 	
 }
