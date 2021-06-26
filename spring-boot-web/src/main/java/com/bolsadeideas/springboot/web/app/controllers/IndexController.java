@@ -25,35 +25,44 @@ public class IndexController {
 	@Value("${texto.indexcontroller.listar.titulo}")
 	private String textoListar;
 	
+	private static final String ATTRIBUTE_TITULO = "titulo";
+	private static final String ATTRIBUTE_USUARIO = "usuario";
+	private static final String ATTRIBUTE_USUARIOS = "usuarios";
+
+	private static final String VIEW_INDEX = "index";
+	private static final String VIEW_PERFIL = "perfil";
+	private static final String VIEW_LISTAR = "listar";
+
+	
 	@GetMapping(value = {"/index", "/", "", "/home"})
 	public String index(ModelMap model) {
-		model.addAttribute("titulo", textoIndex);
+		model.addAttribute(ATTRIBUTE_TITULO, textoIndex);
 		
-		return "index";		
+		return VIEW_INDEX;		
 	}
 
 	@RequestMapping(value = {"/perfil"})
 	public String perfil(Model model) {
 
-		Usuario usuario = new Usuario();
+		var usuario = new Usuario();
 		usuario.setNombre("David");
 		usuario.setApellido("Pelaez");
 		usuario.setEmail("david@correo.com");
 		
-		model.addAttribute("titulo", textoPerfil.concat(usuario.getNombre()));
-		model.addAttribute("usuario", usuario);
-		return "perfil";		
+		model.addAttribute(ATTRIBUTE_TITULO, textoPerfil.concat(usuario.getNombre()));
+		model.addAttribute(ATTRIBUTE_USUARIO, usuario);
+		return VIEW_PERFIL;		
 	}
 
 	@RequestMapping(value = {"/listar"})
 	public String listar(Model model) {
 
-		model.addAttribute("titulo", textoListar);
+		model.addAttribute(ATTRIBUTE_TITULO, textoListar);
 		
-		return "listar";		
+		return VIEW_LISTAR;		
 	}
 
-	@ModelAttribute("usuarios")
+	@ModelAttribute(ATTRIBUTE_USUARIOS)
 	public List<Usuario> rellenarUsuarios(){
 		return Arrays.asList(	
 				new Usuario("David","Pelaez","david@correo.com"),

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" lang="es">
 <head>
 <meta charset="UTF-8">
 <title th:text="${titulo}"></title>
@@ -8,6 +8,6 @@
 <body>
 <h1 class="color-rojo" th:text="${titulo}"></h1>
 <h2 class="color-azul">Decorando con estilos CSS recursos estáticos</h2>
-<img th:src="@{/images/spring_logo_307x161.jpeg}"></img>
+<img th:src="@{/images/spring_logo_307x161.jpeg}" alt="Spring logo"></img>
 </body>
 </html>

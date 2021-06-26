@@ -12,11 +12,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/params")
 public class EjemploParamsController {
 
+	private static final String ATTRIBUTE_RESULTADO = "resultado";
+	
+	private static final String VIEW_INDEX = "params/index";
+	private static final String VIEW_VER = "params/ver";
 	
 	@GetMapping(value = {"/index", "/", ""})
 	public String params(Model model) {
 
-		return "params/index";
+		return VIEW_INDEX;
 		
 	}
 
@@ -25,9 +29,9 @@ public class EjemploParamsController {
 	public String param(@RequestParam(name = "texto", required = false, defaultValue = "VALOR POR DEFECTO") String texto, 
 						Model model) {
 
-		model.addAttribute("resultado", "El texto enviado es: "+ texto);
+		model.addAttribute(ATTRIBUTE_RESULTADO, "El texto enviado es: "+ texto);
 
-		return "params/ver";
+		return VIEW_VER;
 		
 	}
 	
@@ -36,9 +40,9 @@ public class EjemploParamsController {
 						@RequestParam Integer numero,
 						Model model) {
 
-		model.addAttribute("resultado", "El texto enviado es: '"+ saludo + "' y el número es '" + numero + "'");
+		model.addAttribute(ATTRIBUTE_RESULTADO, "El texto enviado es: '"+ saludo + "' y el número es '" + numero + "'");
 
-		return "params/ver";
+		return VIEW_VER;
 		
 	}
 
@@ -54,9 +58,9 @@ public class EjemploParamsController {
 			numero = 0;
 		} 
 					 
-		model.addAttribute("resultado", "El texto enviado es: '"+ saludo + "' y el número es '" + numero + "'");
+		model.addAttribute(ATTRIBUTE_RESULTADO, "El texto enviado es: '"+ saludo + "' y el número es '" + numero + "'");
 
-		return "params/ver";
+		return VIEW_VER;
 		
 	}
 	

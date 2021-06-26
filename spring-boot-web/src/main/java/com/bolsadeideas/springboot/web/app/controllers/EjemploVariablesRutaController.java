@@ -10,10 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/variables")
 public class EjemploVariablesRutaController {
 
+	private static final String ATTRIBUTE_TITULO = "titulo";
+	private static final String ATTRIBUTE_RESULTADO = "resultado";
+
+	private static final String VIEW_INDEX = "variables/index";
+	private static final String VIEW_VER = "variables/ver";
+	
 	@GetMapping(value = {"/index", "/", ""})
 	public String params(Model model) {
-		model.addAttribute("titulo", "Enviar Parametros de la ruta (@PathVariable)");
-		return "variables/index";
+		model.addAttribute(ATTRIBUTE_TITULO, "Enviar Parametros de la ruta (@PathVariable)");
+		return VIEW_INDEX;
 		
 	}
 	
@@ -22,10 +28,10 @@ public class EjemploVariablesRutaController {
 	public String variables(@PathVariable(name="texto") String texto, 
 						Model model) {
 
-		model.addAttribute("titulo", "Recibir Parametros de la ruta (@PathVariable)");
-		model.addAttribute("resultado", "El texto enviado en la ruta es: "+ texto);
+		model.addAttribute(ATTRIBUTE_TITULO, "Recibir Parametros de la ruta (@PathVariable)");
+		model.addAttribute(ATTRIBUTE_RESULTADO, "El texto enviado en la ruta es: "+ texto);
 
-		return "variables/ver";
+		return VIEW_VER;
 		
 	}
 
@@ -34,10 +40,10 @@ public class EjemploVariablesRutaController {
 						@PathVariable(name="numero") Integer numero,
 						Model model) {
 
-		model.addAttribute("titulo", "Recibir Parametros de la ruta (@PathVariable)");
-		model.addAttribute("resultado", "El texto enviado en la ruta es '"+ texto + "' y el numero enviado en el path es '" + numero + "'");
+		model.addAttribute(ATTRIBUTE_TITULO, "Recibir Parametros de la ruta (@PathVariable)");
+		model.addAttribute(ATTRIBUTE_RESULTADO, "El texto enviado en la ruta es '"+ texto + "' y el numero enviado en el path es '" + numero + "'");
 
-		return "variables/ver";
+		return VIEW_VER;
 		
 	}
 	
