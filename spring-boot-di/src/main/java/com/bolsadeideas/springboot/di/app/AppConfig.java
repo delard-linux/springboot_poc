@@ -27,7 +27,8 @@ public class AppConfig {
 		return new MiServicioComplejo();		
 	}
 
-	@Bean
+	@Bean("itemFactura")
+	@Primary
 	public List<ItemFactura> registrarItemsFactura(){
 		
 		var producto1 = new Producto("Camara Sony", 100);
@@ -39,4 +40,22 @@ public class AppConfig {
 		return Arrays.asList(linea1, linea2);
 	}
 	
+	@Bean("itemFacturaOficina")
+	public List<ItemFactura> registrarItemsFacturaOficina(){
+		
+		var producto1 = new Producto("Monitor LG LCD 24", 250);
+		var producto2 = new Producto("Notebook Asus", 500); 
+		var producto3 = new Producto("Impresora HP Multifunción", 80); 
+		var producto4 = new Producto("Escritorio Oficina", 300); 
+		
+		var linea1 = new ItemFactura(producto1, 2);
+		var linea2 = new ItemFactura(producto2, 1);
+		var linea3 = new ItemFactura(producto3, 1);
+		var linea4 = new ItemFactura(producto4, 1);
+		
+		return Arrays.asList(linea1, linea2, linea3, linea4);
+	}
+
+
+
 }
