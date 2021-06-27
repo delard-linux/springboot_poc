@@ -2,6 +2,9 @@ package com.bolsadeideas.springboot.di.app.models.domain;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +23,17 @@ public class Factura {
 	@Qualifier("itemFacturaOficina")
 	private List<ItemFactura> items;
 
+	@PostConstruct
+	public void inicializar() {
+		cliente.setNombre(cliente.getNombre().concat(" ").concat("José"));
+		setDescripcion(getDescripcion().concat(" del cliente: ").concat(cliente.getNombre()));
+	}
+
+	@PreDestroy
+	public void destrucion() {
+		System.out.println("Factura destruida: ".concat(getDescripcion()));
+	}
+	
 	public String getDescripcion() {
 		return descripcion;
 	}
