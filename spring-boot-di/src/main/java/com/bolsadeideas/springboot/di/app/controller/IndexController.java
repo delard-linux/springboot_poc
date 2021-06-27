@@ -10,12 +10,9 @@ import com.bolsadeideas.springboot.di.app.models.services.IServicio;
 @Controller
 public class IndexController {
 	
+	@Autowired
 	private IServicio servicio;
 	
-	public IndexController(IServicio servicio) {
-		this.servicio = servicio;
-	}
-
 	@GetMapping({"/","","/index"})
 	public String index(Model model) {
 		model.addAttribute("objeto", servicio.operacion());
