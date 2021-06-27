@@ -15,6 +15,7 @@ public class Factura {
 	@Autowired
 	private Cliente cliente;
 
+	@Autowired
 	private List<ItemFactura> items;
 
 	public String getDescripcion() {
