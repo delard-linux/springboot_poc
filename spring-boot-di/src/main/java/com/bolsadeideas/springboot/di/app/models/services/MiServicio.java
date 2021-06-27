@@ -3,8 +3,8 @@ package com.bolsadeideas.springboot.di.app.models.services;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-@Component("miServicioSimple")
 @Primary
+@Component("miServicioSimple")
 public class MiServicio implements IServicio{
 	
 	@Override
