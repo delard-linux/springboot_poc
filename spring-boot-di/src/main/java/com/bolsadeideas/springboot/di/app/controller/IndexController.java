@@ -10,7 +10,6 @@ import com.bolsadeideas.springboot.di.app.models.services.IServicio;
 @Controller
 public class IndexController {
 	
-	@Autowired
 	private IServicio servicio;
 	
 	@GetMapping({"/","","/index"})
@@ -19,5 +18,13 @@ public class IndexController {
 		return "index";
 		
 	}
+
+
+	@Autowired
+	public void setServicio(IServicio servicio) {
+		this.servicio = servicio;
+	}
+	
+	
 
 }
