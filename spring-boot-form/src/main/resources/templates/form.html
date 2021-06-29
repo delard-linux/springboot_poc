@@ -2,9 +2,10 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title th:text="${titulo}"></title>
 </head>
 <body>
+	<h3 th:text="${titulo}"></h3>
 	<form th:action="@{/form}" method="post">
 		<div>
 			<label for="username">Username</label>
