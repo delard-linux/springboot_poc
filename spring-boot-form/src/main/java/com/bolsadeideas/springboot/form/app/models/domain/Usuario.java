@@ -1,7 +1,17 @@
 package com.bolsadeideas.springboot.form.app.models.domain;
 
+import javax.validation.constraints.NotEmpty;
+
 public class Usuario {
 
+	@NotEmpty
+	private String username;
+	@NotEmpty
+	private String password;
+	@NotEmpty
+	private String email;
+	
+	
 	public Usuario() {
 	}
 
@@ -29,8 +39,5 @@ public class Usuario {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	private String username;
-	private String password;
-	private String email;
 	
 }
