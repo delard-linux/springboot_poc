@@ -10,21 +10,21 @@
 		<div>
 			<label for="username">Username</label>
 			<div>
-				<input type="text" name="username" id="username" th:value="${usuario.username}">
+				<input type="text" name="username" id="username" th:value="${user.username}">
 			</div>
 		<div th:if="${error != null  && error.containsKey('username')}" th:text="${error.username}"></div>
 		</div>
 		<div>
 			<label for="password">Password</label>
 			<div>
-				<input type="password" name="password" id="password" th:value="${usuario.password}">
+				<input type="password" name="password" id="password" th:value="${user.password}">
 			</div>
 		<div th:if="${error != null && error.containsKey('password')}" th:text="${error.password}"></div>
 		</div>
 		<div>
 			<label for="email">email</label>
 			<div>
-				<input type="text" name="email" id="email" th:value="${usuario.email}">
+				<input type="text" name="email" id="email" th:value="${user.email}">
 			</div>
 		<div th:if="${error != null && error.containsKey('email')}" th:text="${error.email}"></div>
 		</div>
