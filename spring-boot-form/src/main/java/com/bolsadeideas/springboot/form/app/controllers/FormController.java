@@ -2,9 +2,7 @@ package com.bolsadeideas.springboot.form.app.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -23,9 +21,12 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.bolsadeideas.springboot.form.app.editors.NombreMayusculaEditor;
 import com.bolsadeideas.springboot.form.app.editors.PaisPropertyEditor;
+import com.bolsadeideas.springboot.form.app.editors.RolPropertyEditor;
 import com.bolsadeideas.springboot.form.app.models.domain.Pais;
+import com.bolsadeideas.springboot.form.app.models.domain.Rol;
 import com.bolsadeideas.springboot.form.app.models.domain.Usuario;
 import com.bolsadeideas.springboot.form.app.services.PaisService;
+import com.bolsadeideas.springboot.form.app.services.RolService;
 import com.bolsadeideas.springboot.form.app.validation.UsuarioValidador;
 
 @Controller
@@ -41,18 +42,20 @@ public class FormController {
 	@Autowired
 	private PaisPropertyEditor paisEditor;
 	
-	@ModelAttribute(name = "paises")
+	@ModelAttribute(name = "listaPaises")
 	public List<Pais> listaPaises(){
 		return paisService.listar();
 	}
 
-	@ModelAttribute(name = "listaRolesMap")
-	public Map<String,String> listaRolesMap(){
-		Map<String,String> roles = new HashMap<>();
-		roles.put("ROLE_ADMIN","Administrador");
-		roles.put("ROLE_USER","Usuario");
-		roles.put("ROLE_MODERATOR","Moderador");
-		return roles;
+	@Autowired
+	private RolService rolService;
+
+	@Autowired
+	private RolPropertyEditor rolEditor;
+	
+	@ModelAttribute(name = "listaRoles")
+	public List<Rol> listaRolesMap(){
+		return rolService.listar();
 	}
 	
 	@InitBinder
@@ -65,6 +68,7 @@ public class FormController {
 		binder.registerCustomEditor(String.class, "apellido", new NombreMayusculaEditor());
 		
 		binder.registerCustomEditor(Pais.class, "pais", paisEditor);
+		binder.registerCustomEditor(Rol.class, "roles", rolEditor);
 		
 	}
 	

@@ -12,16 +12,16 @@
 			<div>
 				<select id="pais" th:field="*{pais}">
 				<option value="">--- seleccionar ---</option>				
-				<option th:each="pais: ${paises}" th:text="${pais.nombre}" th:value="${pais.id}"></option>
+				<option th:each="pais: ${listaPaises}" th:text="${pais.nombre}" th:value="${pais.id}"></option>
 				</select>
 			</div>
 		<div th:if="${#fields.hasErrors('pais')}" th:errors="*{pais}"></div>
 		</div>		
 		<div>
 			<label for="roles">Roles</label>
-			<div th:each="role: ${listaRolesMap.entrySet()}">
-				<input type="checkbox" th:field="*{roles}" th:value="${role.key}">
-				<label th:for="${#ids.prev('roles')}" th:text="${role.value}"></label>
+			<div th:each="role: ${listaRoles}">
+				<input type="checkbox" th:field="*{roles}" th:value="${role.id}">
+				<label th:for="${#ids.prev('roles')}" th:text="${role.nombre}"></label>
 			</div>
 		<div th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
 		</div>
