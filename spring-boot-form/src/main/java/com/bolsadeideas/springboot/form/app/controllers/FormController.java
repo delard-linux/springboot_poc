@@ -1,6 +1,7 @@
 package com.bolsadeideas.springboot.form.app.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +43,15 @@ public class FormController {
 	@ModelAttribute(name = "paises")
 	public List<Pais> listaPaises(){
 		return paisService.listar();
+	}
+
+	@ModelAttribute(name = "listaRolesString")
+	public List<String> listaRoles(){
+		List<String> roles = new ArrayList<>();
+		roles.add("ROLE_ADMIN");
+		roles.add("ROLE_USER");
+		roles.add("ROLE_MODERATOR");
+		return roles;
 	}
 	
 	@InitBinder
