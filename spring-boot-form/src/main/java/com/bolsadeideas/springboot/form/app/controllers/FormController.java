@@ -1,9 +1,9 @@
 package com.bolsadeideas.springboot.form.app.controllers;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -31,9 +31,17 @@ public class FormController {
 	@Autowired
 	private UsuarioValidador validador;
 	
-	@ModelAttribute(name = "paises")
-	public List<String> paises(){
-		return Arrays.asList("España", "Mexico", "Chile", "Argentina", "Peru", "Colombia", "Venezuela");
+	@ModelAttribute(name = "paisesMap")
+	public Map<String,String> paisesMap(){
+		var paises = new HashMap<String,String>();
+		paises.put("ES","España" );
+		paises.put("MX", "Mexico");
+		paises.put("CL", "Chile");
+		paises.put("AR", "Argentina");
+		paises.put("PE", "Peru");
+		paises.put("CO", "Colombia");
+		paises.put("VE", "Venezuela");
+		return paises;
 	}
 	
 	@InitBinder
