@@ -8,6 +8,11 @@
 	<h3 th:text="${titulo}"></h3>
 	<form th:action="@{/form}" th:object="${usuario}" method="post">
 		<div>
+			<input type="checkbox" th:field="*{habilitar}" th:value="${habilitar}">
+			<label th:for="habilitar">Habilitar Usuario</label>
+		<div th:if="${#fields.hasErrors('habilitar')}" th:errors="*{habilitar}"></div>
+		</div>
+		<div>
 			<label for="pais">País</label>
 			<div>
 				<select id="pais" th:field="*{pais}">

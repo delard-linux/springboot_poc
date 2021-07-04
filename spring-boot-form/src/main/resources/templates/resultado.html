@@ -17,6 +17,7 @@
 			<li th:text="${usuario.email}"></li>
 			<li th:text="${usuario.cuenta}"></li>
 			<li th:text="${#dates.format(usuario.fechaNacimiento, 'YYYY-M-dd')}"></li>
+			<li th:text="'Habilitado: ' + ${usuario.habilitar}"></li>
 		</ul>
 	</div>
 	<div>Roles</div>
