@@ -9,7 +9,7 @@
 	<div>
 		<ul>
 			<li th:text="${usuario.identificador}"></li>
-			<li th:text="${usuario.pais.id}"></li>
+			<li th:text="${usuario.pais.id} + ' - ' + ${usuario.pais.codigo} + ' - ' + ${usuario.pais.nombre}"></li>
 			<li th:text="${usuario.nombre}"></li>
 			<li th:text="${usuario.apellido}"></li>
 			<li th:text="${usuario.username}"></li>

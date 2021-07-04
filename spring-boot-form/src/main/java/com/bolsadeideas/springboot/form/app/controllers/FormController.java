@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.bolsadeideas.springboot.form.app.editors.NombreMayusculaEditor;
+import com.bolsadeideas.springboot.form.app.editors.PaisPropertyEditor;
 import com.bolsadeideas.springboot.form.app.models.domain.Pais;
 import com.bolsadeideas.springboot.form.app.models.domain.Usuario;
 import com.bolsadeideas.springboot.form.app.services.PaisService;
@@ -35,6 +36,9 @@ public class FormController {
 	@Autowired
 	private PaisService paisService;
 	
+	@Autowired
+	private PaisPropertyEditor paisEditor;
+	
 	@ModelAttribute(name = "paises")
 	public List<Pais> listaPaises(){
 		return paisService.listar();
@@ -48,6 +52,9 @@ public class FormController {
 		binder.registerCustomEditor(Date.class, "fechaNacimiento" ,new CustomDateEditor(dateFormat,true));
 		binder.registerCustomEditor(String.class, "nombre", new NombreMayusculaEditor());
 		binder.registerCustomEditor(String.class, "apellido", new NombreMayusculaEditor());
+		
+		binder.registerCustomEditor(Pais.class, "pais", paisEditor);
+		
 	}
 	
 	@GetMapping("/form")
