@@ -1,6 +1,7 @@
 package com.bolsadeideas.springboot.form.app.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -54,8 +55,13 @@ public class FormController {
 	private RolPropertyEditor rolEditor;
 	
 	@ModelAttribute(name = "listaRoles")
-	public List<Rol> listaRolesMap(){
+	public List<Rol> listaRoles(){
 		return rolService.listar();
+	}
+	
+	@ModelAttribute(name = "listaGeneros")
+	public List<String> listaGeneros(){
+		return Arrays.asList("Hombre","Mujer");
 	}
 	
 	@InitBinder
