@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" lang="es">
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
 <meta charset="UTF-8">
 <title th:text="${titulo}"></title>
@@ -57,11 +57,11 @@
 		<div th:if="${#fields.hasErrors('cuenta')}" th:errors="*{cuenta}"></div>
 		</div>
 		<div>
-			<label for="fechanacimiento">Fecha de nacimiento</label>
+			<label for="fechaNacimiento">Fecha de nacimiento</label>
 			<div>
-				<input type="text" id="fechanacimiento" th:field="*{fechanacimiento}" placeholder="yyyy/MM/dd">
+				<input type="date" id="fechaNacimiento" th:field="*{fechaNacimiento}" placeholder="yyyy-MM-dd">
 			</div>
-		<div th:if="${#fields.hasErrors('fechanacimiento')}" th:errors="*{fechanacimiento}"></div>
+		<div th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}"></div>
 		</div>
 		<div>
 			<div>
