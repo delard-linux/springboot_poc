@@ -1,9 +1,10 @@
 package com.bolsadeideas.springboot.form.app.controllers;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -45,12 +46,12 @@ public class FormController {
 		return paisService.listar();
 	}
 
-	@ModelAttribute(name = "listaRolesString")
-	public List<String> listaRoles(){
-		List<String> roles = new ArrayList<>();
-		roles.add("ROLE_ADMIN");
-		roles.add("ROLE_USER");
-		roles.add("ROLE_MODERATOR");
+	@ModelAttribute(name = "listaRolesMap")
+	public Map<String,String> listaRolesMap(){
+		Map<String,String> roles = new HashMap<>();
+		roles.put("ROLE_ADMIN","Administrador");
+		roles.put("ROLE_USER","Usuario");
+		roles.put("ROLE_MODERATOR","Moderador");
 		return roles;
 	}
 	
