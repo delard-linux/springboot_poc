@@ -5,8 +5,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.bolsadeideas.springboot.form.app.validation.IdentificadorRegex;
+
 public class Usuario {
 
+	@IdentificadorRegex
 	private	String identificador;
 	
 	private	String nombre;
