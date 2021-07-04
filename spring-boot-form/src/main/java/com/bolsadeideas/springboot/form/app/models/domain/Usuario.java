@@ -3,7 +3,6 @@ package com.bolsadeideas.springboot.form.app.models.domain;
 import java.util.Date;
 
 import javax.validation.constraints.Email;
-//import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -44,6 +43,9 @@ public class Usuario {
 	@NotNull
 	@Past
 	private Date fechaNacimiento;
+	
+	@NotEmpty
+	private String pais;
 	
 	public Usuario() {
 	}
@@ -108,5 +110,12 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 	
+	public String getPais() {
+		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
 	
 }
