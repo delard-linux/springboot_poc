@@ -1,9 +1,9 @@
 package com.bolsadeideas.springboot.form.app.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.bolsadeideas.springboot.form.app.editors.NombreMayusculaEditor;
+import com.bolsadeideas.springboot.form.app.models.domain.Pais;
 import com.bolsadeideas.springboot.form.app.models.domain.Usuario;
 import com.bolsadeideas.springboot.form.app.validation.UsuarioValidador;
 
@@ -31,17 +32,16 @@ public class FormController {
 	@Autowired
 	private UsuarioValidador validador;
 	
-	@ModelAttribute(name = "paisesMap")
-	public Map<String,String> paisesMap(){
-		var paises = new HashMap<String,String>();
-		paises.put("ES","España" );
-		paises.put("MX", "Mexico");
-		paises.put("CL", "Chile");
-		paises.put("AR", "Argentina");
-		paises.put("PE", "Peru");
-		paises.put("CO", "Colombia");
-		paises.put("VE", "Venezuela");
-		return paises;
+	@ModelAttribute(name = "paises")
+	public List<Pais> paisesMap(){
+		return Arrays.asList(
+				new Pais(1, "ES", "España"), 
+				new Pais(2, "MX", "Mexico"), 
+				new Pais(3, "CL", "Chile"),
+				new Pais(4, "AR", "Argentina"), 
+				new Pais(5, "PE", "Peru"), 
+				new Pais(6, "CO", "Colombia"),
+				new Pais(7, "VE", "Venezuela"));
 	}
 	
 	@InitBinder
