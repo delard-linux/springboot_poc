@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -33,6 +34,8 @@ import com.bolsadeideas.springboot.form.app.validation.UsuarioValidador;
 @Controller
 @SessionAttributes("usuario")
 public class FormController {
+	
+	private static final String ATTR_TITULO = "titulo";
 	
 	@Autowired
 	private UsuarioValidador validador;
@@ -89,26 +92,47 @@ public class FormController {
 		usuario.setValorSecreto("soy un valor secreto");
 		usuario.setPais(new Pais(3, "CL", "Chile"));
 		usuario.setRoles(Arrays.asList(new Rol(2,"ROLE_USER","Usuario")));
-		model.addAttribute("titulo","Formulario de usuarios");
+		model.addAttribute(ATTR_TITULO,"Formulario de usuarios");
 		model.addAttribute("usuario",usuario);
 
 		return "form";
 	}
 
 	@PostMapping("/form")
-	public String procesar(@Valid Usuario usuario, BindingResult result, Model model, SessionStatus status) {
-		
-		model.addAttribute("titulo","Resultado del envío del formulario");
+	public String procesar(@Valid Usuario usuario, BindingResult result, Model model) {
 		
 		if(result.hasErrors()) {
+			model.addAttribute(ATTR_TITULO,"Resultado del envío del formulario");
 			return "form";
 		}
 		
-		model.addAttribute("usuario",usuario);
+		return "redirect:/ver";
+	}
+
+	@GetMapping("/ver")
+	public String ver(@SessionAttribute(name="usuario", required = false) Usuario usuario, Model model, SessionStatus status) {
+		
+		if(usuario == null)
+			return "redirect:/form";
+		
+		model.addAttribute(ATTR_TITULO,"Resultado del envío del formulario");
 		
 		status.setComplete();
 		
 		return "resultado";
 	}
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
