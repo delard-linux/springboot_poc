@@ -1,5 +1,7 @@
 package com.bolsadeideas.springboot.form.app.models.domain;
 
+import java.util.Objects;
+
 public class Rol {
 
 	private Integer id;
@@ -37,6 +39,26 @@ public class Rol {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Rol))
+			return false;
+		if (this == obj)
+			return true;
+		var role = (Rol)obj;
+		return this.hashCode() == role.hashCode();
+	}
+
+	@Override
+	public int hashCode() {
+	    return Objects.hash(
+	    		((this.id == null) ? 0 : this.id), 
+	    		((this.codigo == null) ? "sincodigo" : this.codigo), 
+	    		((this.nombre == null) ? "sinnombre" : this.nombre));
 	}
 
 }
