@@ -31,9 +31,7 @@
 </head>
 <body>
 <body class="bg-light">
-	<div class="alert alert-success">
-		<span th:text="'Tiempo transcurrido: ' + ${tiempotranscurrido} + ' ms'"></span>
-	</div>
+<section th:replace="components/tiempo :: interceptor"></section>
 	<div class="container">
 		<main>
 			<div class="py-3 text-center row">

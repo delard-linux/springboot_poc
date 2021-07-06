@@ -26,6 +26,9 @@ public class TiempoTranscurridoInterceptor implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
+		if(request.getMethod().equalsIgnoreCase("post"))
+			return true;
+		
 		var requestUrl = new String(request.getRequestURL());
 		
 		if (logger.isInfoEnabled()) {
@@ -34,7 +37,7 @@ public class TiempoTranscurridoInterceptor implements HandlerInterceptor{
 			request.setAttribute(STR_TIEMPO_INICIO, tiempoInicio);
 			
 		}
-		Thread.sleep((new Random()).nextInt(500));
+		Thread.sleep((new Random()).nextInt(100));
 		
 		return true;
 	}
@@ -51,17 +54,18 @@ public class TiempoTranscurridoInterceptor implements HandlerInterceptor{
 				try {
 					tiempoTranscurrido = System.currentTimeMillis()-(Long)request.getAttribute(STR_TIEMPO_INICIO); 
 					logger.info(String.format("Tiempo Transcurrido: %d ms %s ",tiempoTranscurrido, requestUrl));
+					logger.info(String.format("TiempoTranscurridoInterceptor: post  Handle saliendo ... %s",requestUrl));
 				} catch (NumberFormatException e) {
 					logger.error("Tiempo Transcurrido con formato erroneo!", e);
 				}
 			} else {
 				logger.info("Tiempo Transcurrido no trazado por request!");
 			}
-
-			logger.info(String.format("TiempoTranscurridoInterceptor: post  Handle saliendo ... %s",requestUrl));
 		}
 		
-		if(handler instanceof HandlerMethod && modelAndView!=null)
+		if(handler instanceof HandlerMethod 
+				&& modelAndView!=null
+				&& request.getAttribute(STR_TIEMPO_INICIO)!=null)
 			modelAndView.addObject(STR_TIEMPO_TRANSCURRIDO, tiempoTranscurrido); 
 		
 	}
