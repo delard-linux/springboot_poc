@@ -92,7 +92,7 @@ public class FormController {
 		usuario.setValorSecreto("soy un valor secreto");
 		usuario.setPais(new Pais(3, "CL", "Chile"));
 		usuario.setRoles(Arrays.asList(new Rol(2,"ROLE_USER","Usuario")));
-		model.addAttribute(ATTR_TITULO,"Formulario de usuarios");
+		model.addAttribute(ATTR_TITULO,"Formulario de Usuarios");
 		model.addAttribute("usuario",usuario);
 
 		return "form";
@@ -102,7 +102,7 @@ public class FormController {
 	public String procesar(@Valid Usuario usuario, BindingResult result, Model model) {
 		
 		if(result.hasErrors()) {
-			model.addAttribute(ATTR_TITULO,"Resultado del envío del formulario");
+			model.addAttribute(ATTR_TITULO,"Formulario de Usuarios con errores");
 			return "form";
 		}
 		
