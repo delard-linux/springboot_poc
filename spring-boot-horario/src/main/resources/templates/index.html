@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<meta name="theme-color" content="#7952b3">
+<style>
+.bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+@media ( min-width : 768px) {
+	.bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+}
+
+.container {
+	max-width: 1100px;
+}
+
+.form-group-name {
+	max-width: 200px;
+}
+</style>
+</head>
+<body>
+<body class="bg-light">
+	<div class="container">
+		<main>
+			<div class="py-3 text-center row">
+				<div class="col">
+					<h2 class="mb-3" th:text="${titulo}"></h2>
+					<p class="lead">Ejemplo de Interceptor para horario de atencion configurado en properties</p>
+				</div>
+			</div>
+		</main>
+	</div>
+
+</body>
+</html>
