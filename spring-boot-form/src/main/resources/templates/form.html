@@ -37,9 +37,11 @@
 	<div class="container">
 		<main>
 			<div class="py-3 text-center row">
-				<h2 class="mb-3" th:text="${titulo}"></h2>
-				<p class="lead">Ejemplo de componentes de formulario con Spring
-					Framework, Thymeleaf y Bootstrap</p>
+				<div class="col">
+					<h2 class="mb-3" th:text="${titulo}"></h2>
+					<p class="lead">Ejemplo de componentes de formulario con Spring
+						Framework, Thymeleaf y Bootstrap</p>
+				</div>
 			</div>
 			<div class="py-3 text-center row">
 				<div class="col">
@@ -241,8 +243,10 @@
 				</div>
 
 				<div class="py-2 form-group row">
-					<div>
-						<input type="submit" value="Enviar" class="btn btn-primary">
+					<div class="col">
+					</div>
+					<div class="col">
+						<input type="submit" value="enviar" class="btn btn-primary">
 					</div>
 				</div>
 				<input type="hidden" th:field="*{valorSecreto}">
