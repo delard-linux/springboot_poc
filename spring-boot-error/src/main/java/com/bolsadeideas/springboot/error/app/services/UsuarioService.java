@@ -42,4 +42,16 @@ public class UsuarioService implements IUsuarioService {
 		
 	}
 
+	@Override
+	public Optional<Usuario> obtenerPorIdOptional(Integer id) {
+
+	    return this.lista.stream()
+	    		.filter(s -> id.equals(s.getId()))
+	    		.findFirst();
+		
+	}
+
+	
+	
+	
 }
