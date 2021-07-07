@@ -16,7 +16,16 @@ public class ErrorHandlerController {
 		model.addAttribute("message", ex.getMessage());
 		model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 		model.addAttribute("timestamp", new Date());
-		return "/error/aritmetica";
+		return "/error/generica";
+	}
+	
+	@ExceptionHandler(NumberFormatException.class)
+	public String numberFormatExceptionError(NumberFormatException ex, Model model) {
+		model.addAttribute("error", "Formato número inválido!");
+		model.addAttribute("message", ex.getMessage());
+		model.addAttribute("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+		model.addAttribute("timestamp", new Date());
+		return "/error/numero-formato";
 	}
 
 }
