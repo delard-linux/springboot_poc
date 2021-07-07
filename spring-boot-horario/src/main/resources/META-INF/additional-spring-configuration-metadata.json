@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "config.horario.apertura",
+    "type": "java.lang.String",
+    "description": "Horario de apertura en formato 24h"
+  },
+  {
+    "name": "config.horario.cierre",
+    "type": "java.lang.String",
+    "description": "Horario de cierre en formato 24h"
+  }
+]}
