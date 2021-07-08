@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<meta name="theme-color" content="#7952b3">
+<style>
+.bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+@media ( min-width : 768px) {
+	.bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+}
+
+.container {
+	max-width: 900px;
+}
+
+.form-group-name {
+	max-width: 200px;
+}
+
+.h2margin {
+	margin-top: revert;
+}
+</style>
+</head>
+<body>
+<body class="bg-light">
+
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">Spring Boot</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link active"
+						aria-current="page" href="#">Home</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/listar}">Clientes</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="#">Pricing</a>
+					</li>
+					<li class="nav-item"><a class="nav-link disabled" href="#"
+						tabindex="-1" aria-disabled="true">Disabled</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<main>
+			<h2 class="text-secondary h2margin" th:text="${titulo}"></h2>
+			<table class="table table-striped table-bordered">
+				<caption></caption>
+				<thead>
+					<tr class="table-primary">
+						<th scope="col">id</th>
+						<th scope="col">nombre</th>
+						<th scope="col">apellido</th>
+						<th scope="col">email</th>
+						<th scope="col">fecha</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cl : ${clientes}">
+						<td th:text="${cl.id}"></td>
+						<td th:text="${cl.nombre}"></td>
+						<td th:text="${cl.apellido}"></td>
+						<td th:text="${cl.email}"></td>
+						<td th:text="${cl.createAt}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</main>
+	</div>
+
+</body>
+</html>
