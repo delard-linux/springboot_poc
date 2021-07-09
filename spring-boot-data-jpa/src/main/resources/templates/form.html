@@ -67,11 +67,13 @@
 						<h6 class="mb-3">Nombre:</h6>
 					</div>
 					<div class="col">
-						<input class="form-control" type="text" id="nombre" th:field="*{nombre}">
+						<input class="form-control" type="text" id="nombre"
+							th:field="*{nombre}" th:errorclass="'form-control alert-danger'">
 					</div>
 					<div class="col">
-					<div class="alert alert-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
-				</div>
+						<small class="form-text text-danger"
+							th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+					</div>
 				</div>
 
 				<div class="py-2 form-group row">
@@ -79,12 +81,13 @@
 						<h6 class="mb-3">Apellido:</h6>
 					</div>
 					<div class="col">
-						<input class="form-control" type="text" id="apellido" th:field="*{apellido}">
+						<input class="form-control" type="text" id="apellido"
+							th:field="*{apellido}" th:errorclass="'form-control alert-danger'">
 					</div>
 					<div class="col">
-					<div class="alert alert-danger" th:if="${#fields.hasErrors('apellido')}"
-						th:errors="*{apellido}"></div>
-				</div>
+						<small class="form-text text-danger"
+							th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></small>
+					</div>
 				</div>
 
 				<div class="py-2 form-group row">
@@ -93,11 +96,11 @@
 					</div>
 					<div class="col">
 						<input class="form-control" type="text" id="email"
-							th:field="*{email}">
+							th:field="*{email}" th:errorclass="'form-control alert-danger'">
 					</div>
 					<div class="col">
-						<div class="alert alert-danger"
-							th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+						<small class="form-text text-danger"
+							th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
 					</div>
 				</div>
 
@@ -107,12 +110,11 @@
 					</div>
 					<div class="col">
 						<input class="form-control" type="date" id="bornAt"
-							th:field="*{bornAt}" placeholder="yyyy-MM-dd">
+							th:field="*{bornAt}" placeholder="yyyy-MM-dd" th:errorclass="'form-control alert-danger'">
 					</div>
 					<div class="col">
-						<div class="alert alert-danger"
-							th:if="${#fields.hasErrors('bornAt')}"
-							th:errors="*{bornAt}"></div>
+						<small class="form-text text-danger"
+							th:if="${#fields.hasErrors('bornAt')}" th:errors="*{bornAt}"></small>
 					</div>
 				</div>
 

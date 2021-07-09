@@ -3,16 +3,20 @@ package com.bolsadeideas.springboot.app.model.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.NotEmpty;
 
 public class ClienteDTO implements Serializable {
 
 
 	private static final long serialVersionUID = 8058062057701411951L;
 
+	@NotEmpty
 	private String nombre;
 
+	@NotEmpty
 	private String apellido;
 
+	@NotEmpty
 	private String email;
 
 	private Date bornAt;
