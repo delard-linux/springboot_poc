@@ -50,12 +50,8 @@
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="#">Home</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/listar}">Clientes</a>
+					<li class="nav-item"><a class="nav-link" th:href="@{/listar}">Cliente</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#">Pricing</a>
-					</li>
-					<li class="nav-item"><a class="nav-link disabled" href="#"
-						tabindex="-1" aria-disabled="true">Disabled</a></li>
 				</ul>
 			</div>
 		</div>
@@ -64,15 +60,19 @@
 	<div class="container">
 		<main>
 			<h2 class="text-secondary h2margin" th:text="${titulo}"></h2>
-			<table class="table table-striped table-bordered">
+
+			<a th:href="@{/form}">crear cliente</a>
+			
+			<table class="table table-bordered">
 				<caption></caption>
 				<thead>
-					<tr class="table-primary">
-						<th scope="col">id</th>
-						<th scope="col">nombre</th>
-						<th scope="col">apellido</th>
-						<th scope="col">email</th>
-						<th scope="col">fecha</th>
+					<tr>
+						<th scope="col">Identificador</th>
+						<th scope="col">Nombre</th>
+						<th scope="col">Apellido</th>
+						<th scope="col">Email</th>
+						<th scope="col">Fecha de Nacimiento</th>
+						<th scope="col">Fecha de Creacion</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -81,6 +81,7 @@
 						<td th:text="${cl.nombre}"></td>
 						<td th:text="${cl.apellido}"></td>
 						<td th:text="${cl.email}"></td>
+						<td th:text="${cl.bornAt}"></td>
 						<td th:text="${cl.createAt}"></td>
 					</tr>
 				</tbody>
