@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
 
 public class ClienteDTO implements Serializable {
 
-
 	private static final long serialVersionUID = 8058062057701411951L;
 
 	private Long id;
@@ -27,6 +26,21 @@ public class ClienteDTO implements Serializable {
 
 	private Date createAt;
 
+	public ClienteDTO() {
+		super();
+	}
+	
+	public ClienteDTO(Long id, @NotEmpty String nombre, @NotEmpty String apellido, @NotEmpty @Email String email,
+			Date bornAt, Date createAt) {
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.email = email;
+		this.bornAt = bornAt;
+		this.createAt = createAt;
+	}
+	
+	
 	public Long getId() {
 		return id;
 	}

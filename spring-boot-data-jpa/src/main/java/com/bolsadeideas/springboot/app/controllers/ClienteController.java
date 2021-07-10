@@ -1,7 +1,9 @@
 package com.bolsadeideas.springboot.app.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -18,17 +20,19 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.bolsadeideas.springboot.app.model.domain.ClienteDTO;
 import com.bolsadeideas.springboot.app.models.dao.IClienteDao;
 import com.bolsadeideas.springboot.app.models.entity.Cliente;
 
-
 @Controller
+@SessionAttributes("clientedto")
 public class ClienteController {
 
 	private static final String STR_TITULO = "titulo";
-	private static final String STR_CLIENTE = "cliente";
+	private static final String STR_CLIENTE = "clientedto";
 	
 	@Autowired
 	@Qualifier("clienteDaoJPA")
@@ -41,7 +45,7 @@ public class ClienteController {
 		var dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, "bornAt" ,new CustomDateEditor(dateFormat,true));
-		binder.registerCustomEditor(Date.class, "createAt" ,new CustomDateEditor(dateFormat,true));
+//		binder.registerCustomEditor(Date.class, "createAt" ,new CustomDateEditor(dateFormat,true));
 				
 	}
 	
@@ -50,21 +54,29 @@ public class ClienteController {
 	public String listar(Model model) {
 
 		model.addAttribute(STR_TITULO, "Listado de Clientes");
-		model.addAttribute("clientes", clienteDao.findAll());
+		
+		List<ClienteDTO> clientes =  new ArrayList<>();
+		List<Cliente> clientesEntity =  clienteDao.findAll();
+		
+		clientesEntity.forEach(cl -> clientes.add(new ClienteDTO(
+				cl.getId(),cl.getNombre(), cl.getApellido(), cl.getEmail(), cl.getBornAt(), cl.getCreateAt()
+				)));
+		
+		model.addAttribute("clientedtolist", clientes);
 
 		return "listar";
 	}
 
 	@GetMapping("/form")
 	public String crear(Map<String, Object> model) {
-		var cliente = new Cliente();
+		var cliente = new ClienteDTO();
 		model.put(STR_CLIENTE, cliente);
 		model.put(STR_TITULO, "Formulario de Cliente");
 		return "form";
 	}
 
 	@PostMapping("/form")
-	public String guardar(@Valid @ModelAttribute("cliente") ClienteDTO cliente, BindingResult result, Model model) {
+	public String guardar(@Valid @ModelAttribute("clientedto") ClienteDTO cliente, BindingResult result, Model model, SessionStatus status) {
 		
 		if(result.hasErrors()) {
 			model.addAttribute(STR_TITULO,"Formulario de Cliente");
@@ -72,6 +84,7 @@ public class ClienteController {
 		}
 		
 		clienteDao.save(cliente);
+		status.setComplete();
 		return "redirect:listar";
 	}
 	
@@ -80,7 +93,17 @@ public class ClienteController {
 	public String editar(@PathVariable(name="id") Long id, Map<String, Object> model ) {
 		
 		if(id>0) {
-			var cliente = clienteDao.findById(id);
+			var clienteEntity = clienteDao.findById(id);
+			
+			var cliente = new ClienteDTO(
+					clienteEntity.getId(),
+					clienteEntity.getNombre(), 
+					clienteEntity.getApellido(), 
+					clienteEntity.getEmail(), 
+					clienteEntity.getBornAt(), 
+					clienteEntity.getCreateAt()
+					);
+			
 			model.put(STR_CLIENTE, cliente);
 			model.put(STR_TITULO,"Formulario de Actualizar Cliente");
 		} else {

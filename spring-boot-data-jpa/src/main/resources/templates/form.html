@@ -60,13 +60,13 @@
 
 			<h2 class="text-secondary h2margin" th:text="${titulo}"></h2>
 
-			<div th:object="${cliente}" th:remove="tag">
+			<div th:object="${clientedto}" th:remove="tag">
 				<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
 					<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
 				</ul>
 			</div>
 
-			<form th:action="@{/form}" th:object="${cliente}" method="post">
+			<form th:action="@{/form}" th:object="${clientedto}" method="post">
 
 				<div class="py-2 form-group row">
 					<div class="form-group-name col">
@@ -124,19 +124,19 @@
 					</div>
 				</div>
 
-				<div class="py-2 form-group row">
-					<div class="form-group-name col">
-						<h6 class="mb-3">Fecha de creacion:</h6>
-					</div>
-					<div class="col">
-						<input class="form-control disabled" type="date" id="createAt"
-							th:field="*{createAt}" placeholder="yyyy-MM-dd" th:errorclass="'form-control alert-danger'">
-					</div>
-					<div class="col">
-						<small class="form-text text-danger"
-							th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></small>
-					</div>
-				</div>
+<!-- 				<div class="py-2 form-group row"> -->
+<!-- 					<div class="form-group-name col"> -->
+<!-- 						<h6 class="mb-3">Fecha de creacion:</h6> -->
+<!-- 					</div> -->
+<!-- 					<div class="col"> -->
+<!-- 						<input class="form-control disabled" type="date" id="createAt" -->
+<!-- 							th:field="*{createAt}" placeholder="yyyy-MM-dd" th:errorclass="'form-control alert-danger'"> -->
+<!-- 					</div> -->
+<!-- 					<div class="col"> -->
+<!-- 						<small class="form-text text-danger" -->
+<!-- 							th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></small> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 
 				<div class="py-2 form-group row">
 					<div class="col">
@@ -145,8 +145,6 @@
 						<input type="submit" value="guardar" class="btn btn-secondary">
 					</div>
 				</div>
-				
-				<input type="hidden" th:field="*{id}">
 				
 			</form>
 		</main>
