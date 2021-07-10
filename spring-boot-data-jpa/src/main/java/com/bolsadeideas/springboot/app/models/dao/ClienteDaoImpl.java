@@ -17,6 +17,11 @@ public class ClienteDaoImpl implements IClienteDao {
 	@PersistenceContext
 	private EntityManager em;
 	
+	@Override
+	public Cliente findById(Long id) {
+		return em.find(Cliente.class, id);
+	}
+	
 	@Transactional
 	@Override
 	public List<Cliente> findAll() {
@@ -27,13 +32,21 @@ public class ClienteDaoImpl implements IClienteDao {
 	@Transactional
 	public void save(ClienteDTO cliente) {
 		
-		var clienteEntity =  new Cliente();
+		var clienteEntity = new Cliente();
+		clienteEntity.setId(cliente.getId());
 		clienteEntity.setNombre(cliente.getNombre());
 		clienteEntity.setApellido(cliente.getApellido());
 		clienteEntity.setEmail(cliente.getEmail());
 		clienteEntity.setBornAt(cliente.getBornAt());
+		clienteEntity.setCreateAt(cliente.getCreateAt());
 		
-		em.persist(clienteEntity);
+		// diferenciación salvar cliente actual o crear nuevo
+		if (cliente.getId()!=null && cliente.getId()>0) {
+			em.merge(clienteEntity);
+		} else {
+			em.persist(clienteEntity);
+		}
+		
 	}
 
 }

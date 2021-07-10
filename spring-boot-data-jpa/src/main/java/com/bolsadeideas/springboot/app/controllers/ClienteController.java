@@ -16,6 +16,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.bolsadeideas.springboot.app.model.domain.ClienteDTO;
@@ -27,6 +28,7 @@ import com.bolsadeideas.springboot.app.models.entity.Cliente;
 public class ClienteController {
 
 	private static final String STR_TITULO = "titulo";
+	private static final String STR_CLIENTE = "cliente";
 	
 	@Autowired
 	@Qualifier("clienteDaoJPA")
@@ -39,6 +41,7 @@ public class ClienteController {
 		var dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, "bornAt" ,new CustomDateEditor(dateFormat,true));
+		binder.registerCustomEditor(Date.class, "createAt" ,new CustomDateEditor(dateFormat,true));
 				
 	}
 	
@@ -55,7 +58,7 @@ public class ClienteController {
 	@GetMapping("/form")
 	public String crear(Map<String, Object> model) {
 		var cliente = new Cliente();
-		model.put("cliente", cliente);
+		model.put(STR_CLIENTE, cliente);
 		model.put(STR_TITULO, "Formulario de Cliente");
 		return "form";
 	}
@@ -71,6 +74,23 @@ public class ClienteController {
 		clienteDao.save(cliente);
 		return "redirect:listar";
 	}
+	
+	
+	@GetMapping("/form/{id}")
+	public String editar(@PathVariable(name="id") Long id, Map<String, Object> model ) {
+		
+		if(id>0) {
+			var cliente = clienteDao.findById(id);
+			model.put(STR_CLIENTE, cliente);
+			model.put(STR_TITULO,"Formulario de Actualizar Cliente");
+		} else {
+			return "redirect:listar";
+		}
+		
+		return "form";
+	} 
+	
+	
 
 
 }

@@ -61,8 +61,11 @@
 		<main>
 			<h2 class="text-secondary h2margin" th:text="${titulo}"></h2>
 
-			<a th:href="@{/form}">crear cliente</a>
-			
+			<div class="py-2 form-group">
+				<a class="btn btn-secondary btn-sm" th:href="@{/form}">crear
+					cliente</a>
+			</div>
+
 			<table class="table table-bordered">
 				<caption></caption>
 				<thead>
@@ -73,6 +76,7 @@
 						<th scope="col">Email</th>
 						<th scope="col">Fecha de Nacimiento</th>
 						<th scope="col">Fecha de Creacion</th>
+						<th scope="col">Accion</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -83,6 +87,8 @@
 						<td th:text="${cl.email}"></td>
 						<td th:text="${cl.bornAt}"></td>
 						<td th:text="${cl.createAt}"></td>
+						<td><a class="btn btn-secondary btn-sm"
+							th:href="@{/form/} + ${cl.id}">editar</a></td>
 					</tr>
 				</tbody>
 			</table>

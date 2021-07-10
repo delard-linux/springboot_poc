@@ -11,6 +11,8 @@ public class ClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 8058062057701411951L;
 
+	private Long id;
+
 	@NotEmpty
 	private String nombre;
 
@@ -23,6 +25,15 @@ public class ClienteDTO implements Serializable {
 
 	private Date bornAt;
 
+	private Date createAt;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -55,5 +66,13 @@ public class ClienteDTO implements Serializable {
 	public void setBornAt(Date bornAt) {
 		this.bornAt = bornAt;
 	}	
+
+	public Date getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(Date createAt) {
+		this.createAt = createAt;
+	}
 	
 }

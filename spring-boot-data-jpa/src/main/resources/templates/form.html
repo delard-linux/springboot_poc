@@ -125,12 +125,29 @@
 				</div>
 
 				<div class="py-2 form-group row">
-					<div class="col">
+					<div class="form-group-name col">
+						<h6 class="mb-3">Fecha de creacion:</h6>
 					</div>
 					<div class="col">
-						<input type="submit" value="Crear Cliente" class="btn btn-secondary">
+						<input class="form-control disabled" type="date" id="createAt"
+							th:field="*{createAt}" placeholder="yyyy-MM-dd" th:errorclass="'form-control alert-danger'">
+					</div>
+					<div class="col">
+						<small class="form-text text-danger"
+							th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></small>
 					</div>
 				</div>
+
+				<div class="py-2 form-group row">
+					<div class="col">
+					</div>
+					<div class="col">
+						<input type="submit" value="guardar" class="btn btn-secondary">
+					</div>
+				</div>
+				
+				<input type="hidden" th:field="*{id}">
+				
 			</form>
 		</main>
 	</div>
