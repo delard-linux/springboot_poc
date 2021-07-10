@@ -45,7 +45,6 @@ public class ClienteController {
 		var dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, "bornAt" ,new CustomDateEditor(dateFormat,true));
-//		binder.registerCustomEditor(Date.class, "createAt" ,new CustomDateEditor(dateFormat,true));
 				
 	}
 	
@@ -85,7 +84,7 @@ public class ClienteController {
 		
 		clienteDao.save(cliente);
 		status.setComplete();
-		return "redirect:listar";
+		return "redirect:/listar";
 	}
 	
 	
@@ -93,7 +92,7 @@ public class ClienteController {
 	public String editar(@PathVariable(name="id") Long id, Map<String, Object> model ) {
 		
 		if(id>0) {
-			var clienteEntity = clienteDao.findById(id);
+			var clienteEntity = clienteDao.findOne(id);
 			
 			var cliente = new ClienteDTO(
 					clienteEntity.getId(),
@@ -107,13 +106,21 @@ public class ClienteController {
 			model.put(STR_CLIENTE, cliente);
 			model.put(STR_TITULO,"Formulario de Actualizar Cliente");
 		} else {
-			return "redirect:listar";
+			return "redirect:/listar";
 		}
 		
 		return "form";
 	} 
 	
-	
+	@GetMapping("/eliminar/{id}")
+	public String eliminar(@PathVariable(name="id") Long id, Map<String, Object> model, SessionStatus status) {
+		
+		if(id>0) {
+			clienteDao.delete(id);
+		} 
+		status.setComplete();
+		return "redirect:/listar";
+	} 	
 
 
 }

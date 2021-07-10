@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bolsadeideas.springboot.app.model.domain.ClienteDTO;
 import com.bolsadeideas.springboot.app.models.entity.Cliente;
@@ -18,12 +18,13 @@ public class ClienteDaoImpl implements IClienteDao {
 	private EntityManager em;
 	
 	@Override
-	public Cliente findById(Long id) {
+	@Transactional(readOnly = true)
+	public Cliente findOne(Long id) {
 		return em.find(Cliente.class, id);
 	}
 	
-	@Transactional
 	@Override
+	@Transactional(readOnly = true)
 	public List<Cliente> findAll() {
 		return em.createQuery("from Cliente", Cliente.class).getResultList();
 	}
@@ -47,6 +48,12 @@ public class ClienteDaoImpl implements IClienteDao {
 			em.persist(clienteEntity);
 		}
 		
+	}
+
+	@Override
+	@Transactional
+	public void delete(Long id) {
+		em.remove(findOne(id));
 	}
 
 }

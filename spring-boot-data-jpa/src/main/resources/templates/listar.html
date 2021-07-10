@@ -66,17 +66,18 @@
 					cliente</a>
 			</div>
 
-			<table class="table table-bordered">
+			<table class="table table-bordered align-middle">
 				<caption></caption>
 				<thead>
-					<tr>
-						<th scope="col">Identificador</th>
+					<tr class="align-middle">
+						<th scope="col">#</th>
 						<th scope="col">Nombre</th>
 						<th scope="col">Apellido</th>
 						<th scope="col">Email</th>
-						<th scope="col">Fecha de Nacimiento</th>
-						<th scope="col">Fecha de Creacion</th>
-						<th scope="col">Accion</th>
+						<th scope="col">Nacimiento</th>
+						<th scope="col">Creacion</th>
+						<th scope="col">Editar</th>
+						<th scope="col">Borrar</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -87,8 +88,13 @@
 						<td th:text="${cl.email}"></td>
 						<td th:text="${cl.bornAt}"></td>
 						<td th:text="${cl.createAt}"></td>
-						<td><a class="btn btn-secondary btn-sm"
+						<td>
+						<a class="btn btn-secondary btn-sm"
 							th:href="@{/form/} + ${cl.id}">editar</a></td>
+						<td>
+						<a class="btn btn-secondary btn-sm"
+							th:href="@{/eliminar/} + ${cl.id}" 
+							onclick="return confirm('¿Está seguro que quiere eliminar?');">borrar</a></td>
 					</tr>
 				</tbody>
 			</table>

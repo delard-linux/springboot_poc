@@ -9,8 +9,10 @@ public interface IClienteDao {
 	
 	public List<Cliente> findAll();
 
-	public Cliente findById(Long id);
+	public Cliente findOne(Long id);
 	
 	public void save(ClienteDTO cliente);
+
+	public void delete(Long id);
 
 }
