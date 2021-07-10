@@ -28,6 +28,10 @@ hs_err_pid*
 **/.project
 **/.settings/
 **/target/
+
+# documentacion adicional que no hay que subir
+/docs/
+
 **/.mvn/
 **/mvnw
 **/mvnw.cmd
