@@ -3,6 +3,7 @@ package com.bolsadeideas.springboot.app.model.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 public class ClienteDTO implements Serializable {
@@ -17,6 +18,7 @@ public class ClienteDTO implements Serializable {
 	private String apellido;
 
 	@NotEmpty
+	@Email
 	private String email;
 
 	private Date bornAt;
