@@ -1,8 +1,8 @@
-package com.bolsadeideas.springboot.app.models.dao;
+package com.drd.springbootpoc.app.models.dao;
 
 import java.util.List;
 
-import com.bolsadeideas.springboot.app.models.entity.Cliente;
+import com.drd.springbootpoc.app.models.entity.Cliente;
 
 public interface IClienteDao {
 	

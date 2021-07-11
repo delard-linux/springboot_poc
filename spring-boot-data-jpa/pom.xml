@@ -8,8 +8,8 @@
 		<version>2.5.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.bolsadeideas.springboot.datajpa.app</groupId>
-	<artifactId>spring-boot-data-jpa</artifactId>
+	<groupId>com.drd.springbootpoc.datajpa.app</groupId>
+	<artifactId>springbootpoc-data-jpa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-boot-data-jpa</name>
 	<description>Demo project for Spring Boot Forms Thymeleaf</description>

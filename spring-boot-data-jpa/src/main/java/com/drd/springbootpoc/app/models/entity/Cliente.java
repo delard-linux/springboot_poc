@@ -1,45 +1,55 @@
-package com.bolsadeideas.springboot.app.model.domain;
+package com.drd.springbootpoc.app.models.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.validation.constraints.Email;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-public class ClienteDTO implements Serializable {
+@Entity
+@Table(name = "clientes")
+public class Cliente implements Serializable {
 
-	private static final long serialVersionUID = 8058062057701411951L;
+	private static final long serialVersionUID = 1230791196947869605L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotEmpty
+	@NotNull
 	private String nombre;
 
 	@NotEmpty
+	@NotNull
 	private String apellido;
 
 	@NotEmpty
-	@Email
+	@NotNull
 	private String email;
 
+	@Column(name = "born_at")
+	@Temporal(TemporalType.DATE)
 	private Date bornAt;
 
+	@NotNull
+	@Column(name = "create_at")
+	@Temporal(TemporalType.DATE)
 	private Date createAt;
-
-	public ClienteDTO() {
-		super();
-	}
 	
-	public ClienteDTO(Long id, @NotEmpty String nombre, @NotEmpty String apellido, @NotEmpty @Email String email,
-			Date bornAt, Date createAt) {
-		this.id = id;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.email = email;
-		this.bornAt = bornAt;
-		this.createAt = createAt;
+	@PrePersist
+	public void prePersist() {
+		createAt =  new Date();
 	}
-	
 	
 	public Long getId() {
 		return id;
@@ -79,8 +89,8 @@ public class ClienteDTO implements Serializable {
 
 	public void setBornAt(Date bornAt) {
 		this.bornAt = bornAt;
-	}	
-
+	}
+	
 	public Date getCreateAt() {
 		return createAt;
 	}
@@ -88,5 +98,5 @@ public class ClienteDTO implements Serializable {
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
-	
+
 }

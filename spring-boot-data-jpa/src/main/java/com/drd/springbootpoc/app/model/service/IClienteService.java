@@ -1,8 +1,8 @@
-package com.bolsadeideas.springboot.app.model.service;
+package com.drd.springbootpoc.app.model.service;
 
 import java.util.List;
 
-import com.bolsadeideas.springboot.app.model.domain.ClienteDTO;
+import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 
 public interface IClienteService {
 	

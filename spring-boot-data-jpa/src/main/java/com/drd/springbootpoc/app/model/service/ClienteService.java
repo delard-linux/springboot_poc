@@ -1,4 +1,4 @@
-package com.bolsadeideas.springboot.app.model.service;
+package com.drd.springbootpoc.app.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bolsadeideas.springboot.app.model.domain.ClienteDTO;
-import com.bolsadeideas.springboot.app.models.dao.IClienteDao;
-import com.bolsadeideas.springboot.app.models.entity.Cliente;
+import com.drd.springbootpoc.app.model.domain.ClienteDTO;
+import com.drd.springbootpoc.app.models.dao.IClienteDao;
+import com.drd.springbootpoc.app.models.entity.Cliente;
 
 @Service
 public class ClienteService implements IClienteService {

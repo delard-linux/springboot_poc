@@ -1,4 +1,4 @@
-package com.bolsadeideas.springboot.app.controllers;
+package com.drd.springbootpoc.app.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.bolsadeideas.springboot.app.model.domain.ClienteDTO;
-import com.bolsadeideas.springboot.app.model.service.IClienteService;
+import com.drd.springbootpoc.app.model.domain.ClienteDTO;
+import com.drd.springbootpoc.app.model.service.IClienteService;
 
 @Controller
 @SessionAttributes("clientedto")
