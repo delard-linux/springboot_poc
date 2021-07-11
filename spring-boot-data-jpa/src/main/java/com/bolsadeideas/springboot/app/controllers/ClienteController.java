@@ -1,7 +1,6 @@
 package com.bolsadeideas.springboot.app.controllers;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,8 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.bolsadeideas.springboot.app.model.domain.ClienteDTO;
-import com.bolsadeideas.springboot.app.models.dao.IClienteDao;
-import com.bolsadeideas.springboot.app.models.entity.Cliente;
+import com.bolsadeideas.springboot.app.model.service.IClienteService;
 
 @Controller
 @SessionAttributes("clientedto")
@@ -35,8 +32,8 @@ public class ClienteController {
 	private static final String STR_CLIENTE = "clientedto";
 	
 	@Autowired
-	@Qualifier("clienteDaoJPA")
-	private IClienteDao clienteDao;
+	//@Qualifier("clienteDaoJPA")
+	private IClienteService clienteService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -54,12 +51,7 @@ public class ClienteController {
 
 		model.addAttribute(STR_TITULO, "Listado de Clientes");
 		
-		List<ClienteDTO> clientes =  new ArrayList<>();
-		List<Cliente> clientesEntity =  clienteDao.findAll();
-		
-		clientesEntity.forEach(cl -> clientes.add(new ClienteDTO(
-				cl.getId(),cl.getNombre(), cl.getApellido(), cl.getEmail(), cl.getBornAt(), cl.getCreateAt()
-				)));
+		List<ClienteDTO> clientes = clienteService.getAllClientes();  
 		
 		model.addAttribute("clientedtolist", clientes);
 
@@ -82,7 +74,8 @@ public class ClienteController {
 			return "form";
 		}
 		
-		clienteDao.save(cliente);
+		clienteService.saveCliente(cliente);
+		
 		status.setComplete();
 		return "redirect:/listar";
 	}
@@ -92,19 +85,12 @@ public class ClienteController {
 	public String editar(@PathVariable(name="id") Long id, Map<String, Object> model ) {
 		
 		if(id>0) {
-			var clienteEntity = clienteDao.findOne(id);
 			
-			var cliente = new ClienteDTO(
-					clienteEntity.getId(),
-					clienteEntity.getNombre(), 
-					clienteEntity.getApellido(), 
-					clienteEntity.getEmail(), 
-					clienteEntity.getBornAt(), 
-					clienteEntity.getCreateAt()
-					);
+			var cliente = clienteService.getCliente(id);
 			
 			model.put(STR_CLIENTE, cliente);
 			model.put(STR_TITULO,"Formulario de Actualizar Cliente");
+
 		} else {
 			return "redirect:/listar";
 		}
@@ -116,7 +102,7 @@ public class ClienteController {
 	public String eliminar(@PathVariable(name="id") Long id, Map<String, Object> model, SessionStatus status) {
 		
 		if(id>0) {
-			clienteDao.delete(id);
+			clienteService.deleteCliente(id);
 		} 
 		status.setComplete();
 		return "redirect:/listar";
