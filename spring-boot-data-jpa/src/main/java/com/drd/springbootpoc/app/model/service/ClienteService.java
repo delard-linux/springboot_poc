@@ -21,16 +21,16 @@ public class ClienteService implements IClienteService {
 	@Transactional(readOnly = true)
 	public ClienteDTO getCliente(Long id) {
 
-		var clienteEntity = clienteDao.findOne(id);
+		var clienteEntity = clienteDao.findById(id).orElse(null);
 		
-		return new ClienteDTO(
+		return clienteEntity!=null ? new ClienteDTO(
 				clienteEntity.getId(),
 				clienteEntity.getNombre(), 
 				clienteEntity.getApellido(), 
 				clienteEntity.getEmail(), 
 				clienteEntity.getBornAt(), 
 				clienteEntity.getCreateAt()
-				);
+				) : null;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class ClienteService implements IClienteService {
 	public List<ClienteDTO> getAllClientes() {
 
 		List<ClienteDTO> clientes =  new ArrayList<>();
-		List<Cliente> clientesEntity =  clienteDao.findAll();
+		List<Cliente> clientesEntity =  (List<Cliente>) clienteDao.findAll();
 		
 		clientesEntity.forEach(cl -> 
 						clientes.add(new ClienteDTO(
@@ -72,7 +72,7 @@ public class ClienteService implements IClienteService {
 	@Override
 	@Transactional
 	public void deleteCliente(Long id) {
-		clienteDao.delete(id);
+		clienteDao.deleteById(id);
 	}
 
 }
