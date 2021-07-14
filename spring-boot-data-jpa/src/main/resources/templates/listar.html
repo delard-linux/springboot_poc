@@ -1,59 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
-<head th:replace="layout/layout :: head">
-</head>
+<head th:replace="layout/layout :: head"></head>
 <body>
-<body class="bg-light">
-
 
 	<header th:replace="layout/layout :: header"></header>
 
-	<div class="container">
-		<main>
-			<h2 class="text-secondary h2margin" th:text="${titulo}"></h2>
-
-			<div class="py-2 form-group">
-				<a class="btn btn-secondary btn-sm" th:href="@{/form}">crear
-					cliente</a>
+	<div class="container py-4">
+	
+		<div class="card bg-light">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+		
+				<h4 class="card-title">
+					<a class="btn btn-secondary btn-sm" th:href="@{/form}">crear
+						cliente</a>
+				</h4>
+	
+				<table class="table table-bordered align-middle">
+					<caption></caption>
+					<thead>
+						<tr class="align-middle">
+							<th scope="col">#</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Apellido</th>
+							<th scope="col">Email</th>
+							<th scope="col">Nacimiento</th>
+							<th scope="col">Creacion</th>
+							<th scope="col">Editar</th>
+							<th scope="col">Borrar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="cl : ${clientedtolist}">
+							<td th:text="${cl.id}"></td>
+							<td th:text="${cl.nombre}"></td>
+							<td th:text="${cl.apellido}"></td>
+							<td th:text="${cl.email}"></td>
+							<td th:text="${cl.bornAt}"></td>
+							<td th:text="${cl.createAt}"></td>
+							<td>
+							<a class="btn btn-secondary btn-sm"
+								th:href="@{/form/} + ${cl.id}">editar</a></td>
+							<td>
+							<a class="btn btn-secondary btn-sm"
+								th:href="@{/eliminar/} + ${cl.id}" 
+								onclick="return confirm('¿Está seguro que quiere eliminar?');">borrar</a></td>
+						</tr>
+					</tbody>
+				</table>
+			
 			</div>
+		</div>
 
-			<table class="table table-bordered align-middle">
-				<caption></caption>
-				<thead>
-					<tr class="align-middle">
-						<th scope="col">#</th>
-						<th scope="col">Nombre</th>
-						<th scope="col">Apellido</th>
-						<th scope="col">Email</th>
-						<th scope="col">Nacimiento</th>
-						<th scope="col">Creacion</th>
-						<th scope="col">Editar</th>
-						<th scope="col">Borrar</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="cl : ${clientedtolist}">
-						<td th:text="${cl.id}"></td>
-						<td th:text="${cl.nombre}"></td>
-						<td th:text="${cl.apellido}"></td>
-						<td th:text="${cl.email}"></td>
-						<td th:text="${cl.bornAt}"></td>
-						<td th:text="${cl.createAt}"></td>
-						<td>
-						<a class="btn btn-secondary btn-sm"
-							th:href="@{/form/} + ${cl.id}">editar</a></td>
-						<td>
-						<a class="btn btn-secondary btn-sm"
-							th:href="@{/eliminar/} + ${cl.id}" 
-							onclick="return confirm('¿Está seguro que quiere eliminar?');">borrar</a></td>
-					</tr>
-				</tbody>
-			</table>
-		</main>
 	</div>
 
 	<footer th:replace="layout/layout :: footer"></footer>
-
 
 </body>
 </html>

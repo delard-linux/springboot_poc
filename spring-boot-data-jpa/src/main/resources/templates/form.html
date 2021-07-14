@@ -1,65 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
-<head>
-<meta charset="UTF-8">
-<title th:text="${titulo}"></title>
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-<meta name="theme-color" content="#7952b3">
-<style>
-.bd-placeholder-img {
-	font-size: 1.125rem;
-	text-anchor: middle;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none;
-}
+<head th:replace="layout/layout :: head"></head>
+<body>
 
-@media ( min-width : 768px) {
-	.bd-placeholder-img-lg {
-		font-size: 3.5rem;
-	}
-}
+	<header th:replace="layout/layout :: header"></header>
 
-.container {
-	max-width: 900px;
-}
-
-.form-group-name {
-	max-width: 200px;
-}
-
-.h2margin {
-	margin-top: revert;
-}
-</style>
-</head>
-<body class="bg-light">
-
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="#">Spring Boot</a>
-			<button class="navbar-toggler" type="button"
-				data-bs-toggle="collapse" data-bs-target="#navbarNav"
-				aria-controls="navbarNav" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="#">Home</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/listar}">Cliente</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-
-	<div class="container">
-		<main>
-
-			<h2 class="text-secondary h2margin" th:text="${titulo}"></h2>
-
+	<div class="container py-4">
+	
+	
+			<div class="card bg-light">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+		
 			<div th:object="${clientedto}" th:remove="tag">
 				<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
 					<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
@@ -128,12 +80,17 @@
 					<div class="col">
 					</div>
 					<div class="col">
-						<input type="submit" value="guardar" class="btn btn-secondary">
+						<input type="submit" value="guardar" class="btn btn-secondary btn-sm">
 					</div>
 				</div>
 				
 			</form>
-		</main>
-	</div>
+
+			</div>
+			</div>
+	</div>	
+	
+	<footer th:replace="layout/layout :: footer"></footer>
+	
 </body>
 </html>
