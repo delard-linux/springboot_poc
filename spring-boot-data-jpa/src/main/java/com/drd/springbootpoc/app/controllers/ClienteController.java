@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.model.service.IClienteService;
@@ -67,7 +68,8 @@ public class ClienteController {
 	}
 
 	@PostMapping("/form")
-	public String guardar(@Valid @ModelAttribute("clientedto") ClienteDTO cliente, BindingResult result, Model model, SessionStatus status) {
+	public String guardar(@Valid @ModelAttribute("clientedto") ClienteDTO cliente, BindingResult result, 
+			Model model, RedirectAttributes  flash, SessionStatus status) {
 		
 		if(result.hasErrors()) {
 			model.addAttribute(STR_TITULO,"Formulario de Cliente");
@@ -77,12 +79,14 @@ public class ClienteController {
 		clienteService.saveCliente(cliente);
 		
 		status.setComplete();
+		flash.addFlashAttribute("success", "Cliente salvado con exito!");
 		return "redirect:/listar";
 	}
 	
 	
 	@GetMapping("/form/{id}")
-	public String editar(@PathVariable(name="id") Long id, Map<String, Object> model ) {
+	public String editar(@PathVariable(name="id") Long id, 
+			Map<String, Object> model, RedirectAttributes  flash ) {
 		
 		if(id>0) {
 			
@@ -90,8 +94,14 @@ public class ClienteController {
 			
 			model.put(STR_CLIENTE, cliente);
 			model.put(STR_TITULO,"Formulario de Actualizar Cliente");
+			
+			if (cliente == null) {
+				flash.addFlashAttribute("error", "Cliente inexistente con el ID: " + id);
+				return "redirect:/listar";
+			}
 
 		} else {
+			flash.addFlashAttribute("error", "El ID de cliente no puede ser cero o negativo: " + id);
 			return "redirect:/listar";
 		}
 		
@@ -99,12 +109,14 @@ public class ClienteController {
 	} 
 	
 	@GetMapping("/eliminar/{id}")
-	public String eliminar(@PathVariable(name="id") Long id, Map<String, Object> model, SessionStatus status) {
+	public String eliminar(@PathVariable(name="id") Long id, 
+			Map<String, Object> model, RedirectAttributes  flash,  SessionStatus status) {
 		
 		if(id>0) {
 			clienteService.deleteCliente(id);
 		} 
 		status.setComplete();
+		flash.addFlashAttribute("success", "Cliente eliminado con exito!");
 		return "redirect:/listar";
 	} 	
 
