@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,4 +76,28 @@ public class ClienteService implements IClienteService {
 		clienteDao.deleteById(id);
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<ClienteDTO> getAllClientes(Pageable pageable) {
+		return transformToDTO(clienteDao.findAll(pageable));
+	}
+
+	
+	public List<ClienteDTO> transformToDTO(Iterable<Cliente> clientesEntityIterable) {
+
+		List<ClienteDTO> clientes =  new ArrayList<>();
+		
+		clientesEntityIterable.forEach(cl -> 
+						clientes.add(new ClienteDTO(
+										cl.getId(),
+										cl.getNombre(), 
+										cl.getApellido(), 
+										cl.getEmail(), 
+										cl.getBornAt(), 
+										cl.getCreateAt())));
+		
+		return clientes;
+	}
+	
+	
 }

@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#7952b3">
 <style>
 .bd-placeholder-img {
-	font-size: 1.125rem;
+	font-size: 1rem;
 	text-anchor: middle;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -18,10 +18,6 @@
 	.bd-placeholder-img-lg {
 		font-size: 3.5rem;
 	}
-}
-
-.container {
-	max-width: 1000px;
 }
 
 .form-group-name {
@@ -54,25 +50,32 @@
 				</div>
 			</div>
 		</nav>
-		
-		<div class="alert alert-success" th:if="${success != null}" th:text="${success}"></div>		
-		<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>		
-		<div class="alert alert-warning" th:if="${warning != null}" th:text="${warning}"></div>		
-		<div class="alert alert-info" th:if="${info != null}" th:text="${info}"></div>		
-		
+
+		<div class="alert alert-success" th:if="${success != null}"
+			th:text="${success}"></div>
+		<div class="alert alert-danger" th:if="${error != null}"
+			th:text="${error}"></div>
+		<div class="alert alert-warning" th:if="${warning != null}"
+			th:text="${warning}"></div>
+		<div class="alert alert-info" th:if="${info != null}"
+			th:text="${info}"></div>
+
 	</header>
-	<footer th:fragment="footer" class="container">
+	<footer th:fragment="footer" class="container-md">
 		<hr />
-		<img th:src="@{/images/spring.png}" alt="Spring logo" height="30px"/>
-		<p><small>
-			Powered by <a href="https://projects.spring.io/spring-boot/">Spring
-				Boot</a>, <a href="http://www.thymeleaf.org">Thymeleaf</a> and 
-				<a href="https://getbootstrap.com/">Bootstrap</a>.
-		</small></p>
+		<img th:src="@{/images/spring.png}" alt="Spring logo" height="30px" />
 		<p>
-			<small>Este proyecto fue desarrollado en IDE Spring Tool Suite <br />
-			&copy; MiRolloEsElRock 2021, Ningún derecho reservado. Sin Términos de uso y
-			menos privacidad.<br /></small>
+			<small> Powered by <a
+				href="https://projects.spring.io/spring-boot/">Spring Boot</a>, <a
+				href="http://www.thymeleaf.org">Thymeleaf</a> and <a
+				href="https://getbootstrap.com/">Bootstrap</a>.
+			</small>
+		</p>
+		<p>
+			<small>Este proyecto fue desarrollado en IDE Spring Tool
+				Suite <br /> &copy; MiRolloEsElRock 2021, Ningún derecho reservado.
+				Sin Términos de uso y menos privacidad.<br />
+			</small>
 		</p>
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Bootstrap JS -->

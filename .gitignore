@@ -32,6 +32,10 @@ hs_err_pid*
 # documentacion adicional que no hay que subir
 /docs/
 
+# projectos que no se quieren trackear
+/software-hardware-catalog/
+
+# maven related
 **/.mvn/
 **/mvnw
 **/mvnw.cmd

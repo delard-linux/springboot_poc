@@ -5,50 +5,99 @@
 
 	<header th:replace="layout/layout :: header"></header>
 
-	<div class="container py-4">
-	
-		<div class="card bg-light">
+	<div class="container-md">
+
+		<div class="card bg-light mt-1">
+			<div class="card-body">
+
+				<form th:action="@{/form}" method="post">
+
+					<div class="py-1 form-group row">
+						<div class="form-group-name col">
+							<h6 class="mb-3">Nombre:</h6>
+						</div>
+						<div class="col">
+							<input class="form-control" type="text" id="nombre">
+						</div>
+					</div>
+
+					<div class="py-1 form-group row">
+						<div class="form-group-name col">
+							<h6 class="mb-3">Apellido:</h6>
+						</div>
+						<div class="col">
+							<input class="form-control" type="text" id="apellido">
+						</div>
+					</div>
+
+					<div class="py-1 form-group row">
+						<div class="form-group-name col">
+							<h6 class="mb-3">Email:</h6>
+						</div>
+						<div class="col">
+							<input class="form-control" type="text" id="email">
+						</div>
+					</div>
+
+					<div class="py-1 form-group row">
+						<div class="col-10"></div>
+						<div class="col">
+							<input type="submit" value="buscar"
+								class="btn btn-outline-primary btn-sm" th:href="@{/form}">
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+
+		<div class="card bg-light mt-1">
 			<div class="card-header" th:text="${titulo}"></div>
 			<div class="card-body">
-		
-				<h4 class="card-title">
-					<a class="btn btn-secondary btn-sm" th:href="@{/form}">crear
+
+				<div class="py-1 form-group row">
+					<div class="col-10"></div>
+					<div class="col">
+						<a class="btn btn-outline-primary btn-sm" th:href="@{/form}">crear
 						cliente</a>
-				</h4>
-	
-				<table class="table table-bordered align-middle">
-					<caption></caption>
-					<thead>
-						<tr class="align-middle">
-							<th scope="col">#</th>
-							<th scope="col">Nombre</th>
-							<th scope="col">Apellido</th>
-							<th scope="col">Email</th>
-							<th scope="col">Nacimiento</th>
-							<th scope="col">Creacion</th>
-							<th scope="col">Editar</th>
-							<th scope="col">Borrar</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="cl : ${clientedtolist}">
-							<td th:text="${cl.id}"></td>
-							<td th:text="${cl.nombre}"></td>
-							<td th:text="${cl.apellido}"></td>
-							<td th:text="${cl.email}"></td>
-							<td th:text="${cl.bornAt}"></td>
-							<td th:text="${cl.createAt}"></td>
-							<td>
-							<a class="btn btn-secondary btn-sm"
-								th:href="@{/form/} + ${cl.id}">editar</a></td>
-							<td>
-							<a class="btn btn-secondary btn-sm"
-								th:href="@{/eliminar/} + ${cl.id}" 
-								onclick="return confirm('¿Está seguro que quiere eliminar?');">borrar</a></td>
-						</tr>
-					</tbody>
-				</table>
-			
+					</div>
+				</div>
+
+				<div class="py-1 form-group row">
+					<div class="col">
+						<table class="table table-bordered align-middle">
+							<caption></caption>
+							<thead>
+								<tr class="align-middle">
+									<th scope="col">#</th>
+									<th scope="col">Nombre</th>
+									<th scope="col">Apellido</th>
+									<th scope="col">Email</th>
+									<th scope="col">Nacimiento</th>
+									<th scope="col">Creacion</th>
+									<th scope="col">Editar</th>
+									<th scope="col">Borrar</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="cl : ${clientedtolist}">
+									<td th:text="${cl.id}"></td>
+									<td th:text="${cl.nombre}"></td>
+									<td th:text="${cl.apellido}"></td>
+									<td th:text="${cl.email}"></td>
+									<td th:text="${cl.bornAt}"></td>
+									<td th:text="${cl.createAt}"></td>
+									<td><a class="btn btn-outline-primary btn-sm"
+										th:href="@{/form/} + ${cl.id}">editar</a></td>
+									<td><a class="btn btn-outline-danger btn-sm"
+										th:href="@{/eliminar/} + ${cl.id}"
+										onclick="return confirm('¿Está seguro que quiere eliminar?');">borrar</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 
