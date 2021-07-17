@@ -10,20 +10,43 @@ public class ClienteDTOMapper {
 
 	private ClienteDTOMapper() {}	
 	
-	public static List<ClienteDTO> transformToDTO(Iterable<Cliente> clientesEntityIterable) {
+	public static List<ClienteDTO> transformEntityListToDTOList(Iterable<Cliente> clientesEntityIterable) {
 
 		List<ClienteDTO> clientes =  new ArrayList<>();
 		
 		clientesEntityIterable.forEach(cl -> 
-						clientes.add(new ClienteDTO(
-										cl.getId(),
-										cl.getNombre(), 
-										cl.getApellido(), 
-										cl.getEmail(), 
-										cl.getBornAt(), 
-										cl.getCreateAt())));
+						clientes.add(transformEntityToDTO(cl)));
 		
 		return clientes;
 	}
+	
+	public static ClienteDTO transformEntityToDTO(Cliente clienteEntity) {
+
+		return new ClienteDTO(clienteEntity.getId(),
+				clienteEntity.getNombre(), 
+				clienteEntity.getApellido(), 
+				clienteEntity.getEmail(), 
+				clienteEntity.getBornAt(), 
+				clienteEntity.getCreateAt(),
+				clienteEntity.getFoto());
+
+	}
+
+	public static Cliente transformDTOToEntity(ClienteDTO cliente) {
+
+		var clienteEntity = new Cliente();
+		
+		clienteEntity.setId(cliente.getId());
+		clienteEntity.setNombre(cliente.getNombre());
+		clienteEntity.setApellido(cliente.getApellido());
+		clienteEntity.setEmail(cliente.getEmail());
+		clienteEntity.setBornAt(cliente.getBornAt());
+		clienteEntity.setCreateAt(cliente.getCreateAt());
+		clienteEntity.setFoto(cliente.getFoto());
+		
+		return clienteEntity;
+
+	}	
+	
 	
 }

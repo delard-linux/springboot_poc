@@ -26,18 +26,21 @@ public class ClienteDTO implements Serializable {
 
 	private Date createAt;
 
+	private String foto;
+	
 	public ClienteDTO() {
 		super();
 	}
 	
 	public ClienteDTO(Long id, @NotEmpty String nombre, @NotEmpty String apellido, @NotEmpty @Email String email,
-			Date bornAt, Date createAt) {
+			Date bornAt, Date createAt, String foto) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.email = email;
 		this.bornAt = bornAt;
 		this.createAt = createAt;
+		this.foto = foto;
 	}
 	
 	
@@ -89,4 +92,11 @@ public class ClienteDTO implements Serializable {
 		this.createAt = createAt;
 	}
 	
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
 }
