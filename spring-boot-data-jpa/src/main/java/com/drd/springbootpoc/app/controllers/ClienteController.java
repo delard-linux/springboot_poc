@@ -2,7 +2,6 @@ package com.drd.springbootpoc.app.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -27,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.model.service.IClienteService;
+import com.drd.springbootpoc.app.util.paginator.Pagina;
 
 @Controller
 @SessionAttributes("clientedto")
@@ -54,10 +54,10 @@ public class ClienteController {
 	public String listar(@RequestParam(name="page", defaultValue="0") int page,  Model model) {
 
 		Pageable pageRequest = PageRequest.of(page,10);		
-		List<ClienteDTO> clientes = clienteService.getAllClientes(pageRequest);  
+		Pagina<ClienteDTO> clientes = clienteService.getAllClientes(pageRequest);  
 		
 		model.addAttribute(STR_TITULO, "Listado de Clientes");
-		model.addAttribute("clientedtolist", clientes);
+		model.addAttribute("clientedtolist", clientes.getContenido());
 
 		return "listar";
 	}

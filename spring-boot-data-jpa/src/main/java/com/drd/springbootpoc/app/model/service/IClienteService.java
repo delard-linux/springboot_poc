@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
+import com.drd.springbootpoc.app.util.paginator.Pagina;
 
 public interface IClienteService {
 	
@@ -12,7 +13,7 @@ public interface IClienteService {
 
 	public List<ClienteDTO> getAllClientes();
 
-	public List<ClienteDTO> getAllClientes(Pageable pageable);
+	public Pagina<ClienteDTO> getAllClientes(Pageable pageable);
 
 	public void saveCliente(ClienteDTO cliente);
 

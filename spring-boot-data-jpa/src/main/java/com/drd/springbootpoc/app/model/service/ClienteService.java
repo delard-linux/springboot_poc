@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.models.dao.IClienteDao;
 import com.drd.springbootpoc.app.models.entity.Cliente;
+import com.drd.springbootpoc.app.util.paginator.Pagina;
 
 @Service
 public class ClienteService implements IClienteService {
@@ -53,6 +55,18 @@ public class ClienteService implements IClienteService {
 		return clientes;
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Pagina<ClienteDTO> getAllClientes(Pageable pageable) {
+		
+		Page<Cliente> paginaClientes =  clienteDao.findAll(pageable);
+		
+		Pagina<ClienteDTO> paginaClientesDTO = new Pagina<ClienteDTO>();
+		
+		paginaClientesDTO.setContenido(transformToDTO(paginaClientes.getContent()));
+		
+		return paginaClientesDTO;
+	}
 	
 	@Override
 	@Transactional
@@ -75,13 +89,6 @@ public class ClienteService implements IClienteService {
 	public void deleteCliente(Long id) {
 		clienteDao.deleteById(id);
 	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public List<ClienteDTO> getAllClientes(Pageable pageable) {
-		return transformToDTO(clienteDao.findAll(pageable));
-	}
-
 	
 	public List<ClienteDTO> transformToDTO(Iterable<Cliente> clientesEntityIterable) {
 
@@ -98,6 +105,5 @@ public class ClienteService implements IClienteService {
 		
 		return clientes;
 	}
-	
 	
 }
