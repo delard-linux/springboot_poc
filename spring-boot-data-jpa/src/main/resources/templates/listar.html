@@ -5,45 +5,39 @@
 
 	<header th:replace="layout/layout :: header"></header>
 
+
+
 	<div class="container-md">
 
-		<div class="card bg-light mt-1">
+	<div class="card bg-light mt-1">
 			<div class="card-body">
 
 				<form th:action="@{/form}" method="post">
 
-					<div class="py-1 form-group row">
-						<div class="form-group-name col">
-							<h6 class="mb-3">Nombre:</h6>
-						</div>
-						<div class="col">
+					<div class="py-1 row">
+						<div class="col-3 col-md-3">
+							<h6>Nombre:</h6>
 							<input class="form-control" type="text" id="nombre">
 						</div>
-					</div>
-
-					<div class="py-1 form-group row">
-						<div class="form-group-name col">
-							<h6 class="mb-3">Apellido:</h6>
-						</div>
-						<div class="col">
+						<div class="col-3 col-md-3">
+							<h6>Apellido:</h6>
 							<input class="form-control" type="text" id="apellido">
 						</div>
-					</div>
-
-					<div class="py-1 form-group row">
-						<div class="form-group-name col">
-							<h6 class="mb-3">Email:</h6>
-						</div>
-						<div class="col">
+						<div class="col-3 col-md-3">
+							<h6>Email:</h6>
 							<input class="form-control" type="text" id="email">
 						</div>
-					</div>
+						<div class="col-1 col-md-3">
 
-					<div class="py-1 form-group row">
-						<div class="col-10"></div>
-						<div class="col">
-							<input type="submit" value="buscar"
-								class="btn btn-outline-primary btn-sm" th:href="@{/form}">
+							<div class="container">
+								<div class="row align-content-end justify-content-end">
+									<div class="col-3">
+										<input type="submit" value="buscar"
+											class="btn btn-outline-primary btn-sm" th:href="@{/form}">
+									</div>
+								</div>
+							</div>
+
 						</div>
 					</div>
 
@@ -57,7 +51,6 @@
 			<div class="card-body">
 
 				<div class="py-1 form-group row">
-					<div class="col-10"></div>
 					<div class="col">
 						<a class="btn btn-outline-primary btn-sm" th:href="@{/form}">crear
 						cliente</a>
@@ -96,6 +89,9 @@
 								</tr>
 							</tbody>
 						</table>
+						
+						<nav th:replace="paginador-nav :: paginador"></nav>
+												
 					</div>
 				</div>
 			</div>

@@ -97,5 +97,6 @@ INSERT INTO clientes (id, nombre, apellido, email, born_at, create_at) VALUES (9
 INSERT INTO clientes (id, nombre, apellido, email, born_at, create_at) VALUES (96 ,'Reuben','Romero','porttitor.tellus.non@lacus.com','2022-04-01', CURRENT_TIMESTAMP()); 
 INSERT INTO clientes (id, nombre, apellido, email, born_at, create_at) VALUES (97 ,'Tanner','Savage','sagittis@montesnascetur.ca','2022-04-28', CURRENT_TIMESTAMP()); 
 INSERT INTO clientes (id, nombre, apellido, email, born_at, create_at) VALUES (98 ,'Ali','Rich','ipsum.primis.in@faucibus.net','2022-05-01', CURRENT_TIMESTAMP()); 
+INSERT INTO clientes (id, nombre, apellido, email, born_at, create_at) VALUES (99 ,'Pedro','Picapiedra','lamia@sekera.net','1974-08-06', CURRENT_TIMESTAMP()); 
 INSERT INTO clientes (id, nombre, apellido, email, born_at, create_at) VALUES (100 ,'Jerome','Perry','in.faucibus.Morbi@Quisque.com','2020-11-27', CURRENT_TIMESTAMP()); 
 INSERT INTO clientes (id, nombre, apellido, email, born_at, create_at) VALUES (101 ,'Ralph','Thomas','Nam.nulla@felis.org','2020-10-21', CURRENT_TIMESTAMP());

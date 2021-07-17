@@ -1,12 +1,11 @@
 package com.drd.springbootpoc.app.util.paginator;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.data.domain.Page;
 
 public class PaginaRender<T> {
 	
-	private Page<T> pagina;
+	private Pagina<T> pagina;
 	private int numElementosPorPagina;
 	
 	private String url;
@@ -14,14 +13,15 @@ public class PaginaRender<T> {
 	private int numPaginaActual;
 	private List<PaginaItem> paginas;
 	
-	public PaginaRender(String url, Page<T> pagina) {
+	public PaginaRender(String url, Pagina<T> pagina) {
 		super();
 		this.url = url;
 		this.pagina = pagina;
+		this.paginas = new ArrayList<>();
 		
 		numElementosPorPagina = 6;
-		this.totalPaginas = pagina.getTotalPages();
-		this.numPaginaActual = pagina.getNumber();
+		this.totalPaginas = pagina.getNumeroDePaginas();
+		this.numPaginaActual = pagina.getNumeroPaginaActual();
 		
 		int desde;
 		int hasta;

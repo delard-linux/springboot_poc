@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.drd.springbootpoc.app.model.dao.IClienteDao;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
-import com.drd.springbootpoc.app.models.dao.IClienteDao;
-import com.drd.springbootpoc.app.models.entity.Cliente;
+import com.drd.springbootpoc.app.model.dtomapper.ClienteDTOMapper;
+import com.drd.springbootpoc.app.model.entity.Cliente;
 import com.drd.springbootpoc.app.util.paginator.Pagina;
 
 @Service
@@ -41,7 +41,7 @@ public class ClienteService implements IClienteService {
 	public List<ClienteDTO> getAllClientes() {
 
 		List<ClienteDTO> clientes =  new ArrayList<>();
-		List<Cliente> clientesEntity =  (List<Cliente>) clienteDao.findAll();
+		var clientesEntity =  clienteDao.findAll();
 		
 		clientesEntity.forEach(cl -> 
 						clientes.add(new ClienteDTO(
@@ -59,13 +59,11 @@ public class ClienteService implements IClienteService {
 	@Transactional(readOnly = true)
 	public Pagina<ClienteDTO> getAllClientes(Pageable pageable) {
 		
-		Page<Cliente> paginaClientes =  clienteDao.findAll(pageable);
+		var paginaClientes = clienteDao.findAll(pageable);
 		
-		Pagina<ClienteDTO> paginaClientesDTO = new Pagina<ClienteDTO>();
-		
-		paginaClientesDTO.setContenido(transformToDTO(paginaClientes.getContent()));
-		
-		return paginaClientesDTO;
+		return new Pagina<>(paginaClientes,
+				ClienteDTOMapper.transformToDTO(paginaClientes.getContent()));
+
 	}
 	
 	@Override
@@ -90,20 +88,5 @@ public class ClienteService implements IClienteService {
 		clienteDao.deleteById(id);
 	}
 	
-	public List<ClienteDTO> transformToDTO(Iterable<Cliente> clientesEntityIterable) {
-
-		List<ClienteDTO> clientes =  new ArrayList<>();
-		
-		clientesEntityIterable.forEach(cl -> 
-						clientes.add(new ClienteDTO(
-										cl.getId(),
-										cl.getNombre(), 
-										cl.getApellido(), 
-										cl.getEmail(), 
-										cl.getBornAt(), 
-										cl.getCreateAt())));
-		
-		return clientes;
-	}
 	
 }

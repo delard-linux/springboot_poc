@@ -1,4 +1,4 @@
-package com.drd.springbootpoc.app.models.entity;
+package com.drd.springbootpoc.app.model.entity;
 
 import java.io.Serializable;
 import java.util.Date;

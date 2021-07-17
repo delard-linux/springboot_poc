@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.model.service.IClienteService;
 import com.drd.springbootpoc.app.util.paginator.Pagina;
+import com.drd.springbootpoc.app.util.paginator.PaginaRender;
 
 @Controller
 @SessionAttributes("clientedto")
@@ -53,11 +54,16 @@ public class ClienteController {
 	@GetMapping(value={"/index", "/", "", "/listar"})
 	public String listar(@RequestParam(name="page", defaultValue="0") int page,  Model model) {
 
-		Pageable pageRequest = PageRequest.of(page,10);		
+
+		Pageable pageRequest = PageRequest.of(page,5);	
+		
 		Pagina<ClienteDTO> clientes = clienteService.getAllClientes(pageRequest);  
+
+		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/listar", clientes);
 		
 		model.addAttribute(STR_TITULO, "Listado de Clientes");
 		model.addAttribute("clientedtolist", clientes.getContenido());
+		model.addAttribute("pagina", paginaRender);
 
 		return "listar";
 	}
