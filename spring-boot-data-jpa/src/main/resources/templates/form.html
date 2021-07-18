@@ -12,12 +12,6 @@
 			<div class="card-header" th:text="${titulo}"></div>
 			<div class="card-body">
 
-				<div th:object="${clientedto}" th:remove="tag">
-					<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-						<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
-					</ul>
-				</div>
-
 				<form th:action="@{/form}" th:object="${clientedto}" method="post" enctype="multipart/form-data">
 
 					<div class="py-2 form-group row">
@@ -75,6 +69,18 @@
 						<div class="col">
 							<small class="form-text text-danger"
 								th:if="${#fields.hasErrors('bornAt')}" th:errors="*{bornAt}"></small>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<div class="form-group-name col">
+							<h6 class="mb-3">Foto:</h6>
+						</div>
+						<div class="col">
+							<input type="file" name="foto_file" class="form-control" />
+						</div>
+						<div class="col">
+							<small></small>
 						</div>
 					</div>
 

@@ -1,5 +1,8 @@
 package com.drd.springbootpoc.app.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
@@ -78,12 +82,31 @@ public class ClienteController {
 
 	@PostMapping("/form")
 	public String guardar(@Valid @ModelAttribute("clientedto") ClienteDTO cliente, BindingResult result, 
-			Model model, RedirectAttributes  flash, SessionStatus status) {
+			Model model, @RequestParam(name = "foto_file") MultipartFile foto, RedirectAttributes  flash, SessionStatus status) {
 		
 		if(result.hasErrors()) {
 			model.addAttribute(STR_TITULO,"Formulario de Cliente");
 			return "form";
 		}
+		
+		if (!foto.isEmpty()) {
+			
+			var directorioRecursos = Paths.get("src//main//resources//static//uploads");
+			String rootPath = directorioRecursos.toFile().getAbsolutePath();
+
+			try {
+
+				byte[] bytes = foto.getBytes();
+				var rutaCompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
+				Files.write(rutaCompleta, bytes);
+				flash.addFlashAttribute("info", "Has subido correctamente '" + foto.getOriginalFilename() + "'");
+
+				cliente.setFoto(foto.getOriginalFilename());
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}		
 		
 		clienteService.saveCliente(cliente);
 		
