@@ -54,6 +54,19 @@ public class ClienteController {
 				
 	}
 	
+	@GetMapping(value = "/ver/{id}")
+	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+
+		ClienteDTO cliente = clienteService.getCliente(id);
+		if (cliente == null) {
+			flash.addFlashAttribute("error", "El cliente no existe en la base de datos");
+			return "redirect:/listar";
+		}
+
+		model.put(STR_CLIENTE, cliente);
+		model.put(STR_TITULO, "Detalle cliente");
+		return "ver";
+	}
 	
 	@GetMapping(value={"/index", "/", "", "/listar"})
 	public String listar(@RequestParam(name="page", defaultValue="0") int page,  Model model) {

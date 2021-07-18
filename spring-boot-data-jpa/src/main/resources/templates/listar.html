@@ -63,7 +63,7 @@
 							<caption></caption>
 							<thead>
 								<tr class="align-middle">
-									<th scope="col">#</th>
+									<th scope="col">ID</th>
 									<th scope="col">Nombre</th>
 									<th scope="col">Apellido</th>
 									<th scope="col">Email</th>
@@ -75,7 +75,9 @@
 							</thead>
 							<tbody>
 								<tr th:each="cl : ${clientedtolist}">
-									<td th:text="${cl.id}"></td>
+									<td>
+										<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/} + ${cl.id}" th:text="${cl.id}"></a>
+									</td>
 									<td th:text="${cl.nombre}"></td>
 									<td th:text="${cl.apellido}"></td>
 									<td th:text="${cl.email}"></td>
