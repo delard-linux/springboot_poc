@@ -6,9 +6,12 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.PageRequest;
@@ -44,6 +47,8 @@ public class ClienteController {
 	//@Qualifier("clienteDaoJPA")
 	private IClienteService clienteService;
 
+	private final Logger log = LoggerFactory.getLogger(getClass());
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 
@@ -103,17 +108,22 @@ public class ClienteController {
 		}
 		
 		if (!foto.isEmpty()) {
+
+			String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
+			var rootPath = Paths.get("uploads").resolve(uniqueFilename);
+
+			var rootAbsolutePath = rootPath.toAbsolutePath();
 			
-			String rootPath = "//tmp//uploads";
+			log.info("rootPath: {}", rootPath);
+			log.info("rootAbsolutPath: {}",rootAbsolutePath);
 
 			try {
 
-				byte[] bytes = foto.getBytes();
-				var rutaCompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
-				Files.write(rutaCompleta, bytes);
-				flash.addFlashAttribute("info", "Has subido correctamente '" + foto.getOriginalFilename() + "'");
+				Files.copy(foto.getInputStream(), rootAbsolutePath);
+				
+				flash.addFlashAttribute("info", "Has subido correctamente '" + uniqueFilename + "'");
 
-				cliente.setFoto(foto.getOriginalFilename());
+				cliente.setFoto(uniqueFilename);
 
 			} catch (IOException e) {
 				e.printStackTrace();
