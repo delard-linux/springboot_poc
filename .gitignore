@@ -31,9 +31,10 @@ hs_err_pid*
 
 # documentacion adicional que no hay que subir
 /docs/
-
 # projectos que no se quieren trackear
 /software-hardware-catalog/
+# directorios con informacion temporal, no trackear
+/spring-boot-data-jpa/uploads/
 
 # maven related
 **/.mvn/
