@@ -1,6 +1,7 @@
 package com.drd.springbootpoc.app.controllers;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -14,8 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +36,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.drd.springbootpoc.app.exception.AppException;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.model.service.IClienteService;
 import com.drd.springbootpoc.app.util.paginator.Pagina;
@@ -174,5 +180,26 @@ public class ClienteController {
 		return "redirect:/listar";
 	} 	
 
+	@GetMapping(value="/uploads/{filename:.+}")
+	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
+		var pathFoto = Paths.get("uploads").resolve(filename).toAbsolutePath();
+		log.info("pathFoto: {}", pathFoto);
+		Resource recurso = null;
+		try {
+			recurso = new UrlResource(pathFoto.toUri());
+			if(!recurso.exists() || !recurso.isReadable()) {
+				throw new AppException("Error: no se puede cargar la imagen: " + pathFoto.toString());
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
+		//TODO: Se podria meter un recurso por defecto apra evitar el operador ternario y la regla sonar
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" 
+							+  (recurso != null ? recurso.getFilename():"") 
+							+"\"")
+				.body(recurso);
+	}
 
 }
