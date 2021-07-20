@@ -1,13 +1,12 @@
 package com.drd.springbootpoc.app.controllers;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -46,8 +45,23 @@ import com.drd.springbootpoc.app.util.paginator.PaginaRender;
 @SessionAttributes("clientedto")
 public class ClienteController {
 
+	// Constantes de atributos
 	private static final String STR_TITULO = "titulo";
 	private static final String STR_CLIENTE = "clientedto";
+
+	// Constantes de folders
+	private static final String FOLDER_UPLOADS = "uploads";
+
+	// Constantes de vistas
+	private static final String STR_REDIRECT = "redirect:/";
+	private static final String VIEW_VER = "ver";
+	private static final String VIEW_LISTAR = "listar";
+	private static final String VIEW_FORM = "form";
+	
+	// Constantes de tipos de mensajes flash
+	private static final String FLASH_SUCCESS = "success";
+	private static final String FLASH_INFO = "info";
+	private static final String FLASH_ERROR = "error";
 	
 	@Autowired
 	//@Qualifier("clienteDaoJPA")
@@ -68,15 +82,15 @@ public class ClienteController {
 	@GetMapping(value = "/ver/{id}")
 	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 
-		ClienteDTO cliente = clienteService.getCliente(id);
+		ClienteDTO cliente = clienteService.obtenerCliente(id);
 		if (cliente == null) {
-			flash.addFlashAttribute("error", "El cliente no existe en la base de datos");
-			return "redirect:/listar";
+			flash.addFlashAttribute(FLASH_ERROR, "El cliente no existe en la base de datos");
+			return STR_REDIRECT + VIEW_LISTAR;
 		}
 
 		model.put(STR_CLIENTE, cliente);
 		model.put(STR_TITULO, "Detalle cliente");
-		return "ver";
+		return VIEW_VER;
 	}
 	
 	@GetMapping(value={"/index", "/", "", "/listar"})
@@ -85,7 +99,7 @@ public class ClienteController {
 
 		Pageable pageRequest = PageRequest.of(page,5);	
 		
-		Pagina<ClienteDTO> clientes = clienteService.getAllClientes(pageRequest);  
+		Pagina<ClienteDTO> clientes = clienteService.obtenerTodosClientes(pageRequest);  
 
 		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/listar", clientes);
 		
@@ -93,7 +107,7 @@ public class ClienteController {
 		model.addAttribute("clientedtolist", clientes.getContenido());
 		model.addAttribute("pagina", paginaRender);
 
-		return "listar";
+		return VIEW_LISTAR;
 	}
 
 	@GetMapping("/form")
@@ -101,7 +115,7 @@ public class ClienteController {
 		var cliente = new ClienteDTO();
 		model.put(STR_CLIENTE, cliente);
 		model.put(STR_TITULO, "Formulario de Cliente");
-		return "form";
+		return VIEW_FORM;
 	}
 
 	@PostMapping("/form")
@@ -110,37 +124,45 @@ public class ClienteController {
 		
 		if(result.hasErrors()) {
 			model.addAttribute(STR_TITULO,"Formulario de Cliente");
-			return "form";
+			return VIEW_FORM;
 		}
-		
-		if (!foto.isEmpty()) {
-
-			String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
-			var rootPath = Paths.get("uploads").resolve(uniqueFilename);
-
-			var rootAbsolutePath = rootPath.toAbsolutePath();
-			
-			log.info("rootPath: {}", rootPath);
-			log.info("rootAbsolutPath: {}",rootAbsolutePath);
-
-			try {
-
-				Files.copy(foto.getInputStream(), rootAbsolutePath);
 				
-				flash.addFlashAttribute("info", "Has subido correctamente '" + uniqueFilename + "'");
+		Long idCliente = cliente.getId();
+		
+		String nombreFichero = null;
+		InputStream streamFichero = null;
 
-				cliente.setFoto(uniqueFilename);
-
-			} catch (IOException e) {
-				e.printStackTrace();
+		try {
+			if (foto!=null 
+					&& foto.getOriginalFilename()!=null) {				
+				nombreFichero = foto.getOriginalFilename();
+				streamFichero = foto.getInputStream();	
 			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			flash.addFlashAttribute(FLASH_ERROR, "No es posible cargar la foto '" 
+					+ nombreFichero + "'!");
+			return STR_REDIRECT + VIEW_LISTAR;
 		}		
-		
-		clienteService.saveCliente(cliente);
-		
+
+		if (idCliente == null) {
+			if (nombreFichero!=null && !nombreFichero.isBlank()) 
+				idCliente = clienteService.crearClienteConFoto(cliente, nombreFichero, streamFichero);
+			else
+				idCliente = clienteService.crearCliente(cliente);
+		} else {
+			if (nombreFichero!=null  && !nombreFichero.isBlank()) 
+				clienteService.actualizarClienteConFoto(cliente, nombreFichero, streamFichero);
+			else 
+				clienteService.actualizarCliente(cliente);
+		}
+
+			
 		status.setComplete();
-		flash.addFlashAttribute("success", "Cliente salvado con exito!");
-		return "redirect:/listar";
+		flash.addFlashAttribute(FLASH_SUCCESS, "Cliente salvado con exito '" 
+				+ idCliente + "'!");
+		return STR_REDIRECT + VIEW_LISTAR;
 	}
 	
 	
@@ -150,22 +172,22 @@ public class ClienteController {
 		
 		if(id>0) {
 			
-			var cliente = clienteService.getCliente(id);
+			var cliente = clienteService.obtenerCliente(id);
 			
 			model.put(STR_CLIENTE, cliente);
 			model.put(STR_TITULO,"Formulario de Actualizar Cliente");
 			
 			if (cliente == null) {
-				flash.addFlashAttribute("error", "Cliente inexistente con el ID: " + id);
-				return "redirect:/listar";
+				flash.addFlashAttribute(FLASH_ERROR, "Cliente inexistente con el ID: " + id);
+				return STR_REDIRECT + VIEW_LISTAR;
 			}
 
 		} else {
-			flash.addFlashAttribute("error", "El ID de cliente no puede ser cero o negativo: " + id);
-			return "redirect:/listar";
+			flash.addFlashAttribute(FLASH_ERROR, "El ID de cliente no puede ser cero o negativo: " + id);
+			return STR_REDIRECT + VIEW_LISTAR;
 		}
 		
-		return "form";
+		return VIEW_FORM;
 	} 
 	
 	@GetMapping("/eliminar/{id}")
@@ -173,24 +195,38 @@ public class ClienteController {
 			Map<String, Object> model, RedirectAttributes  flash,  SessionStatus status) {
 		
 		if(id>0) {
-			clienteService.deleteCliente(id);
+			
+			var cliente = clienteService.obtenerCliente(id);
+			
+			if (cliente!= null) {
+				if(clienteService.borrarFotoCliente(id)) 
+					flash.addFlashAttribute(FLASH_INFO, "Foto " 
+								+ cliente.getFoto()
+								+ " eliminada con exito!");
+				clienteService.borrarCliente(id);
+				flash.addFlashAttribute(FLASH_SUCCESS, "Cliente eliminado con exito!");
+			} else {
+				flash.addFlashAttribute(FLASH_SUCCESS, "Cliente inexistente: " + id);
+			}
+
 		} 
 		status.setComplete();
-		flash.addFlashAttribute("success", "Cliente eliminado con exito!");
-		return "redirect:/listar";
+		return STR_REDIRECT + VIEW_LISTAR;
 	} 	
 
 	@GetMapping(value="/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
-		var pathFoto = Paths.get("uploads").resolve(filename).toAbsolutePath();
+		var pathFoto = Paths.get(FOLDER_UPLOADS).resolve(filename).toAbsolutePath();
 		log.info("pathFoto: {}", pathFoto);
 		Resource recurso = null;
 		try {
 			recurso = new UrlResource(pathFoto.toUri());
 			if(!recurso.exists() || !recurso.isReadable()) {
+				//TODO meter algun tipo de AOP/Interceptor para el control de excepciones de aplicacion
 				throw new AppException("Error: no se puede cargar la imagen: " + pathFoto.toString());
 			}
 		} catch (MalformedURLException e) {
+			//TODO pintar la excepción y la traza a fichero de errores
 			e.printStackTrace();
 		}
 		

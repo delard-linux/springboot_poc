@@ -37,6 +37,7 @@ public class Cliente implements Serializable {
 	@NotNull
 	private String email;
 
+	@NotNull
 	@Column(name = "born_at")
 	@Temporal(TemporalType.DATE)
 	private Date bornAt;

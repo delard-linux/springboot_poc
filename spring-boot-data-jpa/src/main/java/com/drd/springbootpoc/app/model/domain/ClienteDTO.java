@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class ClienteDTO implements Serializable {
 
@@ -22,6 +23,7 @@ public class ClienteDTO implements Serializable {
 	@Email
 	private String email;
 
+	@NotNull
 	private Date bornAt;
 
 	private Date createAt;
