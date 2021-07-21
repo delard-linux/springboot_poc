@@ -94,7 +94,7 @@ public class ClienteController {
 	public String listar(@RequestParam(name="page", defaultValue="0") int page,  Model model) {
 
 
-		Pageable pageRequest = PageRequest.of(page,5);	
+		Pageable pageRequest = PageRequest.of(page,7);	
 		
 		Pagina<ClienteDTO> clientes = clienteService.obtenerTodosClientes(pageRequest);  
 
@@ -128,14 +128,15 @@ public class ClienteController {
 		try {
 			idCliente = clienteService.guardarCliente(cliente, foto);
 		} catch (IOException e) {
-			log.error("No se puede crear el cliente: {} {}", cliente.getNombre(),cliente.getApellido());
+			log.error("No se puede guardar el cliente: {} {}", cliente.getNombre(),cliente.getApellido());
 			log.error(e.getMessage(),e);
-			flash.addFlashAttribute(FLASH_ERROR, "No se puede eliminar el cliente: " 
+			flash.addFlashAttribute(FLASH_ERROR, "No se puede guardar el cliente: " 
 							+ cliente.getNombre() + " " + cliente.getApellido());
+			return STR_REDIRECT + VIEW_LISTAR;
 		}
 		
 		status.setComplete();
-		flash.addFlashAttribute(FLASH_SUCCESS, "Cliente salvado con exito '" 
+		flash.addFlashAttribute(FLASH_SUCCESS, "Cliente guardado con exito '" 
 				+ idCliente + "'!");
 		return STR_REDIRECT + VIEW_LISTAR;
 	}
@@ -180,6 +181,7 @@ public class ClienteController {
 					log.error("No se puede eliminar el cliente: {}", id);
 					log.error(e.getMessage(),e);
 					flash.addFlashAttribute(FLASH_ERROR, "No se puede eliminar el cliente: " + id);
+					return STR_REDIRECT + VIEW_LISTAR;
 				}
 				flash.addFlashAttribute(FLASH_INFO, "Cliente eliminado con exito!");
 			} else {

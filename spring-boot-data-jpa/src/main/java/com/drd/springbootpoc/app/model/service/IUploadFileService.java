@@ -13,5 +13,9 @@ public interface IUploadFileService {
 	public String upload( MultipartFile fichero) throws IOException;
 	
 	public boolean delete (String nombreFichero) throws IOException;
+
+	public void deleteAll();
+
+	public void init() throws IOException;
 	
 }
