@@ -13,11 +13,11 @@
 			<div class="card-body">
 
 					<div class="row">
-						<div class="col">
+						<div class="col-8">
 
 							<div class="py-2 row">
-								<div class="col">
-									<h6 class="mb-3">Identificador:</h6>
+								<div class="col-3">
+									<h6 class="mb-3">ID:</h6>
 								</div>
 								<div class="col">
 									<p th:text="${clientedto.id}"></p>
@@ -25,7 +25,7 @@
 							</div>
 							
 							<div class="py-2 row">
-								<div class="col">
+								<div class="col-3">
 									<h6 class="mb-3">Nombre:</h6>
 								</div>
 								<div class="col">
@@ -34,7 +34,7 @@
 							</div>
 		
 							<div class="py-2 row">
-								<div class="col">
+								<div class="col-3">
 									<h6 class="mb-3">Apellido:</h6>
 								</div>
 								<div class="col">
@@ -43,7 +43,7 @@
 							</div>
 		
 							<div class="py-2 row">
-								<div class="col">
+								<div class="col-3">
 									<h6 class="mb-3">Email:</h6>
 								</div>
 								<div class="col">
@@ -52,7 +52,7 @@
 							</div>
 							
 							<div class="py-2 row">
-								<div class="col">
+								<div class="col-3">
 									<h6 class="mb-3">Fecha de nacimiento:</h6>
 								</div>
 								<div class="col">
@@ -61,8 +61,8 @@
 							</div>
 							
 							<div class="py-2 row">
-								<div class="col">
-									<h6 class="mb-3">Fecha de creacion:</h6>
+								<div class="col-3">
+									<h6 class="mb-3">Fecha de creación:</h6>
 								</div>
 								<div class="col">
 									<p th:text="${clientedto.createAt}"></p>
@@ -70,7 +70,7 @@
 							</div>
 		
 							<div class="py-2 row" th:if="${clientedto.foto}">
-								<div class="col">
+								<div class="col-3">
 									<h6 class="mb-3">Foto:</h6>
 								</div>
 								<div class="col">
@@ -79,10 +79,10 @@
 							</div>
 
 						</div>
-						<div class="col">
+						<div class="col-4">
 							<div th:if="${clientedto.foto}">
 							<img th:if="${#strings.length(clientedto.foto) > 0}" class="img-thumbnail rounded float-left"
-								style="max-width: 25%;" th:src="@{'/uploads/' + ${clientedto.foto}}"
+								style="max-width: 100%;" th:src="@{'/uploads/' + ${clientedto.foto}}"
 								th:alt="${clientedto.foto}" />
 							</div>
 						</div>

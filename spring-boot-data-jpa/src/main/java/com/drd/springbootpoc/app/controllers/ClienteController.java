@@ -1,9 +1,7 @@
 package com.drd.springbootpoc.app.controllers;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -15,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -35,9 +32,9 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.drd.springbootpoc.app.exception.AppException;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.model.service.IClienteService;
+import com.drd.springbootpoc.app.model.service.IUploadFileService;
 import com.drd.springbootpoc.app.util.paginator.Pagina;
 import com.drd.springbootpoc.app.util.paginator.PaginaRender;
 
@@ -48,9 +45,6 @@ public class ClienteController {
 	// Constantes de atributos
 	private static final String STR_TITULO = "titulo";
 	private static final String STR_CLIENTE = "clientedto";
-
-	// Constantes de folders
-	private static final String FOLDER_UPLOADS = "uploads";
 
 	// Constantes de vistas
 	private static final String STR_REDIRECT = "redirect:/";
@@ -66,9 +60,12 @@ public class ClienteController {
 	@Autowired
 	//@Qualifier("clienteDaoJPA")
 	private IClienteService clienteService;
-
-	private final Logger log = LoggerFactory.getLogger(getClass());
 	
+	@Autowired
+	private IUploadFileService uploadFileService;
+	
+	private final Logger log = LoggerFactory.getLogger(getClass());
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 
@@ -114,7 +111,7 @@ public class ClienteController {
 	public String crear(Map<String, Object> model) {
 		var cliente = new ClienteDTO();
 		model.put(STR_CLIENTE, cliente);
-		model.put(STR_TITULO, "Formulario de Cliente");
+		model.put(STR_TITULO, "Crear Cliente");
 		return VIEW_FORM;
 	}
 
@@ -123,42 +120,20 @@ public class ClienteController {
 			Model model, @RequestParam(name = "foto_file") MultipartFile foto, RedirectAttributes  flash, SessionStatus status) {
 		
 		if(result.hasErrors()) {
-			model.addAttribute(STR_TITULO,"Formulario de Cliente");
+			model.addAttribute(STR_TITULO,"Cliente");
 			return VIEW_FORM;
 		}
 				
-		Long idCliente = cliente.getId();
-		
-		String nombreFichero = null;
-		InputStream streamFichero = null;
-
+		Long idCliente = null;
 		try {
-			if (foto!=null 
-					&& foto.getOriginalFilename()!=null) {				
-				nombreFichero = foto.getOriginalFilename();
-				streamFichero = foto.getInputStream();	
-			}
+			idCliente = clienteService.guardarCliente(cliente, foto);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			flash.addFlashAttribute(FLASH_ERROR, "No es posible cargar la foto '" 
-					+ nombreFichero + "'!");
-			return STR_REDIRECT + VIEW_LISTAR;
-		}		
-
-		if (idCliente == null) {
-			if (nombreFichero!=null && !nombreFichero.isBlank()) 
-				idCliente = clienteService.crearClienteConFoto(cliente, nombreFichero, streamFichero);
-			else
-				idCliente = clienteService.crearCliente(cliente);
-		} else {
-			if (nombreFichero!=null  && !nombreFichero.isBlank()) 
-				clienteService.actualizarClienteConFoto(cliente, nombreFichero, streamFichero);
-			else 
-				clienteService.actualizarCliente(cliente);
+			log.error("No se puede crear el cliente: {} {}", cliente.getNombre(),cliente.getApellido());
+			log.error(e.getMessage(),e);
+			flash.addFlashAttribute(FLASH_ERROR, "No se puede eliminar el cliente: " 
+							+ cliente.getNombre() + " " + cliente.getApellido());
 		}
-
-			
+		
 		status.setComplete();
 		flash.addFlashAttribute(FLASH_SUCCESS, "Cliente salvado con exito '" 
 				+ idCliente + "'!");
@@ -175,7 +150,7 @@ public class ClienteController {
 			var cliente = clienteService.obtenerCliente(id);
 			
 			model.put(STR_CLIENTE, cliente);
-			model.put(STR_TITULO,"Formulario de Actualizar Cliente");
+			model.put(STR_TITULO,"Actualizar Cliente");
 			
 			if (cliente == null) {
 				flash.addFlashAttribute(FLASH_ERROR, "Cliente inexistente con el ID: " + id);
@@ -199,14 +174,16 @@ public class ClienteController {
 			var cliente = clienteService.obtenerCliente(id);
 			
 			if (cliente!= null) {
-				if(clienteService.borrarFotoCliente(id)) 
-					flash.addFlashAttribute(FLASH_INFO, "Foto " 
-								+ cliente.getFoto()
-								+ " eliminada con exito!");
-				clienteService.borrarCliente(id);
-				flash.addFlashAttribute(FLASH_SUCCESS, "Cliente eliminado con exito!");
+				try {
+					clienteService.borrarCliente(id);
+				} catch (IOException e) {
+					log.error("No se puede eliminar el cliente: {}", id);
+					log.error(e.getMessage(),e);
+					flash.addFlashAttribute(FLASH_ERROR, "No se puede eliminar el cliente: " + id);
+				}
+				flash.addFlashAttribute(FLASH_INFO, "Cliente eliminado con exito!");
 			} else {
-				flash.addFlashAttribute(FLASH_SUCCESS, "Cliente inexistente: " + id);
+				flash.addFlashAttribute(FLASH_ERROR, "Cliente inexistente: " + id);
 			}
 
 		} 
@@ -215,22 +192,16 @@ public class ClienteController {
 	} 	
 
 	@GetMapping(value="/uploads/{filename:.+}")
-	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
-		var pathFoto = Paths.get(FOLDER_UPLOADS).resolve(filename).toAbsolutePath();
-		log.info("pathFoto: {}", pathFoto);
+	public ResponseEntity<Resource> verFichero(@PathVariable String filename) {
+		
 		Resource recurso = null;
 		try {
-			recurso = new UrlResource(pathFoto.toUri());
-			if(!recurso.exists() || !recurso.isReadable()) {
-				//TODO meter algun tipo de AOP/Interceptor para el control de excepciones de aplicacion
-				throw new AppException("Error: no se puede cargar la imagen: " + pathFoto.toString());
-			}
+			recurso = uploadFileService.load(filename);
 		} catch (MalformedURLException e) {
-			//TODO pintar la excepción y la traza a fichero de errores
-			e.printStackTrace();
+			log.error("No se puede obtener el fichero: {}", filename);
+			log.error(e.getMessage(),e);
 		}
 		
-		//TODO: Se podria meter un recurso por defecto apra evitar el operador ternario y la regla sonar
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" 
 							+  (recurso != null ? recurso.getFilename():"") 
