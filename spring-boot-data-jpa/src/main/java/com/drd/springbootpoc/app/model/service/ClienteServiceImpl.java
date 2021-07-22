@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.drd.springbootpoc.app.model.dao.IClienteDao;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
+import com.drd.springbootpoc.app.model.domain.ClienteSearchCriteria;
 import com.drd.springbootpoc.app.model.dtomapper.ClienteDTOMapper;
 import com.drd.springbootpoc.app.util.paginator.Pagina;
 
@@ -45,6 +46,17 @@ public class ClienteServiceImpl implements IClienteService {
 	public Pagina<ClienteDTO> obtenerTodosClientes(Pageable pageable) {
 		
 		var paginaClientes = clienteDao.findAll(pageable);
+		
+		return new Pagina<>(paginaClientes,
+				ClienteDTOMapper.transformEntityListToDTOList(paginaClientes.getContent()));
+
+	}
+	@Override
+	@Transactional(readOnly = true)
+	public Pagina<ClienteDTO> obtenerTodosClientesCriteria(Pageable pageable, ClienteSearchCriteria criteria) {
+		
+		var paginaClientes = clienteDao.findByNombreAndApellidoAndEmail(pageable,
+				criteria.getNombreFilter(),criteria.getApellidoFilter(),criteria.getEmailFilter());
 		
 		return new Pagina<>(paginaClientes,
 				ClienteDTOMapper.transformEntityListToDTOList(paginaClientes.getContent()));

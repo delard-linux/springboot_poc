@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
+import com.drd.springbootpoc.app.model.domain.ClienteSearchCriteria;
 import com.drd.springbootpoc.app.util.paginator.Pagina;
 
 public interface IClienteService {
@@ -30,5 +31,7 @@ public interface IClienteService {
 	public void borrarCliente(Long id) throws IOException;
 	
 	public boolean borrarFotoCliente(Long id) throws IOException;
+
+	public Pagina<ClienteDTO> obtenerTodosClientesCriteria(Pageable pageable, ClienteSearchCriteria criteria);
 
 }

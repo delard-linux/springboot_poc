@@ -33,13 +33,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
+import com.drd.springbootpoc.app.model.domain.ClienteSearchCriteria;
 import com.drd.springbootpoc.app.model.service.IClienteService;
 import com.drd.springbootpoc.app.model.service.IUploadFileService;
 import com.drd.springbootpoc.app.util.paginator.Pagina;
 import com.drd.springbootpoc.app.util.paginator.PaginaRender;
 
 @Controller
-@SessionAttributes("clientedto")
+@SessionAttributes(names = {"clientedto","cl_search_crit"})
 public class ClienteController {
 
 	// Constantes de atributos
@@ -56,6 +57,8 @@ public class ClienteController {
 	private static final String FLASH_SUCCESS = "success";
 	private static final String FLASH_INFO = "info";
 	private static final String FLASH_ERROR = "error";
+	
+	private static final int NUM_PAGE_ELEMENTS  = 20;
 	
 	@Autowired
 	//@Qualifier("clienteDaoJPA")
@@ -94,7 +97,7 @@ public class ClienteController {
 	public String listar(@RequestParam(name="page", defaultValue="0") int page,  Model model) {
 
 
-		Pageable pageRequest = PageRequest.of(page,7);	
+		Pageable pageRequest = PageRequest.of(page,NUM_PAGE_ELEMENTS);	
 		
 		Pagina<ClienteDTO> clientes = clienteService.obtenerTodosClientes(pageRequest);  
 
@@ -102,11 +105,33 @@ public class ClienteController {
 		
 		model.addAttribute(STR_TITULO, "Listado de Clientes");
 		model.addAttribute("clientedtolist", clientes.getContenido());
-		model.addAttribute("pagina", paginaRender);
+		model.addAttribute("pagina", paginaRender);		
+		model.addAttribute("cl_search_crit", new ClienteSearchCriteria("", "", ""));
 
 		return VIEW_LISTAR;
 	}
 
+	@GetMapping("/buscar")
+	public String buscar(@ModelAttribute("cl_search_crit") ClienteSearchCriteria criteria, @RequestParam(name="page", defaultValue="0") int page,  Model model) {
+
+
+		//TODO no funciona la paginacion con el search ya que se tienen que pasar los 
+		//     criterios de busqueda a los elementos del paginatot
+		Pageable pageRequest = PageRequest.of(page,NUM_PAGE_ELEMENTS);	
+		
+		Pagina<ClienteDTO> clientes = clienteService.obtenerTodosClientesCriteria(pageRequest, criteria);  
+
+		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/buscar", clientes);
+		
+		model.addAttribute(STR_TITULO, "Listado de Clientes");
+		model.addAttribute("clientedtolist", clientes.getContenido());
+		model.addAttribute("pagina", paginaRender);
+		model.addAttribute("cl_search_crit", criteria);
+
+		return VIEW_LISTAR;
+	}
+	
+	
 	@GetMapping("/form")
 	public String crear(Map<String, Object> model) {
 		var cliente = new ClienteDTO();

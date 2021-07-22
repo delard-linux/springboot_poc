@@ -12,20 +12,20 @@
 	<div class="card bg-light mt-1">
 			<div class="card-body">
 
-				<form th:action="@{/form}" method="post">
+				<form th:action="@{/buscar}" method="get"  th:object="${cl_search_crit}">
 
 					<div class="py-1 row">
 						<div class="col-3 col-md-3">
 							<h6>Nombre:</h6>
-							<input class="form-control" type="text" id="nombre">
+							<input class="form-control" type="text" id="nombreFilter" th:field="*{nombreFilter}">
 						</div>
 						<div class="col-3 col-md-3">
 							<h6>Apellido:</h6>
-							<input class="form-control" type="text" id="apellido">
+							<input class="form-control" type="text" id="apellidoFilter" th:field="*{apellidoFilter}">
 						</div>
 						<div class="col-3 col-md-3">
 							<h6>Email:</h6>
-							<input class="form-control" type="text" id="email">
+							<input class="form-control" type="text" id="emailFilter" th:field="*{emailFilter}">
 						</div>
 						<div class="col-1 col-md-3">
 
@@ -33,7 +33,7 @@
 								<div class="row align-content-end justify-content-end">
 									<div class="col-3">
 										<input type="submit" value="buscar"
-											class="btn btn-outline-primary btn-sm" th:href="@{/form}">
+											class="btn btn-outline-primary btn-sm">
 									</div>
 								</div>
 							</div>
@@ -59,6 +59,7 @@
 
 				<div class="py-1 form-group row">
 					<div class="col">
+						<nav th:replace="paginador-nav :: paginador"></nav>
 						<table class="table table-bordered align-middle">
 							<caption></caption>
 							<thead>
