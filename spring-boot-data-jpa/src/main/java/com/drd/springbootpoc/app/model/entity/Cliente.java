@@ -60,7 +60,7 @@ public class Cliente implements Serializable {
 	
 
 	public Cliente() {
-		facturas = new ArrayList<Factura>();
+		facturas = new ArrayList<>();
 	}
 		
 	@PrePersist
