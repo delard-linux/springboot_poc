@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 
 
 @Entity
-@Table(name = "produtos")
+@Table(name = "productos")
 public class Producto implements Serializable {
 	
 	private static final long serialVersionUID = 3903185310612113349L;

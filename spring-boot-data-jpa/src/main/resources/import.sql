@@ -1,4 +1,4 @@
-/*populate tables*/
+/*populate table clientes*/
 INSERT INTO clientes (id, nombre, apellido, email, born_at, foto, create_at) VALUES (1,'Chadwick','Gibbs','risus@mifelisadipiscing.ca','2021-02-15', null, CURRENT_TIMESTAMP()); 
 INSERT INTO clientes (id, nombre, apellido, email, born_at, foto, create_at) VALUES (2, 'Nehru','Moss','lamia.eu.lacus@eratVivamusnisi.co.uk','2021-05-03', null, CURRENT_TIMESTAMP()); 
 INSERT INTO clientes (id, nombre, apellido, email, born_at, foto, create_at) VALUES (3 ,'Zeus','Dillon','et@sempereratin.ca','2020-08-26', null, CURRENT_TIMESTAMP()); 
@@ -100,3 +100,12 @@ INSERT INTO clientes (id, nombre, apellido, email, born_at, foto, create_at) VAL
 INSERT INTO clientes (id, nombre, apellido, email, born_at, foto, create_at) VALUES (99 ,'Pedro','Picapiedra','lamia@sekera.net','1974-08-06', null, CURRENT_TIMESTAMP()); 
 INSERT INTO clientes (id, nombre, apellido, email, born_at, foto, create_at) VALUES (100 ,'Jerome','Perry','in.faucibus.Morbi@Quisque.com','2020-11-27', null, CURRENT_TIMESTAMP()); 
 INSERT INTO clientes (id, nombre, apellido, email, born_at, foto, create_at) VALUES (101 ,'Ralph','Thomas','Nam.nulla@felis.org','2020-10-21', null, CURRENT_TIMESTAMP());
+
+/* Populate tabla productos */
+INSERT INTO productos (nombre, precio, create_at) VALUES('Panasonic Pantalla LCD', 259990, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Sony Camara digital DSC-W320B', 123490, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Apple iPod shuffle', 1499990, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Sony Notebook Z110', 37990, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Hewlett Packard Multifuncional F2280', 69990, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Bianchi Bicicleta Aro 26', 69990, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Mica Comoda 5 Cajones', 299990, NOW());
