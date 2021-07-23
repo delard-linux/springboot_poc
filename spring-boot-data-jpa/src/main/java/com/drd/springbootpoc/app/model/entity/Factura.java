@@ -114,4 +114,10 @@ public class Factura implements Serializable {
 		items.add(item);
 	}
 	
+	public Double getTotal() {
+		return items.stream()
+				  .map(x -> x.calcularImporte())
+				  .reduce(0.0, Double::sum);
+	}
+	
 }
