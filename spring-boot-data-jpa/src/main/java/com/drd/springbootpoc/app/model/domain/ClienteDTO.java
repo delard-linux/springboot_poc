@@ -2,6 +2,7 @@ package com.drd.springbootpoc.app.model.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -29,6 +30,8 @@ public class ClienteDTO implements Serializable {
 	private Date createAt;
 
 	private String foto;
+	
+	private List<FacturaDTO> facturas;
 	
 	public ClienteDTO() {
 		super();
@@ -100,5 +103,13 @@ public class ClienteDTO implements Serializable {
 
 	public void setFoto(String foto) {
 		this.foto = foto;
+	}
+
+	public List<FacturaDTO> getFacturas() {
+		return facturas;
+	}
+
+	public void setFacturas(List<FacturaDTO> facturas) {
+		this.facturas = facturas;
 	}
 }
