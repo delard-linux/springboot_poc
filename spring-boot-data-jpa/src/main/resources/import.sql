@@ -109,3 +109,14 @@ INSERT INTO productos (nombre, precio, create_at) VALUES('Sony Notebook Z110', 3
 INSERT INTO productos (nombre, precio, create_at) VALUES('Hewlett Packard Multifuncional F2280', 69990, NOW());
 INSERT INTO productos (nombre, precio, create_at) VALUES('Bianchi Bicicleta Aro 26', 69990, NOW());
 INSERT INTO productos (nombre, precio, create_at) VALUES('Mica Comoda 5 Cajones', 299990, NOW());
+
+/* Populate tabla facturas */
+INSERT INTO facturas (id,descripcion, observacion, create_at, cliente_id) VALUES(1, 'FAC-01', 'Compra de material', NOW(), 1);
+INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(1, 1, 1);
+INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(5, 1, 3);
+INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(3, 1, 7);
+
+INSERT INTO facturas (id,descripcion, observacion, create_at, cliente_id) VALUES(2,'FAC-02', 'Compra de bicicleta', NOW(), 1);
+INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(1, 2, 6);
+
+

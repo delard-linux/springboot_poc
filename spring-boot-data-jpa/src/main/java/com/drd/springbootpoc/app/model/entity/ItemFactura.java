@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "facturas_item")
+@Table(name = "facturas_items")
 public class ItemFactura implements Serializable {
 
 	
@@ -51,10 +51,6 @@ public class ItemFactura implements Serializable {
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
-	}
-	
-	public Double calcularImporte() {
-		return getCantidad()*getProducto().getPrecio();
 	}
 	
 	public static long getSerialversionuid() {

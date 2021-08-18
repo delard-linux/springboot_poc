@@ -14,6 +14,8 @@ public interface IClienteService {
 	
 	public ClienteDTO obtenerCliente(Long id);
 
+	public ClienteDTO obtenerClienteConFacturas(Long id);
+
 	public List<ClienteDTO> obtenerTodosClientes();
 
 	public Pagina<ClienteDTO> obtenerTodosClientes(Pageable pageable);

@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.drd.springbootpoc.app.model.dao.IClienteDao;
+import com.drd.springbootpoc.app.model.dao.IFacturaDao;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.model.domain.ClienteSearchCriteria;
 import com.drd.springbootpoc.app.model.dtomapper.ClienteDTOMapper;
+import com.drd.springbootpoc.app.model.dtomapper.FacturaDTOMapper;
 import com.drd.springbootpoc.app.util.paginator.Pagina;
 
 @Service
@@ -20,6 +22,9 @@ public class ClienteServiceImpl implements IClienteService {
 
 	@Autowired
 	IClienteDao clienteDao;
+
+	@Autowired
+	IFacturaDao facturaDao;
 	
 	@Autowired
 	private IUploadFileService uploadFileService;
@@ -31,6 +36,27 @@ public class ClienteServiceImpl implements IClienteService {
 		var clienteEntity = clienteDao.findById(id).orElse(null);
 		
 		return clienteEntity!=null ? ClienteDTOMapper.transformEntityToDTO(clienteEntity) : null;
+		
+	}	
+	
+	@Override
+	@Transactional(readOnly = true)
+	public ClienteDTO obtenerClienteConFacturas(Long id) {
+
+		var clienteEntity = clienteDao.findById(id).orElse(null);
+		ClienteDTO clienteDto = null;
+
+		if (clienteEntity != null) {
+			
+			clienteDto = ClienteDTOMapper.transformEntityToDTO(clienteEntity);
+			
+			var listaFacturasEntity = facturaDao.findByClienteId(id);
+			if (listaFacturasEntity != null)
+				clienteDto.setFacturas(FacturaDTOMapper.transformEntityListToDTOList(listaFacturasEntity));
+			
+		}
+		
+		return clienteDto;
 		
 	}
 
