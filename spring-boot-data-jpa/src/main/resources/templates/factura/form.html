@@ -11,7 +11,14 @@
 		<div class="card bg-light">
 			<div class="card-header" th:text="${titulo}"></div>
 			<div class="card-body">
-
+					
+					<div class="py-2 form-group row">
+						<div class="col"></div>
+						<div class="col">
+							<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/} + ${factura.cliente.id}" th:text="'&laquo; volver'"></a>
+						</div>
+					</div>
+					
 					<form th:action="@{/factura/form}" th:object="${factura}" method="post">
 
 					<div class="py-2 form-group row">

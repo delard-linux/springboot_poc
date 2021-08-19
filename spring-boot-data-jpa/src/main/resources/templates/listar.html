@@ -72,6 +72,7 @@
 									<th scope="col">Creacion</th>
 									<th scope="col"></th>
 									<th scope="col"></th>
+									<th scope="col"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -89,6 +90,8 @@
 									<td><a class="btn btn-outline-danger btn-sm"
 										th:href="@{/eliminar/} + ${cl.id}"
 										onclick="return confirm('¿Está seguro que quiere eliminar?');">borrar</a></td>
+									<td><a class="btn btn-outline-primary btn-sm"
+										th:href="@{/factura/form/} + ${cl.id}">crear factura</a></td>
 								</tr>
 							</tbody>
 						</table>
