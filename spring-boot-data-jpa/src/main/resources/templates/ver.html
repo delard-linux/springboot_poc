@@ -102,6 +102,12 @@
 				<div th:if="${#lists.isEmpty(clientedto.facturas)}" 
 				class="alert alert-info my-4" th:text="'No hay facturas asignadas en el cliente'"></div>
 
+				<div class="py-1 form-group row">
+					<div class="col">
+						<a class="btn btn-outline-primary btn-sm" th:href="@{/factura/form/} + ${clientedto.id}">crear
+						factura</a>
+					</div>
+				</div>
 
 				<div  th:if="${not #lists.isEmpty(clientedto.facturas)}"
 					class="py-1 form-group row">

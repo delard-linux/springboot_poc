@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+
+		<div class="card bg-light">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+
+					<form th:action="@{/factura/form}" th:object="${factura}" method="post">
+
+					<div class="py-2 form-group row">
+					
+						<div class="form-group-name col-8">
+							<div th:if="*{id}">
+							<h6 class="mb-3"  th:text="'ID:  ' + *{id}"></h6>
+							</div>
+						</div>
+					
+					</div>
+
+					<div class="py-2 form-group row">
+						<div class="form-group-name col">
+							<h6 class="mb-3">Cliente:</h6>
+						</div>
+						<div class="col">
+							<input class="form-control" type="text" id="cliente"
+								th:value="${factura.cliente.nombre}  + ' ' + ${factura.cliente.apellido}" disabled="disabled">
+						</div>
+						<div class="col">
+						</div>
+					</div>
+					
+					<div class="py-2 form-group row">
+						<div class="form-group-name col">
+							<h6 class="mb-3">Descripción:</h6>
+						</div>
+						<div class="col">
+							<input class="form-control" type="text" id="nombre"
+								th:field="*{descripcion}" th:errorclass="'form-control alert-danger'">
+						</div>
+						<div class="col">
+							<small class="form-text text-danger"
+								th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></small>
+						</div>
+					</div>
+
+					<div class="py-2 form-group row">
+						<div class="form-group-name col">
+							<h6 class="mb-3">Observación:</h6>
+						</div>
+						<div class="col">
+							<textarea class="form-control" type="text" id="observacion"
+								th:field="*{observacion}"
+								th:errorclass="'form-control alert-danger'"></textarea>
+						</div>
+						<div class="col">
+							<small class="form-text text-danger"
+								th:if="${#fields.hasErrors('observacion')}" th:errors="*{observacion}"></small>
+						</div>
+					</div>
+
+					<div class="py-2 form-group row">
+						<div class="col"></div>
+						<div class="col">
+							<input type="submit" value="guardar"
+								class="btn btn-outline-primary btn-sm">
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+
+</body>
+</html>
