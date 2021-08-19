@@ -196,13 +196,10 @@ public class ClienteServiceImpl implements IClienteService {
 	@Override
 	public List<ProductoDTO> findByNombre(String nombreProductoTerm) {
 		
-		var listaProductos = productoDao.findByNombre(nombreProductoTerm);
+		var listaProductos = productoDao.findByNombreIgnoreCaseContaining(nombreProductoTerm);
 		
-		if (listaProductos != null && !listaProductos.isEmpty()) {
-			return ProductoDTOMapper.transformEntityListToDTOList(listaProductos);
-		} 
+		return ProductoDTOMapper.transformEntityListToDTOList(listaProductos);
 		
-		return null ;
 	}	
 	
 }
