@@ -11,10 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.drd.springbootpoc.app.model.dao.IClienteDao;
 import com.drd.springbootpoc.app.model.dao.IFacturaDao;
+import com.drd.springbootpoc.app.model.dao.IProductoDao;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.model.domain.ClienteSearchCriteria;
+import com.drd.springbootpoc.app.model.domain.ProductoDTO;
 import com.drd.springbootpoc.app.model.dtomapper.ClienteDTOMapper;
 import com.drd.springbootpoc.app.model.dtomapper.FacturaDTOMapper;
+import com.drd.springbootpoc.app.model.dtomapper.ProductoDTOMapper;
 import com.drd.springbootpoc.app.util.paginator.Pagina;
 
 @Service
@@ -25,6 +28,9 @@ public class ClienteServiceImpl implements IClienteService {
 
 	@Autowired
 	IFacturaDao facturaDao;
+
+	@Autowired
+	IProductoDao productoDao;
 	
 	@Autowired
 	private IUploadFileService uploadFileService;
@@ -185,6 +191,18 @@ public class ClienteServiceImpl implements IClienteService {
 		
 		return idCliente;
 		
+	}
+
+	@Override
+	public List<ProductoDTO> findByNombre(String nombreProductoTerm) {
+		
+		var listaProductos = productoDao.findByNombre(nombreProductoTerm);
+		
+		if (listaProductos != null && !listaProductos.isEmpty()) {
+			return ProductoDTOMapper.transformEntityListToDTOList(listaProductos);
+		} 
+		
+		return null ;
 	}	
 	
 }
