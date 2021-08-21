@@ -154,6 +154,7 @@ public class ClienteServiceImpl implements IClienteService {
 	}
 		
 	@Override
+	@Transactional
 	public boolean borrarFotoCliente(Long id) throws IOException {
 		
 		var clienteEntity = clienteDao.findById(id).orElse(null);
@@ -195,7 +196,8 @@ public class ClienteServiceImpl implements IClienteService {
 	}
 
 	@Override
-	public List<ProductoDTO> findByNombre(String nombreProductoTerm) {
+	@Transactional(readOnly = true)
+	public List<ProductoDTO> obtenerProductosPorNombre(String nombreProductoTerm) {
 		
 		var listaProductos = productoDao.findByNombreIgnoreCaseContaining(nombreProductoTerm);
 		
@@ -205,8 +207,18 @@ public class ClienteServiceImpl implements IClienteService {
 
 	@Override
 	@Transactional
-	public void saveFactura(FacturaDTO factura) {
+	public void guardarFactura(FacturaDTO factura) {
 		facturaDao.save(FacturaDTOMapper.transformDTOToEntity(factura));
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ProductoDTO obtenerProducto(Long id) {
+		
+		var productoEntity = productoDao.findById(id).orElse(null);
+		
+		return productoEntity!=null ? ProductoDTOMapper.transformEntityToDTO(productoEntity) : null;
+
 	}	
 	
 }

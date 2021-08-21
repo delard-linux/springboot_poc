@@ -38,8 +38,10 @@ public interface IClienteService {
 
 	public Pagina<ClienteDTO> obtenerTodosClientesCriteria(Pageable pageable, ClienteSearchCriteria criteria);
 
-	public List<ProductoDTO> findByNombre(String nombreProductoTerm);
+	public List<ProductoDTO> obtenerProductosPorNombre(String nombreProductoTerm);
 	
-	public void saveFactura(FacturaDTO factura);
+	public void guardarFactura(FacturaDTO factura);
+	
+	public ProductoDTO obtenerProducto(Long id);
 	
 }
