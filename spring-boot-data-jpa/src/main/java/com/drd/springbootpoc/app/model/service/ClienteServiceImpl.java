@@ -14,6 +14,7 @@ import com.drd.springbootpoc.app.model.dao.IFacturaDao;
 import com.drd.springbootpoc.app.model.dao.IProductoDao;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.model.domain.ClienteSearchCriteria;
+import com.drd.springbootpoc.app.model.domain.FacturaDTO;
 import com.drd.springbootpoc.app.model.domain.ProductoDTO;
 import com.drd.springbootpoc.app.model.dtomapper.ClienteDTOMapper;
 import com.drd.springbootpoc.app.model.dtomapper.FacturaDTOMapper;
@@ -200,6 +201,12 @@ public class ClienteServiceImpl implements IClienteService {
 		
 		return ProductoDTOMapper.transformEntityListToDTOList(listaProductos);
 		
+	}
+
+	@Override
+	@Transactional
+	public void saveFactura(FacturaDTO factura) {
+		facturaDao.save(FacturaDTOMapper.transformDTOToEntity(factura));
 	}	
 	
 }

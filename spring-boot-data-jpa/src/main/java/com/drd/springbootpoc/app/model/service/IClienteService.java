@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.model.domain.ClienteSearchCriteria;
+import com.drd.springbootpoc.app.model.domain.FacturaDTO;
 import com.drd.springbootpoc.app.model.domain.ProductoDTO;
 import com.drd.springbootpoc.app.util.paginator.Pagina;
 
@@ -38,5 +39,7 @@ public interface IClienteService {
 	public Pagina<ClienteDTO> obtenerTodosClientesCriteria(Pageable pageable, ClienteSearchCriteria criteria);
 
 	public List<ProductoDTO> findByNombre(String nombreProductoTerm);
+	
+	public void saveFactura(FacturaDTO factura);
 	
 }
