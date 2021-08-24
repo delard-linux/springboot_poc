@@ -15,11 +15,11 @@
 					<div class="py-2 form-group row">
 						<div class="col"></div>
 						<div class="col">
-							<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/} + ${factura.cliente.id}" th:text="'&laquo; volver'"></a>
+							<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/} + ${facturadto.cliente.id}" th:text="'&laquo; volver'"></a>
 						</div>
 					</div>
 					
-					<form th:action="@{/factura/form}" th:object="${factura}" method="post">
+					<form th:action="@{/factura/form}" th:object="${facturadto}" method="post">
 
 					<div class="py-2 form-group row">
 					
@@ -36,8 +36,9 @@
 							<h6 class="mb-3">Cliente:</h6>
 						</div>
 						<div class="col">
-							<input class="form-control" type="text" id="cliente"
-								th:value="${factura.cliente.nombre}  + ' ' + ${factura.cliente.apellido}" disabled="disabled">
+							<input name="cliente"
+								th:value="${facturadto.cliente.nombre} + ' ' + ${facturadto.cliente.apellido}"
+								class="form-control" disabled='disabled' />
 						</div>
 						<div class="col">
 						</div>
@@ -48,7 +49,7 @@
 							<h6 class="mb-3">Descripción:</h6>
 						</div>
 						<div class="col">
-							<input class="form-control" type="text" id="nombre"
+							<input class="form-control" type="text" id="descripcion"
 								th:field="*{descripcion}" th:errorclass="'form-control alert-danger'">
 						</div>
 						<div class="col">
@@ -62,7 +63,7 @@
 							<h6 class="mb-3">Observación:</h6>
 						</div>
 						<div class="col">
-							<textarea class="form-control" type="text" id="observacion"
+							<textarea class="form-control" id="observacion"
 								th:field="*{observacion}"
 								th:errorclass="'form-control alert-danger'"></textarea>
 						</div>
