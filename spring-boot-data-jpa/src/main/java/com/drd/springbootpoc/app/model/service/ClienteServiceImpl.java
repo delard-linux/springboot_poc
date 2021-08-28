@@ -57,6 +57,7 @@ public class ClienteServiceImpl implements IClienteService {
 			
 			clienteDto = ClienteDTOMapper.transformEntityToDTO(clienteEntity);
 			
+			//TODO el cliente tiene que tener una lista de facturas en modo simple, crear otro DTO de Factura simple 
 			var listaFacturasEntity = facturaDao.findByClienteId(id);
 			if (listaFacturasEntity != null)
 				clienteDto.setFacturas(FacturaDTOMapper.transformEntityListToDTOList(listaFacturasEntity));
@@ -218,6 +219,15 @@ public class ClienteServiceImpl implements IClienteService {
 		var productoEntity = productoDao.findById(id).orElse(null);
 		
 		return productoEntity!=null ? ProductoDTOMapper.transformEntityToDTO(productoEntity) : null;
+
+	}
+
+	@Override
+	public FacturaDTO obtenerFactura(Long id) {
+
+		var facturaEntity = facturaDao.findById(id).orElse(null);
+		
+		return facturaEntity!=null ? FacturaDTOMapper.transformEntityToDTO(facturaEntity) : null;
 
 	}	
 	

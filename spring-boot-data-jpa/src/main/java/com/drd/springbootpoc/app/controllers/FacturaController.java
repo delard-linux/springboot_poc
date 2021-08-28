@@ -37,6 +37,7 @@ public class FacturaController {
 	private static final String STR_TITULO = "titulo";
 	private static final String STR_FACTURA = "facturadto";
 	private static final String STR_TITULO_CREAR = "Crear factura";
+	private static final String STR_TITULO_VER = "Ver factura";
 	
 	// Constantes de vistas
 	private static final String STR_REDIRECT = "redirect:/";
@@ -122,5 +123,20 @@ public class FacturaController {
 		return STR_REDIRECT + VIEW_VER + "/" + facturadto.getCliente().getId();
 	}
 	
-	
+	@GetMapping(value = "/ver/{id}")
+	public String ver(@PathVariable(value = "id") Long id, 
+			Map<String, Object> model, 
+			RedirectAttributes flash) {
+
+		FacturaDTO factura = clienteService.obtenerFactura(id);
+		if (factura == null) {
+			flash.addFlashAttribute(FLASH_ERROR, "La factura no existe en la base de datos");
+			//TODO ¿? de donde viene?
+			return STR_REDIRECT + VIEW_LISTAR;
+		}
+
+		model.put(STR_FACTURA, factura);
+		model.put(STR_TITULO, STR_TITULO_VER);
+		return VIEW_VER;
+	}
 }

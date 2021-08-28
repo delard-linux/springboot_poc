@@ -41,6 +41,8 @@ public interface IClienteService {
 	public List<ProductoDTO> obtenerProductosPorNombre(String nombreProductoTerm);
 	
 	public void guardarFactura(FacturaDTO factura);
+
+	public FacturaDTO obtenerFactura(Long id);
 	
 	public ProductoDTO obtenerProducto(Long id);
 	
