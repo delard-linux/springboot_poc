@@ -102,13 +102,13 @@ INSERT INTO clientes (id, nombre, apellido, email, born_at, foto, create_at) VAL
 INSERT INTO clientes (id, nombre, apellido, email, born_at, foto, create_at) VALUES (101 ,'Ralph','Thomas','Nam.nulla@felis.org','2020-10-21', null, CURRENT_TIMESTAMP());
 
 /* Populate tabla productos */
-INSERT INTO productos (nombre, precio, create_at) VALUES('Panasonic Pantalla LCD', 259990, NOW());
-INSERT INTO productos (nombre, precio, create_at) VALUES('Sony Camara digital DSC-W320B', 123490, NOW());
-INSERT INTO productos (nombre, precio, create_at) VALUES('Apple iPod shuffle', 1499990, NOW());
-INSERT INTO productos (nombre, precio, create_at) VALUES('Sony Notebook Z110', 37990, NOW());
-INSERT INTO productos (nombre, precio, create_at) VALUES('Hewlett Packard Multifuncional F2280', 69990, NOW());
-INSERT INTO productos (nombre, precio, create_at) VALUES('Bianchi Bicicleta Aro 26', 69990, NOW());
-INSERT INTO productos (nombre, precio, create_at) VALUES('Mica Comoda 5 Cajones', 299990, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Panasonic Pantalla LCD', 299, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Sony Camara digital DSC-W320B', 745, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Apple iPhone 12', 1137, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Sony Notebook Z110', 1399, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Hewlett Packard Multifuncional F2280', 249, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Orbea Bicicleta 26', 754, NOW());
+INSERT INTO productos (nombre, precio, create_at) VALUES('Mica Comoda 5 Cajones', 1600, NOW());
 
 /* Populate tabla facturas */
 INSERT INTO facturas (id,descripcion, observacion, create_at, cliente_id) VALUES(1, 'FAC-01', 'Compra de material', NOW(), 1);
@@ -118,5 +118,7 @@ INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(3, 1, 7);
 
 INSERT INTO facturas (id,descripcion, observacion, create_at, cliente_id) VALUES(2,'FAC-02', 'Compra de bicicleta', NOW(), 1);
 INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(1, 2, 6);
+
+INSERT INTO facturas (id,descripcion, observacion, create_at, cliente_id) VALUES(3, 'FAC-03', 'Factura erronea sin items', NOW(), 1);
 
 

@@ -223,9 +223,9 @@ public class ClienteServiceImpl implements IClienteService {
 	}
 
 	@Override
-	public FacturaDTO obtenerFactura(Long id) {
+	public FacturaDTO obtenerFacturaYCliente(Long idFactura) {
 
-		var facturaEntity = facturaDao.findById(id).orElse(null);
+		var facturaEntity = facturaDao.findByIdWithCliente(idFactura);
 		
 		return facturaEntity!=null ? FacturaDTOMapper.transformEntityToDTO(facturaEntity) : null;
 

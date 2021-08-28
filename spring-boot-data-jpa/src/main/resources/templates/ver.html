@@ -17,15 +17,6 @@
 
 							<div class="py-2 row">
 								<div class="col-3">
-									<h6 class="mb-3">ID:</h6>
-								</div>
-								<div class="col">
-									<p th:text="${clientedto.id}"></p>
-								</div>
-							</div>
-							
-							<div class="py-2 row">
-								<div class="col-3">
 									<h6 class="mb-3">Nombre:</h6>
 								</div>
 								<div class="col">
@@ -116,7 +107,7 @@
 							<caption></caption>
 							<thead>
 								<tr class="align-middle">
-									<th scope="col">ID</th>
+									<th scope="col"></th>
 									<th scope="col">Descripcion</th>
 									<th scope="col">Observacion</th>
 									<th scope="col">Fecha</th>
@@ -128,12 +119,12 @@
 							<tbody>
 								<tr th:each="factura : ${clientedto.facturas}">
 									<td>
-										<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/todo_ver_factura} + ${factura.id}" th:text="${factura.id}"></a>
+										<a class="btn btn-outline-primary btn-sm" th:href="@{/factura/ver/} + ${factura.id}">ver</a>
 									</td>
 									<td th:text="${factura.descripcion}"></td>
 									<td th:text="${factura.observacion}"></td>
 									<td th:text="${factura.createAt}"></td>
-									<td th:text="${factura.total}"></td>
+									<td th:text="${#numbers.formatCurrency(factura.total)}"></td>
 									<td><a class="btn btn-outline-primary btn-sm"
 										th:href="@{/form/todo_editar_factura} + ${factura.id}">editar</a></td>
 									<td><a class="btn btn-outline-danger btn-sm"

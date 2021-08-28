@@ -114,9 +114,6 @@ public class ClienteController {
 	@GetMapping("/buscar")
 	public String buscar(@ModelAttribute("cl_search_crit") ClienteSearchCriteria criteria, @RequestParam(name="page", defaultValue="0") int page,  Model model) {
 
-
-		//TODO no funciona la paginacion con el search ya que se tienen que pasar los 
-		//     criterios de busqueda a los elementos del paginatot
 		Pageable pageRequest = PageRequest.of(page,NUM_PAGE_ELEMENTS);	
 		
 		Pagina<ClienteDTO> clientes = clienteService.obtenerTodosClientesCriteria(pageRequest, criteria);  

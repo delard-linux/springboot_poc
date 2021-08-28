@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+
+		<div class="card bg-light">
+			<div class="card-header">Cliente</div>
+			<div class="card-body">
+
+					<div class="py-2 form-group row">
+						<div class="col"></div>
+						<div class="col">
+							<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/} + ${facturadto.cliente.id}" 
+								th:text="'&laquo; volver'"></a>
+						</div>
+					</div>
+
+					<div class="row">
+
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Nombre:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${facturadto.cliente.nombre}"></p>
+								</div>
+							</div>
+		
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Apellido:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${facturadto.cliente.apellido}"></p>
+								</div>
+							</div>
+					
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Email:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${facturadto.cliente.email}"></p>
+								</div>
+							</div>
+		
+					</div>
+			</div>
+		</div>
+	
+
+
+
+		<div class="card bg-light">
+			<div class="card-header">Factura</div>
+			<div class="card-body">
+
+					<div class="row">
+
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Descripcion:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${facturadto.descripcion}"></p>
+								</div>
+							</div>
+		
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Observaciones:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${facturadto.observacion}"></p>
+								</div>
+							</div>
+					
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Fecha de creación:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${facturadto.createAt}"></p>
+								</div>
+							</div>
+		
+					</div>
+			</div>
+		</div>
+	
+
+		<div class="card bg-light mt-1">
+			<div class="card-header">Productos</div>
+			<div class="card-body">
+
+				<div th:if="${#lists.isEmpty(facturadto.items)}" 
+					class="alert alert-info my-4" th:text="'No hay lineas en la factura'"></div>
+
+				<div  th:if="${not #lists.isEmpty(facturadto.items)}"
+					class="py-1 form-group row">
+					<div class="col">
+						<table class="table table-bordered align-middle">
+							<caption></caption>
+							<thead>
+								<tr class="align-middle">
+									<th scope="col">Producto</th>
+									<th scope="col">Precio</th>
+									<th scope="col">Cantidad</th>
+									<th scope="col">Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="item : ${facturadto.items}">
+									<td th:text="${item.producto.nombre}"></td>
+									<td th:text="${#numbers.formatCurrency(item.producto.precio)}"></td>
+									<td th:text="${item.cantidad}"></td>
+									<td th:text="${#numbers.formatCurrency(item.calcularImporte())}"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td>Total:</td> 
+									<td><h5><span class="badge bg-secondary" 
+											th:text="${#numbers.formatCurrency(facturadto.getTotal())}"></span>
+										</h5>
+									</td>
+								</tr>								
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+
+</body>
+</html>

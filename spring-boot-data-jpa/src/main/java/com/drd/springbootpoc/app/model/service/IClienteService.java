@@ -42,7 +42,7 @@ public interface IClienteService {
 	
 	public void guardarFactura(FacturaDTO factura);
 
-	public FacturaDTO obtenerFactura(Long id);
+	public FacturaDTO obtenerFacturaYCliente(Long idFactura);
 	
 	public ProductoDTO obtenerProducto(Long id);
 	

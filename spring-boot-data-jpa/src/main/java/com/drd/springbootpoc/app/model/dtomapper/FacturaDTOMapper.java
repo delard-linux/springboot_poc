@@ -23,11 +23,18 @@ public class FacturaDTOMapper {
 	
 	public static FacturaDTO transformEntityToDTO(Factura facturaEntity) {
 
-		return new FacturaDTO(facturaEntity.getId(),
+		var factura =  new FacturaDTO(facturaEntity.getId(),
 				facturaEntity.getDescripcion(), 
 				facturaEntity.getObservacion(), 
 				facturaEntity.getCreateAt(), 
-				ItemFacturaDTOMapper.transformEntityListToDTOList(facturaEntity.getItems())				); 
+				ItemFacturaDTOMapper.transformEntityListToDTOList(facturaEntity.getItems())); 
+		
+		if (facturaEntity.getCliente() != null) {
+			factura.setCliente(ClienteDTOMapper.transformEntityToDTO(facturaEntity.getCliente()));
+		}
+				
+		return factura;
+		
 	}
 
 	public static Factura transformDTOToEntity(FacturaDTO factura) {

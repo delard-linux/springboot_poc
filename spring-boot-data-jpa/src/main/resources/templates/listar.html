@@ -78,7 +78,7 @@
 							<tbody>
 								<tr th:each="cl : ${clientedtolist}">
 									<td>
-										<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/} + ${cl.id}" th:text="${cl.id}"></a>
+										<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/} + ${cl.id}" >ver</a>
 									</td>
 									<td th:text="${cl.nombre}"></td>
 									<td th:text="${cl.apellido}"></td>
