@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -15,17 +16,15 @@ public class FacturaDTO implements Serializable {
 
 	private Long id;
 
-	@NotNull
+	@NotBlank
 	private String descripcion;
 
 	private String observacion;
 
-	@NotNull
 	private Date createAt;
 	
 	private ClienteDTO cliente;	
 
-	@NotEmpty
 	private List<ItemFacturaDTO> items;
 	
 	public FacturaDTO() {

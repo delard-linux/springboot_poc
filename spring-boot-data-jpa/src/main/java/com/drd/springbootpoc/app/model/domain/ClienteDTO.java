@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -14,13 +15,13 @@ public class ClienteDTO implements Serializable {
 
 	private Long id;
 
-	@NotEmpty
+	@NotBlank
 	private String nombre;
 
-	@NotEmpty
+	@NotBlank
 	private String apellido;
 
-	@NotEmpty
+	@NotBlank
 	@Email
 	private String email;
 

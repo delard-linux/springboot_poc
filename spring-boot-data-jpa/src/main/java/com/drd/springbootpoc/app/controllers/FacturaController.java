@@ -3,10 +3,14 @@ package com.drd.springbootpoc.app.controllers;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +36,7 @@ public class FacturaController {
 	// Constantes de atributos
 	private static final String STR_TITULO = "titulo";
 	private static final String STR_FACTURA = "facturadto";
+	private static final String STR_TITULO_CREAR = "Crear factura";
 	
 	// Constantes de vistas
 	private static final String STR_REDIRECT = "redirect:/";
@@ -42,6 +47,7 @@ public class FacturaController {
 	
 	// Constantes de tipos de mensajes flash
 	private static final String FLASH_SUCCESS = "success";
+	private static final String FLASH_ERROR = "error";
 	
 	@Autowired
 	private IClienteService clienteService;
@@ -56,14 +62,14 @@ public class FacturaController {
 		ClienteDTO cliente = clienteService.obtenerCliente(clienteId);
 		
 		if (cliente==null) {
-			flash.addFlashAttribute("error", "El cliente no existe en la base de datos");
+			flash.addFlashAttribute(FLASH_ERROR, "El cliente no existe en la base de datos");
 			return STR_REDIRECT + VIEW_LISTAR;
 		}
 		
 		var factura = new FacturaDTO();
 		factura.setCliente(cliente);
 		model.put(STR_FACTURA, factura);
-		model.put(STR_TITULO, "Crear factura");
+		model.put(STR_TITULO, STR_TITULO_CREAR);
 		
 		return STR_PREFIX_FACTURA + "/" + VIEW_FORM;
 	}
@@ -74,13 +80,27 @@ public class FacturaController {
 	}
 	
 	@PostMapping("/form")
-	public String guardar(@ModelAttribute("facturadto") FacturaDTO facturadto, 
+	public String guardar(@Valid @ModelAttribute("facturadto") FacturaDTO facturadto, 
+			BindingResult result,
+			Model model,
 			@RequestParam(name = "item_id[]", required = false) Long[] itemId,
 			@RequestParam(name = "cantidad[]", required = false) Integer[] cantidad, 
 			RedirectAttributes flash,
 			SessionStatus status) {
 
-		if (itemId != null && itemId.length > 0) {
+		if (result.hasErrors()) {
+			model.addAttribute(STR_TITULO, STR_TITULO_CREAR);
+			//TODO: si se ha metido alguna linea de productos antes se pierde por lo que habría que dejarlo en sesion
+			return STR_PREFIX_FACTURA + "/" + VIEW_FORM;
+		}
+		
+		if (itemId == null || itemId.length == 0) {
+			model.addAttribute(STR_TITULO, STR_TITULO_CREAR);
+			model.addAttribute(FLASH_ERROR, "La factura debe tener al menos una linea");
+			return STR_PREFIX_FACTURA + "/" + VIEW_FORM;
+		}
+		
+		if (itemId.length > 0) {
 			for (var i = 0; i < itemId.length; i++) {
 				ProductoDTO producto = clienteService.obtenerProducto(itemId[i]);
 

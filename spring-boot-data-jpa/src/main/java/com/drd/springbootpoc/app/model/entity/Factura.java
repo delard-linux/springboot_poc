@@ -32,6 +32,7 @@ public class Factura implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
 	private String descripcion;
 
 	private String observacion;

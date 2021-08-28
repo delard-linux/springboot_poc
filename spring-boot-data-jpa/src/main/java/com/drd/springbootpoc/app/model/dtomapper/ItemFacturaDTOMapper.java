@@ -34,7 +34,6 @@ public class ItemFacturaDTOMapper {
 		
 		itemFacturaEntity.setId(itemFactura.getId());
 		itemFacturaEntity.setCantidad(itemFactura.getCantidad());
-		//TODO: esto hay que revisarlo para que no cree el producto de nuevo
 		itemFacturaEntity.setProducto(ProductoDTOMapper.transformDTOToEntity(itemFactura.getProducto()));
 		
 		return itemFacturaEntity;

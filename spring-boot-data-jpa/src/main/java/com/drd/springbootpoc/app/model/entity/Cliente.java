@@ -17,6 +17,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -32,14 +34,18 @@ public class Cliente implements Serializable {
 
 	@NotEmpty
 	@NotNull
+	@NotBlank
 	private String nombre;
 
 	@NotEmpty
 	@NotNull
+	@NotBlank
 	private String apellido;
 
 	@NotEmpty
 	@NotNull
+	@NotBlank
+	@Email
 	private String email;
 
 	@NotNull
