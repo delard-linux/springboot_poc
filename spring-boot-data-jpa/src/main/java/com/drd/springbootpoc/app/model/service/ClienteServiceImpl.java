@@ -223,6 +223,7 @@ public class ClienteServiceImpl implements IClienteService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public FacturaDTO obtenerFacturaYCliente(Long idFactura) {
 
 		var facturaEntity = facturaDao.findByIdWithCliente(idFactura);
@@ -230,5 +231,15 @@ public class ClienteServiceImpl implements IClienteService {
 		return facturaEntity!=null ? FacturaDTOMapper.transformEntityToDTO(facturaEntity) : null;
 
 	}	
+
+	@Override
+	@Transactional
+	public void borrarFactura(Long id) {
+		
+		facturaDao.deleteById(id);
+		
+	}
+	
+	
 	
 }

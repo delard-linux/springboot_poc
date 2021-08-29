@@ -41,8 +41,8 @@ public class FacturaController {
 	
 	// Constantes de vistas
 	private static final String STR_REDIRECT = "redirect:/";
-	private static final String STR_PREFIX_FACTURA = "/factura";
-	private static final String VIEW_VER = "ver";
+	private static final String STR_PREFIX_FACTURA = "factura";
+	private static final String VIEW_VIEW = "ver";
 	private static final String VIEW_LISTAR = "listar";
 	private static final String VIEW_FORM = "form";
 	
@@ -72,7 +72,7 @@ public class FacturaController {
 		model.put(STR_FACTURA, factura);
 		model.put(STR_TITULO, STR_TITULO_CREAR);
 		
-		return STR_PREFIX_FACTURA + "/" + VIEW_FORM;
+		return "/" + STR_PREFIX_FACTURA + "/" + VIEW_FORM;
 	}
 
 	@GetMapping(value = "/cargar-productos/{productoNombreTerm}", produces = { "application/json" })
@@ -92,13 +92,13 @@ public class FacturaController {
 		if (result.hasErrors()) {
 			model.addAttribute(STR_TITULO, STR_TITULO_CREAR);
 			//TODO: si se ha metido alguna linea de productos antes se pierde por lo que habría que dejarlo en sesion
-			return STR_PREFIX_FACTURA + "/" + VIEW_FORM;
+			return "/" + STR_PREFIX_FACTURA + "/" + VIEW_FORM;
 		}
 		
 		if (itemId == null || itemId.length == 0) {
 			model.addAttribute(STR_TITULO, STR_TITULO_CREAR);
 			model.addAttribute(FLASH_ERROR, "La factura debe tener al menos una linea");
-			return STR_PREFIX_FACTURA + "/" + VIEW_FORM;
+			return "/" + STR_PREFIX_FACTURA + "/" + VIEW_FORM;
 		}
 		
 		if (itemId.length > 0) {
@@ -120,7 +120,7 @@ public class FacturaController {
 
 		flash.addFlashAttribute(FLASH_SUCCESS, "Factura creada con éxito!");
 
-		return STR_REDIRECT + VIEW_VER + "/" + facturadto.getCliente().getId();
+		return STR_REDIRECT + VIEW_VIEW + "/" + facturadto.getCliente().getId();
 	}
 	
 	@GetMapping(value = "/ver/{id}")
@@ -136,6 +136,23 @@ public class FacturaController {
 
 		model.put(STR_FACTURA, factura);
 		model.put(STR_TITULO, STR_TITULO_VER);
-		return STR_PREFIX_FACTURA + "/" + VIEW_VER;
+		return "/" + STR_PREFIX_FACTURA + "/" + VIEW_VIEW;
 	}
+
+	@GetMapping("/eliminar/{id}")
+	public String eliminar(@PathVariable(value="id") Long id, RedirectAttributes flash) {
+		
+		var factura = clienteService.obtenerFacturaYCliente(id);
+		
+		if(factura != null) {
+			clienteService.borrarFactura(id);
+			flash.addFlashAttribute(FLASH_SUCCESS, "Factura eliminada con éxito!");
+			return  STR_REDIRECT + VIEW_VIEW + "/" + factura.getCliente().getId();
+		}
+		flash.addFlashAttribute(FLASH_ERROR, "La factura no existe en la base de datos, no se pudo eliminar!");
+		
+		return STR_REDIRECT + VIEW_LISTAR;
+	}
+	
+
 }

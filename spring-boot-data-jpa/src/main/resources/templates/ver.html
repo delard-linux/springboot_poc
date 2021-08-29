@@ -112,8 +112,7 @@
 									<th scope="col">Observacion</th>
 									<th scope="col">Fecha</th>
 									<th scope="col">Total</th>
-									<th scope="col">Editar</th>
-									<th scope="col">Borrar</th>
+									<th scope="col"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -125,11 +124,9 @@
 									<td th:text="${factura.observacion}"></td>
 									<td th:text="${factura.createAt}"></td>
 									<td th:text="${#numbers.formatCurrency(factura.total)}"></td>
-									<td><a class="btn btn-outline-primary btn-sm"
-										th:href="@{/form/todo_editar_factura} + ${factura.id}">editar</a></td>
 									<td><a class="btn btn-outline-danger btn-sm"
-										th:href="@{/eliminar/todo_eliminar_factura} + ${factura.id}"
-										onclick="return confirm('¿Está seguro que quiere eliminar?');">borrar</a></td>
+										th:href="@{/factura/eliminar/} + ${factura.id}"
+										onclick="return confirm('¿Está seguro que quiere eliminar la factura?');">borrar</a></td>
 								</tr>
 							</tbody>
 						</table>

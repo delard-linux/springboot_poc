@@ -46,4 +46,6 @@ public interface IClienteService {
 	
 	public ProductoDTO obtenerProducto(Long id);
 	
+	public void borrarFactura(Long id);
+	
 }
