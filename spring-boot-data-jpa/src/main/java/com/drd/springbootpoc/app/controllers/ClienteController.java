@@ -93,7 +93,7 @@ public class ClienteController {
 		return VIEW_VER;
 	}
 	
-	@GetMapping(value={"/index", "/", "", "/listar"})
+	@GetMapping(value={"/", "/listar"})
 	public String listar(@RequestParam(name="page", defaultValue="0") int page,  Model model) {
 
 
