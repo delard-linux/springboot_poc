@@ -42,8 +42,11 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 			.antMatchers("/eliminar/**").hasAnyRole("ADMIN")
 			.antMatchers("/factura/**").hasAnyRole("ADMIN")
 			.anyRequest().authenticated()
+			.and()
+			.formLogin().permitAll()
+			.and()
+			.logout().permitAll()
 		;
-
 
 	}
 	
