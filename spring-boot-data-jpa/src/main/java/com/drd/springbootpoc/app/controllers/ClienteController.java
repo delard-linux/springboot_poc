@@ -43,20 +43,16 @@ import com.drd.springbootpoc.app.util.paginator.PaginaRender;
 @SessionAttributes(names = {"clientedto","cl_search_crit"})
 public class ClienteController {
 
-	// Constantes de atributos
-	private static final String STR_TITULO = "titulo";
-	private static final String STR_CLIENTE = "clientedto";
-
-	// Constantes de vistas
-	private static final String STR_REDIRECT = "redirect:/";
-	private static final String VIEW_VER = "ver";
-	private static final String VIEW_LISTAR = "listar";
-	private static final String VIEW_FORM = "form";
+	// Constantes de títulos de vista
+	private static final String STR_TITULO_VER         = "Detalle cliente";
+	private static final String STR_TITULO_LISTAR      = "Listado de Clientes";
+	private static final String STR_TITULO_CREAR       = "Crear Cliente";
+	private static final String STR_TITULO_ACTUALIZAR  = "Actualizar Cliente";
 	
-	// Constantes de tipos de mensajes flash
-	private static final String FLASH_SUCCESS = "success";
-	private static final String FLASH_INFO = "info";
-	private static final String FLASH_ERROR = "error";
+	// Constantes de nombres de vistas
+	private static final String VIEW_VER 	= "ver";
+	private static final String VIEW_LISTAR = "listar";
+	private static final String VIEW_FORM 	= "form";
 	
 	private static final int NUM_PAGE_ELEMENTS  = 20;
 	
@@ -84,12 +80,12 @@ public class ClienteController {
 
 		ClienteDTO cliente = clienteService.obtenerClienteConFacturas(id);
 		if (cliente == null) {
-			flash.addFlashAttribute(FLASH_ERROR, "El cliente no existe en la base de datos");
-			return STR_REDIRECT + VIEW_LISTAR;
+			flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "El cliente no existe en la base de datos");
+			return ControllerConstants.REDIRECT + VIEW_LISTAR;
 		}
 
-		model.put(STR_CLIENTE, cliente);
-		model.put(STR_TITULO, "Detalle cliente");
+		model.put(ControllerConstants.ATT_CLIENTE, cliente);
+		model.put(ControllerConstants.ATT_TITULO, STR_TITULO_VER);
 		return VIEW_VER;
 	}
 	
@@ -103,10 +99,10 @@ public class ClienteController {
 
 		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/listar", clientes);
 		
-		model.addAttribute(STR_TITULO, "Listado de Clientes");
-		model.addAttribute("clientedtolist", clientes.getContenido());
-		model.addAttribute("pagina", paginaRender);		
-		model.addAttribute("cl_search_crit", new ClienteSearchCriteria("", "", ""));
+		model.addAttribute(ControllerConstants.ATT_TITULO, STR_TITULO_LISTAR);
+		model.addAttribute(ControllerConstants.ATT_CLIENTE_LIST, clientes.getContenido());
+		model.addAttribute(ControllerConstants.ATT_PAGINA, paginaRender);		
+		model.addAttribute(ControllerConstants.ATT_CLIENTE_SEARCH_CRIT, new ClienteSearchCriteria("", "", ""));
 
 		return VIEW_LISTAR;
 	}
@@ -120,10 +116,10 @@ public class ClienteController {
 
 		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/buscar", clientes);
 		
-		model.addAttribute(STR_TITULO, "Listado de Clientes");
-		model.addAttribute("clientedtolist", clientes.getContenido());
-		model.addAttribute("pagina", paginaRender);
-		model.addAttribute("cl_search_crit", criteria);
+		model.addAttribute(ControllerConstants.ATT_TITULO, STR_TITULO_LISTAR);
+		model.addAttribute(ControllerConstants.ATT_CLIENTE_LIST, clientes.getContenido());
+		model.addAttribute(ControllerConstants.ATT_PAGINA, paginaRender);
+		model.addAttribute(ControllerConstants.ATT_CLIENTE_SEARCH_CRIT, criteria);
 
 		return VIEW_LISTAR;
 	}
@@ -132,8 +128,8 @@ public class ClienteController {
 	@GetMapping("/form")
 	public String crear(Map<String, Object> model) {
 		var cliente = new ClienteDTO();
-		model.put(STR_CLIENTE, cliente);
-		model.put(STR_TITULO, "Crear Cliente");
+		model.put(ControllerConstants.ATT_CLIENTE, cliente);
+		model.put(ControllerConstants.ATT_TITULO, STR_TITULO_CREAR);
 		return VIEW_FORM;
 	}
 
@@ -142,7 +138,7 @@ public class ClienteController {
 			Model model, @RequestParam(name = "foto_file") MultipartFile foto, RedirectAttributes  flash, SessionStatus status) {
 		
 		if(result.hasErrors()) {
-			model.addAttribute(STR_TITULO,"Cliente");
+			model.addAttribute(ControllerConstants.ATT_TITULO, STR_TITULO_CREAR);
 			return VIEW_FORM;
 		}
 				
@@ -152,15 +148,15 @@ public class ClienteController {
 		} catch (IOException e) {
 			log.error("No se puede guardar el cliente: {} {}", cliente.getNombre(),cliente.getApellido());
 			log.error(e.getMessage(),e);
-			flash.addFlashAttribute(FLASH_ERROR, "No se puede guardar el cliente: " 
+			flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "No se puede guardar el cliente: " 
 							+ cliente.getNombre() + " " + cliente.getApellido());
-			return STR_REDIRECT + VIEW_LISTAR;
+			return ControllerConstants.REDIRECT + VIEW_LISTAR;
 		}
 		
 		status.setComplete();
-		flash.addFlashAttribute(FLASH_SUCCESS, "Cliente guardado con exito '" 
+		flash.addFlashAttribute(ControllerConstants.FLASH_SUCCESS, "Cliente guardado con exito '" 
 				+ idCliente + "'!");
-		return STR_REDIRECT + VIEW_LISTAR;
+		return ControllerConstants.REDIRECT + VIEW_LISTAR;
 	}
 	
 	
@@ -172,17 +168,17 @@ public class ClienteController {
 			
 			var cliente = clienteService.obtenerCliente(id);
 			
-			model.put(STR_CLIENTE, cliente);
-			model.put(STR_TITULO,"Actualizar Cliente");
+			model.put(ControllerConstants.ATT_CLIENTE, cliente);
+			model.put(ControllerConstants.ATT_TITULO,STR_TITULO_ACTUALIZAR);
 			
 			if (cliente == null) {
-				flash.addFlashAttribute(FLASH_ERROR, "Cliente inexistente con el ID: " + id);
-				return STR_REDIRECT + VIEW_LISTAR;
+				flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "Cliente inexistente con el ID: " + id);
+				return ControllerConstants.REDIRECT + VIEW_LISTAR;
 			}
 
 		} else {
-			flash.addFlashAttribute(FLASH_ERROR, "El ID de cliente no puede ser cero o negativo: " + id);
-			return STR_REDIRECT + VIEW_LISTAR;
+			flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "El ID de cliente no puede ser cero o negativo: " + id);
+			return ControllerConstants.REDIRECT + VIEW_LISTAR;
 		}
 		
 		return VIEW_FORM;
@@ -202,17 +198,17 @@ public class ClienteController {
 				} catch (IOException e) {
 					log.error("No se puede eliminar el cliente: {}", id);
 					log.error(e.getMessage(),e);
-					flash.addFlashAttribute(FLASH_ERROR, "No se puede eliminar el cliente: " + id);
-					return STR_REDIRECT + VIEW_LISTAR;
+					flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "No se puede eliminar el cliente: " + id);
+					return ControllerConstants.REDIRECT + VIEW_LISTAR;
 				}
-				flash.addFlashAttribute(FLASH_INFO, "Cliente eliminado con exito!");
+				flash.addFlashAttribute(ControllerConstants.FLASH_INFO, "Cliente eliminado con exito!");
 			} else {
-				flash.addFlashAttribute(FLASH_ERROR, "Cliente inexistente: " + id);
+				flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "Cliente inexistente: " + id);
 			}
 
 		} 
 		status.setComplete();
-		return STR_REDIRECT + VIEW_LISTAR;
+		return ControllerConstants.REDIRECT + VIEW_LISTAR;
 	} 	
 
 	@GetMapping(value="/uploads/{filename:.+}")
