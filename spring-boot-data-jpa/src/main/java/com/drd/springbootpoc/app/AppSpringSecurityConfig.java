@@ -27,15 +27,17 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 		UserBuilder users = User.builder().passwordEncoder(encoder::encode);
 
 		builder.inMemoryAuthentication()
-			.withUser(users.username("admin").password("12345").roles("ADMIN", "USER"))
-			.withUser(users.username("david").password("12345").roles("USER"));
+			.withUser(users.username("admin").password("12345").roles("ADMIN","USER"))
+			.withUser(users.username("david").password("12345").roles("USER"))
+			.withUser(users.username("rodrigo").password("12345").roles("USER"));
 
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/", "/listar","/css/**","/js/**","/images/**").permitAll()
+		http.authorizeRequests().antMatchers("/css/**","/js/**","/images/**").permitAll()
+			.antMatchers("/", "/listar").hasAnyRole("USER")
 			.antMatchers("/ver/**").hasAnyRole("USER")
 			.antMatchers("/uploads/**").hasAnyRole("USER")
 			.antMatchers("/form/**").hasAnyRole("ADMIN")
