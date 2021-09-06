@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security" lang="en">
 <head th:replace="layout/layout :: head"></head>
 <body>
 
@@ -93,7 +93,7 @@
 				<div th:if="${#lists.isEmpty(clientedto.facturas)}" 
 				class="alert alert-info my-4" th:text="'No hay facturas asignadas en el cliente'"></div>
 
-				<div class="py-1 form-group row">
+				<div class="py-1 form-group row" sec:authorize="hasRole('ROLE_ADMIN')">
 					<div class="col">
 						<a class="btn btn-outline-primary btn-sm" th:href="@{/factura/form/} + ${clientedto.id}">crear
 						factura</a>
@@ -107,24 +107,24 @@
 							<caption></caption>
 							<thead>
 								<tr class="align-middle">
-									<th scope="col"></th>
+									<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									<th scope="col">Descripcion</th>
 									<th scope="col">Observacion</th>
 									<th scope="col">Fecha</th>
 									<th scope="col">Total</th>
-									<th scope="col"></th>
+									<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="factura : ${clientedto.facturas}">
-									<td>
+									<td sec:authorize="hasRole('ROLE_ADMIN')">
 										<a class="btn btn-outline-primary btn-sm" th:href="@{/factura/ver/} + ${factura.id}">ver</a>
 									</td>
 									<td th:text="${factura.descripcion}"></td>
 									<td th:text="${factura.observacion}"></td>
 									<td th:text="${factura.createAt}"></td>
 									<td th:text="${#numbers.formatCurrency(factura.total)}"></td>
-									<td><a class="btn btn-outline-danger btn-sm"
+									<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-outline-danger btn-sm"
 										th:href="@{/factura/eliminar/} + ${factura.id}"
 										onclick="return confirm('¿Está seguro que quiere eliminar la factura?');">borrar</a></td>
 								</tr>
