@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.drd.springbootpoc.app.auth.handler.LoginSuccessHandler;
+
 @Configuration
 public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	
@@ -18,6 +20,10 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+
+	@Autowired
+	LoginSuccessHandler loginSuccessHandler; 
 	
 	@Autowired
 	public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
@@ -46,6 +52,7 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 			.anyRequest().authenticated()
 			.and()
 			    .formLogin()
+			    	.successHandler(loginSuccessHandler)
 			        .loginPage("/login")
 			        .permitAll()
 			.and()
