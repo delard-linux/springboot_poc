@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,8 @@ public class ClienteController {
 	
 	private static final int NUM_PAGE_ELEMENTS  = 20;
 	
+	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	//@Qualifier("clienteDaoJPA")
 	private IClienteService clienteService;
@@ -90,9 +94,21 @@ public class ClienteController {
 	}
 	
 	@GetMapping(value={"/", "/listar"})
-	public String listar(@RequestParam(name="page", defaultValue="0") int page,  Model model) {
+	public String listar(@RequestParam(name="page", defaultValue="0") int page,  
+			Model model,
+			Authentication authentication) {
 
 
+		// Ejemplo de como realizar operaciones con el usuario autenticado, por parametro o estaticamente
+		if(authentication != null) {
+			logger.info("Hola usuario autenticado, tu username es: {}", authentication.getName());
+		}
+
+		var auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null) {
+			logger.info("Utilizando forma estática SecurityContextHolder.getContext().getAuthentication(): Usuario autenticado: {}", auth.getName());
+		}
+		
 		Pageable pageRequest = PageRequest.of(page,NUM_PAGE_ELEMENTS);	
 		
 		Pagina<ClienteDTO> clientes = clienteService.obtenerTodosClientes(pageRequest);  
