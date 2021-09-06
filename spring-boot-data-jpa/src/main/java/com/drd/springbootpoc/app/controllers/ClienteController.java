@@ -7,12 +7,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +99,9 @@ public class ClienteController {
 	@GetMapping(value={"/", "/listar"})
 	public String listar(@RequestParam(name="page", defaultValue="0") int page,  
 			Model model,
-			Authentication authentication) {
+			Authentication authentication,
+			HttpServletRequest request) {
+
 
 
 		// Ejemplo de como realizar operaciones con el usuario autenticado, por parametro o estaticamente
@@ -116,8 +120,28 @@ public class ClienteController {
 				log.info("Hola '{}', NO tienes acceso", auth.getName());
 			}
 			
+			
+			// Control de los roles del usuario autenticado programaticamente con el wrapper
+			var securityContext = new SecurityContextHolderAwareRequestWrapper(request, "");
+			
+			if(securityContext.isUserInRole("ROLE_ADMIN")) {
+				log.info("Forma usando SecurityContextHolderAwareRequestWrapper: Hola '{}' tienes acceso!", securityContext.getUserPrincipal().getName());
+			} else {
+				log.info("Forma usando SecurityContextHolderAwareRequestWrapper: Hola '{}' NO tienes acceso!", securityContext.getUserPrincipal().getName());
+			}
+
+			if(request.isUserInRole("ROLE_ADMIN")) {
+				log.info("Forma usando HttpServletRequest: Hola '{}' tienes acceso!", auth.getName());
+			} else {
+				log.info("Forma usando HttpServletRequest: Hola '{}' NO tienes acceso!", auth.getName());
+			}
+			
+			
 		}
 
+
+		
+		
 		Pageable pageRequest = PageRequest.of(page,NUM_PAGE_ELEMENTS);	
 		
 		Pagina<ClienteDTO> clientes = clienteService.obtenerTodosClientes(pageRequest);  
