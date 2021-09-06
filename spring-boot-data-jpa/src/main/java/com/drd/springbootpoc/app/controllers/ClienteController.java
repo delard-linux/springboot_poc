@@ -3,12 +3,15 @@ package com.drd.springbootpoc.app.controllers;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +61,6 @@ public class ClienteController {
 	
 	private static final int NUM_PAGE_ELEMENTS  = 20;
 	
-	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
 	@Autowired
 	//@Qualifier("clienteDaoJPA")
 	private IClienteService clienteService;
@@ -101,14 +102,22 @@ public class ClienteController {
 
 		// Ejemplo de como realizar operaciones con el usuario autenticado, por parametro o estaticamente
 		if(authentication != null) {
-			logger.info("Hola usuario autenticado, tu username es: {}", authentication.getName());
+			log.info("Hola usuario autenticado, tu username es: {}", authentication.getName());
 		}
 
 		var auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null) {
-			logger.info("Utilizando forma estática SecurityContextHolder.getContext().getAuthentication(): Usuario autenticado: {}", auth.getName());
+			log.info("Utilizando forma estática SecurityContextHolder.getContext().getAuthentication(): Usuario autenticado: '{}'", auth.getName());
+			
+			// Control de los roles del usuario autenticado programaticamente
+			if(hasRole("ROLE_USER")) {
+				log.info("Hola '{}', tienes acceso", auth.getName());
+			} else {
+				log.info("Hola '{}', NO tienes acceso", auth.getName());
+			}
+			
 		}
-		
+
 		Pageable pageRequest = PageRequest.of(page,NUM_PAGE_ELEMENTS);	
 		
 		Pagina<ClienteDTO> clientes = clienteService.obtenerTodosClientes(pageRequest);  
@@ -244,5 +253,22 @@ public class ClienteController {
 							+"\"")
 				.body(recurso);
 	}
+	
+	private boolean hasRole(String role) {
+		
+		var context = SecurityContextHolder.getContext();
+		if(context == null) 
+			return false;
+		
+		var auth = context.getAuthentication();
+		if(auth == null) 
+			return false;
+		
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		authorities.forEach(item -> log.info("Hola '{}', tu rol es '{}'", auth.getName(), item.getAuthority()));
+		
+		return authorities.contains(new SimpleGrantedAuthority(role));
+		
+	}	
 
 }
