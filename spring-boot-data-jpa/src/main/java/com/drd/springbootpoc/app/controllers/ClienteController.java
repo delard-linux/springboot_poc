@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -82,6 +84,7 @@ public class ClienteController {
 				
 	}
 	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping(value = "/ver/{id}")
 	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 
@@ -96,6 +99,7 @@ public class ClienteController {
 		return VIEW_VER;
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	@GetMapping(value={"/", "/listar"})
 	public String listar(@RequestParam(name="page", defaultValue="0") int page,  
 			Model model,
@@ -156,6 +160,7 @@ public class ClienteController {
 		return VIEW_LISTAR;
 	}
 
+	@Secured({"ROLE_USER","ROLE_ADMIN",})
 	@GetMapping("/buscar")
 	public String buscar(@ModelAttribute("cl_search_crit") ClienteSearchCriteria criteria, @RequestParam(name="page", defaultValue="0") int page,  Model model) {
 
@@ -174,6 +179,7 @@ public class ClienteController {
 	}
 	
 	
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/form")
 	public String crear(Map<String, Object> model) {
 		var cliente = new ClienteDTO();
@@ -182,6 +188,7 @@ public class ClienteController {
 		return VIEW_FORM;
 	}
 
+	@Secured("ROLE_ADMIN")
 	@PostMapping("/form")
 	public String guardar(@Valid @ModelAttribute("clientedto") ClienteDTO cliente, BindingResult result, 
 			Model model, @RequestParam(name = "foto_file") MultipartFile foto, RedirectAttributes  flash, SessionStatus status) {
@@ -209,6 +216,7 @@ public class ClienteController {
 	}
 	
 	
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/form/{id}")
 	public String editar(@PathVariable(name="id") Long id, 
 			Map<String, Object> model, RedirectAttributes  flash ) {
@@ -233,6 +241,7 @@ public class ClienteController {
 		return VIEW_FORM;
 	} 
 	
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/eliminar/{id}")
 	public String eliminar(@PathVariable(name="id") Long id, 
 			Map<String, Object> model, RedirectAttributes  flash,  SessionStatus status) {
@@ -260,6 +269,7 @@ public class ClienteController {
 		return ControllerConstants.REDIRECT + VIEW_LISTAR;
 	} 	
 
+	@Secured("ROLE_ADMIN")
 	@GetMapping(value="/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFichero(@PathVariable String filename) {
 		
@@ -278,6 +288,7 @@ public class ClienteController {
 				.body(recurso);
 	}
 	
+	// este método se puede eliminar, es PoC para autorización programática
 	private boolean hasRole(String role) {
 		
 		var context = SecurityContextHolder.getContext();
