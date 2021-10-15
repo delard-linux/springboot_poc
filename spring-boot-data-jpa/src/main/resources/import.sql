@@ -121,4 +121,18 @@ INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES(1, 2, 6);
 
 INSERT INTO facturas (id,descripcion, observacion, create_at, cliente_id) VALUES(3, 'FAC-03', 'Factura erronea sin items', NOW(), 1);
 
+INSERT INTO users (id,username,password,enabled) VALUES (1, 'david', '$2a$10$25wfKDCGVBog9aXMS7OZTe7yAyvyliXfW1UvcOXHp1aMuY7nOhf1a', 1);
+INSERT INTO users (id,username,password,enabled) VALUES (2, 'rodrigo', '$2a$10$1GUaAfTjNo2VQBWTnAmAhufdZgg5kYSAloG/bAYwoUnc/z1jr1gPq', 1);
+INSERT INTO users (id,username,password,enabled) VALUES (3, 'admin', '$2a$10$vFhEXOqhiu7pBmt2zZU0RODHFFc43AmWe8p3uppLE4ZuQA7cm9A.2', 1);
+
+
+INSERT INTO user_authorities (user_id, authority_code) VALUES (1, 'ROLE_USER');
+INSERT INTO user_authorities (user_id, authority_code) VALUES (2, 'ROLE_USER');
+INSERT INTO user_authorities (user_id, authority_code) VALUES (3, 'ROLE_USER');
+INSERT INTO user_authorities (user_id, authority_code) VALUES (3, 'ROLE_ADMIN');
+
+
+
+
+
 

@@ -1,7 +1,6 @@
 package com.drd.springbootpoc.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,31 +12,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.drd.springbootpoc.app.auth.handler.LoginSuccessHandler;
+import com.drd.springbootpoc.app.common.enums.Authority;
 
 @EnableGlobalMethodSecurity(securedEnabled=true, prePostEnabled=true)
 @Configuration
 public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
-
 	@Autowired
-	LoginSuccessHandler loginSuccessHandler; 
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private LoginSuccessHandler loginSuccessHandler; 
 	
 	@Autowired
 	public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
 
-		PasswordEncoder encoder = passwordEncoder();
+		PasswordEncoder encoder = this.passwordEncoder;
 
 		UserBuilder users = User.builder().passwordEncoder(encoder::encode);
 
 		builder.inMemoryAuthentication()
-			.withUser(users.username("admin").password("12345").roles("ADMIN","USER"))
-			.withUser(users.username("david").password("12345").roles("USER"))
-			.withUser(users.username("rodrigo").password("12345").roles("USER"));
+			.withUser(users.username("admin").password("12345").roles(Authority.ADMIN.getCode(),Authority.USER.getCode()))
+			.withUser(users.username("david").password("12345").roles(Authority.USER.getCode()))
+			.withUser(users.username("rodrigo").password("12345").roles(Authority.USER.getCode()));
 
 	}
 
@@ -45,13 +42,23 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests().antMatchers("/css/**","/js/**","/images/**").permitAll()
+			//Configuracion de seguridad de la consola H2 de SpringBoot
+			.antMatchers("/h2-console/**").hasAnyRole("ADMIN")
+				.anyRequest().authenticated()
+			.and().csrf().ignoringAntMatchers("/h2-console/**")//don't apply CSRF protection to /h2-console
+			.and().headers().frameOptions().sameOrigin()//allow use of frame to same origin urls
+
+//			.antMatchers("/register").permitAll()
+//			.antMatchers("/console/**").permitAll()
+			
 //			.antMatchers("/", "/listar").hasAnyRole("USER")
 //			.antMatchers("/ver/**").hasAnyRole("USER")
 //			.antMatchers("/uploads/**").hasAnyRole("USER")
 //			.antMatchers("/form/**").hasAnyRole("ADMIN")
 //			.antMatchers("/eliminar/**").hasAnyRole("ADMIN")
 //			.antMatchers("/factura/**").hasAnyRole("ADMIN")
-			.anyRequest().authenticated()
+//			.anyRequest().authenticated()
+		
 			.and()
 			    .formLogin()
 			    	.successHandler(loginSuccessHandler)
