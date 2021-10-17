@@ -2,10 +2,10 @@ package com.drd.springbootpoc.app.model.dao.security;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.drd.springbootpoc.app.model.entity.security.User;
+import com.drd.springbootpoc.app.model.entity.security.Usuario;
 
-public interface IUserDao extends CrudRepository<User, Long>{
+public interface IUserDao extends CrudRepository<Usuario, Long>{
 
-	public User findByUsername(String username);
+	public Usuario findByUsername(String username);
 	
 }

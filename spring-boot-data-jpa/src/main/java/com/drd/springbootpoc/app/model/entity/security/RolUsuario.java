@@ -14,8 +14,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "user_authorities", uniqueConstraints= {@UniqueConstraint(columnNames= {"user_id", "authority_code"})})
-public class UserAuthority implements Serializable {
+@Table(name = "roles_usuario", uniqueConstraints= {@UniqueConstraint(columnNames= {"user_id", "role_code"})})
+public class RolUsuario implements Serializable {
 
 	private static final long serialVersionUID = -4331019072127918780L;
 
@@ -30,8 +30,8 @@ public class UserAuthority implements Serializable {
 	@NotEmpty
 	@NotNull
 	@NotBlank
-	@Column(name = "authority_code")
-	private String authorityCode;
+	@Column(name = "role_code")
+	private String rolUsuarioCode;
 	
 	public Long getId() {
 		return id;
@@ -49,12 +49,12 @@ public class UserAuthority implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getAuthorityCode() {
-		return authorityCode;
+	public String getRolUsuarioCode() {
+		return rolUsuarioCode;
 	}
 
-	public void setAuthorityCode(String authorityCode) {
-		this.authorityCode = authorityCode;
+	public void setRolUsuarioCode(String rolUsuarioCode) {
+		this.rolUsuarioCode = rolUsuarioCode;
 	}
 
 	public static long getSerialversionuid() {

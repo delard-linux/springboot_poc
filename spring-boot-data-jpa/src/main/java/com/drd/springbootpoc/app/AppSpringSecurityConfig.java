@@ -6,13 +6,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.drd.springbootpoc.app.auth.handler.LoginSuccessHandler;
-import com.drd.springbootpoc.app.common.enums.Authority;
+import com.drd.springbootpoc.app.model.service.JpaUserDetailsService;
 
 @EnableGlobalMethodSecurity(securedEnabled=true, prePostEnabled=true)
 @Configuration
@@ -23,19 +20,15 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private LoginSuccessHandler loginSuccessHandler; 
+
+	@Autowired
+	private JpaUserDetailsService userDetailsService; 
 	
 	@Autowired
 	public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
 
-		PasswordEncoder encoder = this.passwordEncoder;
-
-		UserBuilder users = User.builder().passwordEncoder(encoder::encode);
-
-		builder.inMemoryAuthentication()
-			.withUser(users.username("admin").password("12345").roles(Authority.ADMIN.getCode(),Authority.USER.getCode()))
-			.withUser(users.username("david").password("12345").roles(Authority.USER.getCode()))
-			.withUser(users.username("rodrigo").password("12345").roles(Authority.USER.getCode()));
-
+		builder.userDetailsService(userDetailsService)
+			.passwordEncoder(passwordEncoder);
 	}
 
 	@Override
@@ -47,18 +40,6 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 				.anyRequest().authenticated()
 			.and().csrf().ignoringAntMatchers("/h2-console/**")//don't apply CSRF protection to /h2-console
 			.and().headers().frameOptions().sameOrigin()//allow use of frame to same origin urls
-
-//			.antMatchers("/register").permitAll()
-//			.antMatchers("/console/**").permitAll()
-			
-//			.antMatchers("/", "/listar").hasAnyRole("USER")
-//			.antMatchers("/ver/**").hasAnyRole("USER")
-//			.antMatchers("/uploads/**").hasAnyRole("USER")
-//			.antMatchers("/form/**").hasAnyRole("ADMIN")
-//			.antMatchers("/eliminar/**").hasAnyRole("ADMIN")
-//			.antMatchers("/factura/**").hasAnyRole("ADMIN")
-//			.anyRequest().authenticated()
-		
 			.and()
 			    .formLogin()
 			    	.successHandler(loginSuccessHandler)
@@ -71,7 +52,4 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	}
 	
-	
-	
-
 }

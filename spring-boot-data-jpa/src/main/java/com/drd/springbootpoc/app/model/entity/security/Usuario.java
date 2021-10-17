@@ -19,8 +19,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "users")
-public class User implements Serializable {
+@Table(name = "usuarios")
+public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 4441666990521895163L;
 
@@ -45,10 +45,10 @@ public class User implements Serializable {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
-	private List<UserAuthority> userAuthorities;
+	private List<RolUsuario> rolesUsuario;
 
-	public User() {
-		this.userAuthorities = new ArrayList<>();
+	public Usuario() {
+		this.rolesUsuario = new ArrayList<>();
 	}
 	
 	public Long getId() {
@@ -75,16 +75,24 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public List<UserAuthority> getUserAuthorities() {
-		return this.userAuthorities;
+	public Boolean getEnabled() {
+		return enabled;
 	}
 
-	public void setUserAuthorities(List<UserAuthority> userAuthorities) {
-		this.userAuthorities = userAuthorities;
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 	
-	public void addUserAuthorities(UserAuthority userAuthorities) {
-		this.userAuthorities.add(userAuthorities);
+	public List<RolUsuario> getRolesUsuario() {
+		return this.rolesUsuario;
+	}
+
+	public void setRolesUsuario(List<RolUsuario> rolesUsuario) {
+		this.rolesUsuario = rolesUsuario;
+	}
+	
+	public void addRolesUsuario(RolUsuario rolUsuario) {
+		this.rolesUsuario.add(rolUsuario);
 	}
 	
 	public static long getSerialversionuid() {
