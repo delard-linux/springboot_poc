@@ -65,11 +65,11 @@
 							<thead>
 								<tr class="align-middle">
 									<th scope="col" sec:authorize="hasRole('ROLE_USER')"></th>
-									<th scope="col">Nombre</th>
-									<th scope="col">Apellido</th>
-									<th scope="col">Email</th>
-									<th scope="col">Nacimiento</th>
-									<th scope="col">Creacion</th>
+									<th scope="col" th:text="#{text.cliente.nombre}">Nombre</th>
+									<th scope="col" th:text="#{text.cliente.apellido}">Apellido</th>
+									<th scope="col" th:text="#{text.cliente.email}">Email</th>
+									<th scope="col" th:text="#{text.cliente.bornDate}">Nacimiento</th>
+									<th scope="col" th:text="#{text.cliente.createAt}">Creacion</th>
 									<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
