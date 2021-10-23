@@ -80,6 +80,55 @@
 		  
 		  </ul>
 
+		  <ul class="navbar-nav navbar-right mx-4">
+
+		  	<li class="nav-item dropdown">
+		  	    <a class="btn btn-primary btn-sm dropdown-toggle"
+		  		  style="background-color: rgb(63, 128, 179);" href="#"
+		  		  role="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">IDIOMA
+		  		</a>
+
+		  		<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+		  			<li>
+		  			  <!-- 
+		  			  <form id="logoutForm" th:action="@{?lang=es_ES}" method="get">
+		  				<button class="dropdown-item"
+		  					onclick="document.getElementById('logoutForm').submit();"
+		  					type="submit">EN</button>
+		  				<input type="hidden" th:name="${_csrf.parameterName}"
+		  					th:value="${_csrf.token}" />
+		  			  </form>
+		  			  -->
+
+			  	      <a class="dropdown-item"
+			  		    href="?lang=es_ES">ES
+			  		  </a>
+
+
+                    </li>
+		  			<li>
+		  			  <!-- 
+		  			  <form id="logoutForm" th:action="@{?lang=en_US}" method="get">
+		  				<button class="dropdown-item"
+		  					onclick="document.getElementById('logoutForm').submit();"
+		  					type="submit">EN</button>
+		  				<input type="hidden" th:name="${_csrf.parameterName}"
+		  					th:value="${_csrf.token}" />
+		  			  </form>
+		  			  -->
+		  			  
+		  			  <a class="dropdown-item"
+			  		    href="?lang=en_US">EN
+			  		  </a>
+		  			  
+                    </li>
+		  		</ul>
+		  	</li>
+		  
+		  </ul>
+
+
+
 		</div>
 	  </div>
 	</nav>

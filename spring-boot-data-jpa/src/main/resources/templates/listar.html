@@ -16,15 +16,15 @@
 
 					<div class="py-1 row">
 						<div class="col-3 col-md-3">
-							<h6>Nombre:</h6>
+							<h6 th:text="#{text.cliente.nombre}">Nombre:</h6>
 							<input class="form-control" type="text" id="nombreFilter" th:field="*{nombreFilter}">
 						</div>
 						<div class="col-3 col-md-3">
-							<h6>Apellido:</h6>
+							<h6 th:text="#{text.cliente.apellido}">Apellido:</h6>
 							<input class="form-control" type="text" id="apellidoFilter" th:field="*{apellidoFilter}">
 						</div>
 						<div class="col-3 col-md-3">
-							<h6>Email:</h6>
+							<h6 th:text="#{text.cliente.email}">Email:</h6>
 							<input class="form-control" type="text" id="emailFilter" th:field="*{emailFilter}">
 						</div>
 						<div class="col-1 col-md-3">
