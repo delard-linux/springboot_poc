@@ -34,7 +34,7 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/css/**","/js/**","/images/**").permitAll()
+		http.authorizeRequests().antMatchers("/css/**","/js/**","/images/**","/locale").permitAll()
 			//Configuracion de seguridad de la consola H2 de SpringBoot
 			.antMatchers("/h2-console/**").hasAnyRole("ADMIN")
 				.anyRequest().authenticated()
