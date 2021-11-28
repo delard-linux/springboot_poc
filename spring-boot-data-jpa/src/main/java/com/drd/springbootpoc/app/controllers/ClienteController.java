@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -54,7 +56,7 @@ public class ClienteController {
 
 	// Constantes de títulos de vista
 	private static final String STR_TITULO_VER         = "Detalle cliente";
-	private static final String STR_TITULO_LISTAR      = "Listado de Clientes";
+	private static final String STR_TITULO_LISTAR      = "text.cliente.listar.titulo";
 	private static final String STR_TITULO_CREAR       = "Crear Cliente";
 	private static final String STR_TITULO_ACTUALIZAR  = "Actualizar Cliente";
 	
@@ -64,6 +66,9 @@ public class ClienteController {
 	private static final String VIEW_FORM 	= "form";
 	
 	private static final int NUM_PAGE_ELEMENTS  = 20;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	@Autowired
 	//@Qualifier("clienteDaoJPA")
@@ -104,7 +109,8 @@ public class ClienteController {
 	public String listar(@RequestParam(name="page", defaultValue="0") int page,  
 			Model model,
 			Authentication authentication,
-			HttpServletRequest request) {
+			HttpServletRequest request,
+			Locale locale) {
 
 
 
@@ -142,9 +148,6 @@ public class ClienteController {
 			
 			
 		}
-
-
-		
 		
 		Pageable pageRequest = PageRequest.of(page,NUM_PAGE_ELEMENTS);	
 		
@@ -152,7 +155,7 @@ public class ClienteController {
 
 		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/listar", clientes);
 		
-		model.addAttribute(ControllerConstants.ATT_TITULO, STR_TITULO_LISTAR);
+		model.addAttribute(ControllerConstants.ATT_TITULO, messageSource.getMessage(STR_TITULO_LISTAR, null, locale));
 		model.addAttribute(ControllerConstants.ATT_CLIENTE_LIST, clientes.getContenido());
 		model.addAttribute(ControllerConstants.ATT_PAGINA, paginaRender);		
 		model.addAttribute(ControllerConstants.ATT_CLIENTE_SEARCH_CRIT, new ClienteSearchCriteria("", "", ""));
@@ -162,7 +165,10 @@ public class ClienteController {
 
 	@Secured({"ROLE_USER","ROLE_ADMIN",})
 	@GetMapping("/buscar")
-	public String buscar(@ModelAttribute("cl_search_crit") ClienteSearchCriteria criteria, @RequestParam(name="page", defaultValue="0") int page,  Model model) {
+	public String buscar(@ModelAttribute("cl_search_crit") ClienteSearchCriteria criteria, 
+			@RequestParam(name="page", defaultValue="0") int page,  
+			Model model,
+			Locale locale) {
 
 		Pageable pageRequest = PageRequest.of(page,NUM_PAGE_ELEMENTS);	
 		
@@ -170,7 +176,7 @@ public class ClienteController {
 
 		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/buscar", clientes);
 		
-		model.addAttribute(ControllerConstants.ATT_TITULO, STR_TITULO_LISTAR);
+		model.addAttribute(ControllerConstants.ATT_TITULO, messageSource.getMessage(STR_TITULO_LISTAR, null, locale));
 		model.addAttribute(ControllerConstants.ATT_CLIENTE_LIST, clientes.getContenido());
 		model.addAttribute(ControllerConstants.ATT_PAGINA, paginaRender);
 		model.addAttribute(ControllerConstants.ATT_CLIENTE_SEARCH_CRIT, criteria);

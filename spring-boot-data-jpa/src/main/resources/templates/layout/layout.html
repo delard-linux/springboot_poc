@@ -90,33 +90,11 @@
 
 		  		<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 		  			<li>
-		  			  <!-- 
-		  			  <form id="logoutForm" th:action="@{?lang=es_ES}" method="get">
-		  				<button class="dropdown-item"
-		  					onclick="document.getElementById('logoutForm').submit();"
-		  					type="submit">EN</button>
-		  				<input type="hidden" th:name="${_csrf.parameterName}"
-		  					th:value="${_csrf.token}" />
-		  			  </form>
-		  			  -->
-
 			  	      <a class="dropdown-item"
 			  		    th:href="@{/locale(lang=es_ES)}">ES
 			  		  </a>
-
-
                     </li>
 		  			<li>
-		  			  <!-- 
-		  			  <form id="logoutForm" th:action="@{?lang=en_US}" method="get">
-		  				<button class="dropdown-item"
-		  					onclick="document.getElementById('logoutForm').submit();"
-		  					type="submit">EN</button>
-		  				<input type="hidden" th:name="${_csrf.parameterName}"
-		  					th:value="${_csrf.token}" />
-		  			  </form>
-		  			  -->
-		  			  
 		  			  <a class="dropdown-item"
 			  		    th:href="@{/locale(lang=en_US)}">EN
 			  		  </a>
