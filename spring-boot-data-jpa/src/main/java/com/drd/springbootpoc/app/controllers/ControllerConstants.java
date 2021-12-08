@@ -20,4 +20,21 @@ public class ControllerConstants {
 	// Constantes comunes de vistas
 	public static final String REDIRECT      = "redirect:/";
 	
+	
+	// Constantes de mensajes i18n
+	public static final String TXT_LOGIN_SUCCESS = "text.login.success";
+	public static final String TXT_LOGIN_ALREADY = "text.login.already";
+	public static final String TXT_LOGIN_LOGOUT = "text.login.logout";
+	public static final String TXT_LOGIN_ERROR = "text.login.error";
+
+	
+	
+	// Constantes de logs i18n
+	public static final String LOG_LOGIN_SUCCESS = "log.login.success";
+	
+	
+	
+	
+	
+	
 }

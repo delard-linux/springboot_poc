@@ -15,8 +15,12 @@
 					<div class="py-2 form-group row">
 						<div class="col"></div>
 						<div class="col">
-							<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/} + ${facturadto.cliente.id}" 
+							<a class="btn btn-outline-primary btn-sm float-left" th:href="@{/ver/} + ${facturadto.cliente.id}" 
 								th:text="'&laquo; volver'"></a>
+						</div>
+						<div class="col">
+							<a class="btn btn-outline-danger btn-sm float-right" th:href="@{'/factura/ver/' + ${facturadto.id}(format=pdf)}" 
+								th:text="PDF" target="_blank"></a>
 						</div>
 					</div>
 

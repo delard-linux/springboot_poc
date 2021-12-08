@@ -8,14 +8,14 @@
 	<div class="container py-4">
 
 		<div class="card bg-light">
-			<div class="card-header">Inicie sesión</div>
+			<div class="card-header" th:text="#{text.login.titulo}"></div>
 			<div class="card-body">
 
 				<form th:action="@{/login}" method="post">
 					
 					<div class="py-2 form-group row">
 						<div class="form-group-name col">
-							<h6 class="mb-3">Usuario:</h6>
+							<h6 class="mb-3" th:text="#{text.login.username}"></h6>
 						</div>
 						<div class="col">
 							<input type="text" name="username" id="username"
@@ -29,7 +29,7 @@
 
 					<div class="py-2 form-group row">
 						<div class="form-group-name col">
-							<h6 class="mb-3">Contraseña:</h6>
+							<h6 class="mb-3" th:text="#{text.login.password}"></h6>
 						</div>
 						<div class="col">
 							<input type="password" name="password" id="password"
@@ -46,7 +46,7 @@
 						<div class="col">
 						
 							<input type="submit" class="btn btn-outline-primary btn-sm"
-								value="Sign In" />
+								th:value="#{text.login.boton}"/>
 						
 						</div>
 					</div>

@@ -42,7 +42,7 @@
 	    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="/listar">Clientes</a>
+	          <a class="nav-link active" aria-current="page" href="/listar" th:text="#{text.menu.clientes}"></a>
 	        </li>
 	        <li class="nav-item">
 	          <a class="nav-link" href="#">Link</a>
@@ -55,7 +55,7 @@
 		  <ul class="navbar-nav navbar-right">
 		    <li sec:authorize="!isAuthenticated()">
 		      <a class="btn btn-primary btn-sm" style="background-color: rgb(63, 128, 179);" 
-		        th:href="@{/login}">Sign In</a>
+		        th:href="@{/login}" th:text="#{text.menu.sign-in}"></a>
 		  	</li>
 		  
 		  	<li sec:authorize="isAuthenticated()" class="nav-item dropdown">
@@ -70,7 +70,7 @@
 		  			  <form id="logoutForm" th:action="@{/logout}" method="post">
 		  				<button class="dropdown-item"
 		  					onclick="document.getElementById('logoutForm').submit();"
-		  					type="submit">Sign Out</button>
+		  					type="submit" th:text="#{text.menu.sign-out}"></button>
 		  				<input type="hidden" th:name="${_csrf.parameterName}"
 		  					th:value="${_csrf.token}" />
 		  			  </form>
@@ -85,18 +85,18 @@
 		  	<li class="nav-item dropdown">
 		  	    <a class="btn btn-primary btn-sm dropdown-toggle"
 		  		  style="background-color: rgb(63, 128, 179);" href="#"
-		  		  role="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">IDIOMA
-		  		</a>
+		  		  role="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{text.menu.language}">
+		  		  </a>
 
 		  		<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 		  			<li>
 			  	      <a class="dropdown-item"
-			  		    th:href="@{/locale(lang=es_ES)}">ES
+			  		    th:href="@{/locale(lang=es_ES)}" th:text="#{text.menu.language.sp}">
 			  		  </a>
                     </li>
 		  			<li>
 		  			  <a class="dropdown-item"
-			  		    th:href="@{/locale(lang=en_US)}">EN
+			  		    th:href="@{/locale(lang=en_US)}" th:text="#{text.menu.language.en}">
 			  		  </a>
 		  			  
                     </li>
@@ -126,17 +126,12 @@
 		<hr />
 		<img th:src="@{/images/spring.png}" alt="Spring logo" height="30px" />
 		<p>
-			<small> Powered by <a
-				href="https://projects.spring.io/spring-boot/">Spring Boot</a>, <a
-				href="http://www.thymeleaf.org">Thymeleaf</a> and <a
-				href="https://getbootstrap.com/">Bootstrap</a>.
+			<small th:utext="#{text.footer.powered}"> 
 			</small>
 		</p>
 
 		<p>
-			<small>Este proyecto fue desarrollado en IDE Spring Tool
-				Suite <br /> &copy; MiRolloEsElRock 2021, Ningún derecho reservado.
-				Sin Términos de uso y menos privacidad.<br />
+			<small th:utext="#{text.footer.copy}"> 
 			</small>
 		</p>
 		<!-- Optional JavaScript -->
