@@ -23,19 +23,19 @@ public class LoginController {
 			Model model, Principal principal, RedirectAttributes flash, Locale locale) {
 		
 		if(principal != null) {
-			flash.addFlashAttribute(ControllerConstants.FLASH_INFO, 
-					messageSource.getMessage(ControllerConstants.TXT_LOGIN_ALREADY, null, locale));
-			return ControllerConstants.REDIRECT;
+			flash.addFlashAttribute(ConstantesController.FLASH_INFO, 
+					messageSource.getMessage(ConstantesController.TXT_LOGIN_ALREADY, null, locale));
+			return ConstantesController.REDIRECT;
 		}
 		
 		if (error != null) {
-			model.addAttribute(ControllerConstants.FLASH_ERROR,
-					messageSource.getMessage(ControllerConstants.TXT_LOGIN_ERROR, null, locale));
+			model.addAttribute(ConstantesController.FLASH_ERROR,
+					messageSource.getMessage(ConstantesController.TXT_LOGIN_ERROR, null, locale));
 		}
 
 		if (logout != null) {
-			model.addAttribute(ControllerConstants.FLASH_SUCCESS, 
-					messageSource.getMessage(ControllerConstants.TXT_LOGIN_LOGOUT, null, locale));
+			model.addAttribute(ConstantesController.FLASH_SUCCESS, 
+					messageSource.getMessage(ConstantesController.TXT_LOGIN_LOGOUT, null, locale));
 		}
 		
 		return "login";

@@ -58,14 +58,14 @@ public class FacturaController {
 		ClienteDTO cliente = clienteService.obtenerCliente(clienteId);
 		
 		if (cliente==null) {
-			flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "El cliente no existe en la base de datos");
-			return ControllerConstants.REDIRECT + VIEW_LISTAR;
+			flash.addFlashAttribute(ConstantesController.FLASH_ERROR, "El cliente no existe en la base de datos");
+			return ConstantesController.REDIRECT + VIEW_LISTAR;
 		}
 		
 		var factura = new FacturaDTO();
 		factura.setCliente(cliente);
-		model.put(ControllerConstants.ATT_FACTURA, factura);
-		model.put(ControllerConstants.ATT_TITULO, STR_TITULO_CREAR);
+		model.put(ConstantesController.ATT_FACTURA, factura);
+		model.put(ConstantesController.ATT_TITULO, STR_TITULO_CREAR);
 		
 		return "/" + STR_PREFIX_FACTURA + "/" + VIEW_FORM;
 	}
@@ -87,14 +87,14 @@ public class FacturaController {
 			SessionStatus status) {
 
 		if (result.hasErrors()) {
-			model.addAttribute(ControllerConstants.ATT_TITULO, STR_TITULO_CREAR);
+			model.addAttribute(ConstantesController.ATT_TITULO, STR_TITULO_CREAR);
 			//TODO: si se ha metido alguna linea de productos antes se pierde por lo que habría que dejarlo en sesion
 			return "/" + STR_PREFIX_FACTURA + "/" + VIEW_FORM;
 		}
 		
 		if (itemId == null || itemId.length == 0) {
-			model.addAttribute(ControllerConstants.ATT_TITULO, STR_TITULO_CREAR);
-			model.addAttribute(ControllerConstants.FLASH_ERROR, "La factura debe tener al menos una linea");
+			model.addAttribute(ConstantesController.ATT_TITULO, STR_TITULO_CREAR);
+			model.addAttribute(ConstantesController.FLASH_ERROR, "La factura debe tener al menos una linea");
 			return "/" + STR_PREFIX_FACTURA + "/" + VIEW_FORM;
 		}
 		
@@ -115,9 +115,9 @@ public class FacturaController {
 		
 		status.setComplete();
 
-		flash.addFlashAttribute(ControllerConstants.FLASH_SUCCESS, "Factura creada con éxito!");
+		flash.addFlashAttribute(ConstantesController.FLASH_SUCCESS, "Factura creada con éxito!");
 
-		return ControllerConstants.REDIRECT + VIEW_VIEW + "/" + facturadto.getCliente().getId();
+		return ConstantesController.REDIRECT + VIEW_VIEW + "/" + facturadto.getCliente().getId();
 	}
 	
 	@Secured("ROLE_ADMIN")
@@ -128,12 +128,12 @@ public class FacturaController {
 
 		FacturaDTO factura = clienteService.obtenerFacturaYCliente(id);
 		if (factura == null) {
-			flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "La factura no existe en la base de datos");
-			return ControllerConstants.REDIRECT + VIEW_LISTAR;
+			flash.addFlashAttribute(ConstantesController.FLASH_ERROR, "La factura no existe en la base de datos");
+			return ConstantesController.REDIRECT + VIEW_LISTAR;
 		}
 
-		model.put(ControllerConstants.ATT_FACTURA, factura);
-		model.put(ControllerConstants.ATT_TITULO, STR_TITULO_VER);
+		model.put(ConstantesController.ATT_FACTURA, factura);
+		model.put(ConstantesController.ATT_TITULO, STR_TITULO_VER);
 		return "/" + STR_PREFIX_FACTURA + "/" + VIEW_VIEW;
 	}
 
@@ -145,12 +145,12 @@ public class FacturaController {
 		
 		if(factura != null) {
 			clienteService.borrarFactura(id);
-			flash.addFlashAttribute(ControllerConstants.FLASH_SUCCESS, "Factura eliminada con éxito!");
-			return  ControllerConstants.REDIRECT + VIEW_VIEW + "/" + factura.getCliente().getId();
+			flash.addFlashAttribute(ConstantesController.FLASH_SUCCESS, "Factura eliminada con éxito!");
+			return  ConstantesController.REDIRECT + VIEW_VIEW + "/" + factura.getCliente().getId();
 		}
-		flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "La factura no existe en la base de datos, no se pudo eliminar!");
+		flash.addFlashAttribute(ConstantesController.FLASH_ERROR, "La factura no existe en la base de datos, no se pudo eliminar!");
 		
-		return ControllerConstants.REDIRECT + VIEW_LISTAR;
+		return ConstantesController.REDIRECT + VIEW_LISTAR;
 	}
 	
 

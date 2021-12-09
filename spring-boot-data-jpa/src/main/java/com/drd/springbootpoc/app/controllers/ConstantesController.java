@@ -1,8 +1,8 @@
 package com.drd.springbootpoc.app.controllers;
 
-public class ControllerConstants {
+public class ConstantesController {
 	
-	private ControllerConstants() {}
+	private ConstantesController() {}
 	
 	// Constantes de tipos de mensajes flash
 	public static final String FLASH_SUCCESS = "success";
@@ -28,7 +28,12 @@ public class ControllerConstants {
 	public static final String TXT_LOGIN_ERROR = "text.login.error";
 
 	
-	
+	// Constantes de títulos de vista
+	public static final String TXT_CLIENTE_TITULO_LISTAR      = "text.cliente.titulo.listar";
+	public static final String TXT_CLIENTE_TITULO_VER         = "text.cliente.titulo.detalle";
+	public static final String TXT_CLIENTE_TITULO_CREAR       = "text.cliente.titulo.crear";
+	public static final String TXT_CLIENTE_TITULO_ACTUALIZAR  = "text.cliente.titulo.editar";
+
 	// Constantes de logs i18n
 	public static final String LOG_LOGIN_SUCCESS = "log.login.success";
 	

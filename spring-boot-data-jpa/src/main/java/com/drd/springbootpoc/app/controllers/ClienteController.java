@@ -54,11 +54,6 @@ import com.drd.springbootpoc.app.util.paginator.PaginaRender;
 @SessionAttributes(names = {"clientedto","cl_search_crit"})
 public class ClienteController {
 
-	// Constantes de títulos de vista
-	private static final String STR_TITULO_VER         = "Detalle cliente";
-	private static final String STR_TITULO_LISTAR      = "text.cliente.listar.titulo";
-	private static final String STR_TITULO_CREAR       = "Crear Cliente";
-	private static final String STR_TITULO_ACTUALIZAR  = "Actualizar Cliente";
 	
 	// Constantes de nombres de vistas
 	private static final String VIEW_VER 	= "ver";
@@ -91,16 +86,19 @@ public class ClienteController {
 	
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping(value = "/ver/{id}")
-	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
+	public String ver(@PathVariable(value = "id") Long id, 
+			Map<String, Object> model, 
+			RedirectAttributes flash,
+			Locale locale) {
 
 		ClienteDTO cliente = clienteService.obtenerClienteConFacturas(id);
 		if (cliente == null) {
-			flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "El cliente no existe en la base de datos");
-			return ControllerConstants.REDIRECT + VIEW_LISTAR;
+			flash.addFlashAttribute(ConstantesController.FLASH_ERROR, "El cliente no existe en la base de datos");
+			return ConstantesController.REDIRECT + VIEW_LISTAR;
 		}
 
-		model.put(ControllerConstants.ATT_CLIENTE, cliente);
-		model.put(ControllerConstants.ATT_TITULO, STR_TITULO_VER);
+		model.put(ConstantesController.ATT_CLIENTE, cliente);
+		model.put(ConstantesController.ATT_TITULO, messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_VER, null, locale));
 		return VIEW_VER;
 	}
 	
@@ -112,11 +110,9 @@ public class ClienteController {
 			HttpServletRequest request,
 			Locale locale) {
 
-
-
 		// Ejemplo de como realizar operaciones con el usuario autenticado, por parametro o estaticamente
 		if(authentication != null) {
-			log.info("Hola usuario autenticado, tu username es: {}", authentication.getName());
+			log.info("Hola, tu username es: {}", authentication.getName());
 		}
 
 		var auth = SecurityContextHolder.getContext().getAuthentication();
@@ -155,10 +151,10 @@ public class ClienteController {
 
 		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/listar", clientes);
 		
-		model.addAttribute(ControllerConstants.ATT_TITULO, messageSource.getMessage(STR_TITULO_LISTAR, null, locale));
-		model.addAttribute(ControllerConstants.ATT_CLIENTE_LIST, clientes.getContenido());
-		model.addAttribute(ControllerConstants.ATT_PAGINA, paginaRender);		
-		model.addAttribute(ControllerConstants.ATT_CLIENTE_SEARCH_CRIT, new ClienteSearchCriteria("", "", ""));
+		model.addAttribute(ConstantesController.ATT_TITULO, messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_VER, null, locale));
+		model.addAttribute(ConstantesController.ATT_CLIENTE_LIST, clientes.getContenido());
+		model.addAttribute(ConstantesController.ATT_PAGINA, paginaRender);		
+		model.addAttribute(ConstantesController.ATT_CLIENTE_SEARCH_CRIT, new ClienteSearchCriteria("", "", ""));
 
 		return VIEW_LISTAR;
 	}
@@ -176,31 +172,32 @@ public class ClienteController {
 
 		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/buscar", clientes);
 		
-		model.addAttribute(ControllerConstants.ATT_TITULO, messageSource.getMessage(STR_TITULO_LISTAR, null, locale));
-		model.addAttribute(ControllerConstants.ATT_CLIENTE_LIST, clientes.getContenido());
-		model.addAttribute(ControllerConstants.ATT_PAGINA, paginaRender);
-		model.addAttribute(ControllerConstants.ATT_CLIENTE_SEARCH_CRIT, criteria);
-
+		model.addAttribute(ConstantesController.ATT_TITULO, messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_LISTAR, null, locale));
+		model.addAttribute(ConstantesController.ATT_CLIENTE_LIST, clientes.getContenido());
+		model.addAttribute(ConstantesController.ATT_PAGINA, paginaRender);
+		model.addAttribute(ConstantesController.ATT_CLIENTE_SEARCH_CRIT, criteria);
+		
 		return VIEW_LISTAR;
 	}
 	
 	
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/form")
-	public String crear(Map<String, Object> model) {
+	public String crear(Map<String, Object> model, Locale locale) {
 		var cliente = new ClienteDTO();
-		model.put(ControllerConstants.ATT_CLIENTE, cliente);
-		model.put(ControllerConstants.ATT_TITULO, STR_TITULO_CREAR);
+		model.put(ConstantesController.ATT_CLIENTE, cliente);
+		model.put(ConstantesController.ATT_TITULO, messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_CREAR, null, locale));
 		return VIEW_FORM;
 	}
 
 	@Secured("ROLE_ADMIN")
 	@PostMapping("/form")
 	public String guardar(@Valid @ModelAttribute("clientedto") ClienteDTO cliente, BindingResult result, 
-			Model model, @RequestParam(name = "foto_file") MultipartFile foto, RedirectAttributes  flash, SessionStatus status) {
+			Model model, @RequestParam(name = "foto_file") MultipartFile foto, 
+			RedirectAttributes  flash, SessionStatus status, Locale locale) {
 		
 		if(result.hasErrors()) {
-			model.addAttribute(ControllerConstants.ATT_TITULO, STR_TITULO_CREAR);
+			model.addAttribute(ConstantesController.ATT_TITULO, messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_CREAR, null, locale));
 			return VIEW_FORM;
 		}
 				
@@ -210,38 +207,38 @@ public class ClienteController {
 		} catch (IOException e) {
 			log.error("No se puede guardar el cliente: {} {}", cliente.getNombre(),cliente.getApellido());
 			log.error(e.getMessage(),e);
-			flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "No se puede guardar el cliente: " 
+			flash.addFlashAttribute(ConstantesController.FLASH_ERROR, "No se puede guardar el cliente: " 
 							+ cliente.getNombre() + " " + cliente.getApellido());
-			return ControllerConstants.REDIRECT + VIEW_LISTAR;
+			return ConstantesController.REDIRECT + VIEW_LISTAR;
 		}
 		
 		status.setComplete();
-		flash.addFlashAttribute(ControllerConstants.FLASH_SUCCESS, "Cliente guardado con exito '" 
+		flash.addFlashAttribute(ConstantesController.FLASH_SUCCESS, "Cliente guardado con exito '" 
 				+ idCliente + "'!");
-		return ControllerConstants.REDIRECT + VIEW_LISTAR;
+		return ConstantesController.REDIRECT + VIEW_LISTAR;
 	}
 	
 	
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/form/{id}")
 	public String editar(@PathVariable(name="id") Long id, 
-			Map<String, Object> model, RedirectAttributes  flash ) {
+			Map<String, Object> model, RedirectAttributes  flash, Locale locale ) {
 		
 		if(id>0) {
 			
 			var cliente = clienteService.obtenerCliente(id);
 			
-			model.put(ControllerConstants.ATT_CLIENTE, cliente);
-			model.put(ControllerConstants.ATT_TITULO,STR_TITULO_ACTUALIZAR);
+			model.put(ConstantesController.ATT_CLIENTE, cliente);
+			model.put(ConstantesController.ATT_TITULO,messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_ACTUALIZAR, null, locale));
 			
 			if (cliente == null) {
-				flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "Cliente inexistente con el ID: " + id);
-				return ControllerConstants.REDIRECT + VIEW_LISTAR;
+				flash.addFlashAttribute(ConstantesController.FLASH_ERROR, "Cliente inexistente con el ID: " + id);
+				return ConstantesController.REDIRECT + VIEW_LISTAR;
 			}
 
 		} else {
-			flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "El ID de cliente no puede ser cero o negativo: " + id);
-			return ControllerConstants.REDIRECT + VIEW_LISTAR;
+			flash.addFlashAttribute(ConstantesController.FLASH_ERROR, "El ID de cliente no puede ser cero o negativo: " + id);
+			return ConstantesController.REDIRECT + VIEW_LISTAR;
 		}
 		
 		return VIEW_FORM;
@@ -262,17 +259,17 @@ public class ClienteController {
 				} catch (IOException e) {
 					log.error("No se puede eliminar el cliente: {}", id);
 					log.error(e.getMessage(),e);
-					flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "No se puede eliminar el cliente: " + id);
-					return ControllerConstants.REDIRECT + VIEW_LISTAR;
+					flash.addFlashAttribute(ConstantesController.FLASH_ERROR, "No se puede eliminar el cliente: " + id);
+					return ConstantesController.REDIRECT + VIEW_LISTAR;
 				}
-				flash.addFlashAttribute(ControllerConstants.FLASH_INFO, "Cliente eliminado con exito!");
+				flash.addFlashAttribute(ConstantesController.FLASH_INFO, "Cliente eliminado con exito!");
 			} else {
-				flash.addFlashAttribute(ControllerConstants.FLASH_ERROR, "Cliente inexistente: " + id);
+				flash.addFlashAttribute(ConstantesController.FLASH_ERROR, "Cliente inexistente: " + id);
 			}
 
 		} 
 		status.setComplete();
-		return ControllerConstants.REDIRECT + VIEW_LISTAR;
+		return ConstantesController.REDIRECT + VIEW_LISTAR;
 	} 	
 
 	@Secured("ROLE_ADMIN")

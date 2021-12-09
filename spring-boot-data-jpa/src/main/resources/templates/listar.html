@@ -3,6 +3,8 @@
 <head th:replace="layout/layout :: head"></head>
 <body>
 
+    <div id="i18n_eliminar" th:text="#{text.global.msg.eliminarOk}" style="display: none;"></div>
+
 	<header th:replace="layout/layout :: header"></header>
 
 
@@ -16,15 +18,15 @@
 
 					<div class="py-1 row">
 						<div class="col-3 col-md-3">
-							<h6 th:text="#{text.cliente.nombre}">Nombre:</h6>
+							<h6 th:text="#{text.cliente.nombre}"></h6>
 							<input class="form-control" type="text" id="nombreFilter" th:field="*{nombreFilter}">
 						</div>
 						<div class="col-3 col-md-3">
-							<h6 th:text="#{text.cliente.apellido}">Apellido:</h6>
+							<h6 th:text="#{text.cliente.apellido}"></h6>
 							<input class="form-control" type="text" id="apellidoFilter" th:field="*{apellidoFilter}">
 						</div>
 						<div class="col-3 col-md-3">
-							<h6 th:text="#{text.cliente.email}">Email:</h6>
+							<h6 th:text="#{text.cliente.email}"></h6>
 							<input class="form-control" type="text" id="emailFilter" th:field="*{emailFilter}">
 						</div>
 						<div class="col-1 col-md-3">
@@ -32,8 +34,9 @@
 							<div class="container">
 								<div class="row align-content-end justify-content-end">
 									<div class="col-3">
-										<input type="submit" value="buscar"
-											class="btn btn-outline-primary btn-sm">
+										<input type="submit" 
+											class="btn btn-outline-primary btn-sm" 
+											th:value="#{text.global.accion.buscar}">
 									</div>
 								</div>
 							</div>
@@ -52,8 +55,7 @@
 
 				<div class="py-1 form-group row" sec:authorize="hasRole('ROLE_ADMIN')">
 					<div class="col">
-						<a class="btn btn-outline-primary btn-sm" th:href="@{/form}">crear
-						cliente</a>
+						<a class="btn btn-outline-primary btn-sm" th:href="@{/form}" th:text="#{text.global.accion.cliente.crear}"></a>
 					</div>
 				</div>
 
@@ -65,11 +67,11 @@
 							<thead>
 								<tr class="align-middle">
 									<th scope="col" sec:authorize="hasRole('ROLE_USER')"></th>
-									<th scope="col" th:text="#{text.cliente.nombre}">Nombre</th>
-									<th scope="col" th:text="#{text.cliente.apellido}">Apellido</th>
-									<th scope="col" th:text="#{text.cliente.email}">Email</th>
-									<th scope="col" th:text="#{text.cliente.bornDate}">Nacimiento</th>
-									<th scope="col" th:text="#{text.cliente.createAt}">Creacion</th>
+									<th scope="col" th:text="#{text.cliente.nombre}"></th>
+									<th scope="col" th:text="#{text.cliente.apellido}"></th>
+									<th scope="col" th:text="#{text.cliente.email}"></th>
+									<th scope="col" th:text="#{text.cliente.bornDate}"></th>
+									<th scope="col" th:text="#{text.cliente.createAt}"></th>
 									<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
@@ -78,7 +80,7 @@
 							<tbody>
 								<tr th:each="cl : ${clientedtolist}">
 									<td sec:authorize="hasRole('ROLE_USER')">
-										<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/} + ${cl.id}" >ver</a>
+										<a class="btn btn-outline-primary btn-sm" th:href="@{/ver/} + ${cl.id}" th:text="#{text.global.accion.ver}"></a>
 									</td>
 									<td th:text="${cl.nombre}"></td>
 									<td th:text="${cl.apellido}"></td>
@@ -86,12 +88,13 @@
 									<td th:text="${cl.bornAt}"></td>
 									<td th:text="${cl.createAt}"></td>
 									<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-outline-primary btn-sm"
-										th:href="@{/form/} + ${cl.id}">editar</a></td>
+										th:href="@{/form/} + ${cl.id}" th:text="#{text.global.accion.editar}"></a></td>
 									<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-outline-danger btn-sm"
 										th:href="@{/eliminar/} + ${cl.id}"
-										onclick="return confirm('¿Está seguro que quiere eliminar?');">borrar</a></td>
+										onclick="return confirm(document.getElementById('i18n_eliminar').innerHTML);" 
+										th:text="#{text.global.accion.eliminar}"></a></td>
 									<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-outline-primary btn-sm"
-										th:href="@{/factura/form/} + ${cl.id}">crear factura</a></td>
+										th:href="@{/factura/form/} + ${cl.id}" th:text="#{text.global.accion.factura.crear}"></a></td>
 								</tr>
 							</tbody>
 						</table>

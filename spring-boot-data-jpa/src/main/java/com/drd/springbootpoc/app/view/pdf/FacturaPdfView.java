@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
-import com.drd.springbootpoc.app.controllers.ControllerConstants;
+import com.drd.springbootpoc.app.controllers.ConstantesController;
 import com.drd.springbootpoc.app.model.domain.FacturaDTO;
 import com.drd.springbootpoc.app.model.domain.ItemFacturaDTO;
 import com.lowagie.text.Document;
@@ -35,7 +35,7 @@ public class FacturaPdfView extends AbstractPdfView {
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		var factura = (FacturaDTO) model.get(ControllerConstants.ATT_FACTURA);
+		var factura = (FacturaDTO) model.get(ConstantesController.ATT_FACTURA);
 		
 		var locale = localeResolver.resolveLocale(request);
 		
