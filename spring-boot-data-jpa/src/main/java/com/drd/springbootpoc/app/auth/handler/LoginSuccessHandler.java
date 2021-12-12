@@ -43,7 +43,6 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		var locale = localeResolver.resolveLocale(request);
 		var mensaje = String.format(messageSource.getMessage(ConstantesController.TXT_LOGIN_SUCCESS, null, locale), authentication.getName());
 		
-		
 		flashMap.put(ConstantesController.FLASH_SUCCESS, mensaje);
 		
 		flashMapManager.saveOutputFlashMap(flashMap, request, response);

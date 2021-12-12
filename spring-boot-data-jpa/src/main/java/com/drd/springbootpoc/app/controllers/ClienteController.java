@@ -5,7 +5,6 @@ import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +41,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.drd.springbootpoc.app.common.controller.AppController;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 import com.drd.springbootpoc.app.model.domain.ClienteSearchCriteria;
 import com.drd.springbootpoc.app.model.service.IClienteService;
@@ -52,7 +51,7 @@ import com.drd.springbootpoc.app.util.paginator.PaginaRender;
 
 @Controller
 @SessionAttributes(names = {"clientedto","cl_search_crit"})
-public class ClienteController {
+public class ClienteController extends AppController{
 
 	
 	// Constantes de nombres de vistas
@@ -61,9 +60,6 @@ public class ClienteController {
 	private static final String VIEW_FORM 	= "form";
 	
 	private static final int NUM_PAGE_ELEMENTS  = 20;
-	
-	@Autowired
-	private MessageSource messageSource;
 	
 	@Autowired
 	//@Qualifier("clienteDaoJPA")
@@ -88,8 +84,7 @@ public class ClienteController {
 	@GetMapping(value = "/ver/{id}")
 	public String ver(@PathVariable(value = "id") Long id, 
 			Map<String, Object> model, 
-			RedirectAttributes flash,
-			Locale locale) {
+			RedirectAttributes flash) {
 
 		ClienteDTO cliente = clienteService.obtenerClienteConFacturas(id);
 		if (cliente == null) {
@@ -98,18 +93,17 @@ public class ClienteController {
 		}
 
 		model.put(ConstantesController.ATT_CLIENTE, cliente);
-		model.put(ConstantesController.ATT_TITULO, messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_VER, null, locale));
+		model.put(ConstantesController.ATT_TITULO, getMessage(ConstantesController.TXT_CLIENTE_TITULO_VER));
 		return VIEW_VER;
-	}
+	}											
 	
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	@GetMapping(value={"/", "/listar"})
 	public String listar(@RequestParam(name="page", defaultValue="0") int page,  
 			Model model,
 			Authentication authentication,
-			HttpServletRequest request,
-			Locale locale) {
-
+			HttpServletRequest request) {
+		
 		// Ejemplo de como realizar operaciones con el usuario autenticado, por parametro o estaticamente
 		if(authentication != null) {
 			log.info("Hola, tu username es: {}", authentication.getName());
@@ -151,7 +145,7 @@ public class ClienteController {
 
 		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/listar", clientes);
 		
-		model.addAttribute(ConstantesController.ATT_TITULO, messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_VER, null, locale));
+		model.addAttribute(ConstantesController.ATT_TITULO, getMessage(ConstantesController.TXT_CLIENTE_TITULO_VER));
 		model.addAttribute(ConstantesController.ATT_CLIENTE_LIST, clientes.getContenido());
 		model.addAttribute(ConstantesController.ATT_PAGINA, paginaRender);		
 		model.addAttribute(ConstantesController.ATT_CLIENTE_SEARCH_CRIT, new ClienteSearchCriteria("", "", ""));
@@ -163,8 +157,7 @@ public class ClienteController {
 	@GetMapping("/buscar")
 	public String buscar(@ModelAttribute("cl_search_crit") ClienteSearchCriteria criteria, 
 			@RequestParam(name="page", defaultValue="0") int page,  
-			Model model,
-			Locale locale) {
+			Model model) {
 
 		Pageable pageRequest = PageRequest.of(page,NUM_PAGE_ELEMENTS);	
 		
@@ -172,7 +165,7 @@ public class ClienteController {
 
 		PaginaRender<ClienteDTO> paginaRender = new PaginaRender<>("/buscar", clientes);
 		
-		model.addAttribute(ConstantesController.ATT_TITULO, messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_LISTAR, null, locale));
+		model.addAttribute(ConstantesController.ATT_TITULO, getMessage(ConstantesController.TXT_CLIENTE_TITULO_LISTAR));
 		model.addAttribute(ConstantesController.ATT_CLIENTE_LIST, clientes.getContenido());
 		model.addAttribute(ConstantesController.ATT_PAGINA, paginaRender);
 		model.addAttribute(ConstantesController.ATT_CLIENTE_SEARCH_CRIT, criteria);
@@ -183,10 +176,10 @@ public class ClienteController {
 	
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/form")
-	public String crear(Map<String, Object> model, Locale locale) {
+	public String crear(Map<String, Object> model) {
 		var cliente = new ClienteDTO();
 		model.put(ConstantesController.ATT_CLIENTE, cliente);
-		model.put(ConstantesController.ATT_TITULO, messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_CREAR, null, locale));
+		model.put(ConstantesController.ATT_TITULO, getMessage(ConstantesController.TXT_CLIENTE_TITULO_CREAR));
 		return VIEW_FORM;
 	}
 
@@ -194,10 +187,10 @@ public class ClienteController {
 	@PostMapping("/form")
 	public String guardar(@Valid @ModelAttribute("clientedto") ClienteDTO cliente, BindingResult result, 
 			Model model, @RequestParam(name = "foto_file") MultipartFile foto, 
-			RedirectAttributes  flash, SessionStatus status, Locale locale) {
+			RedirectAttributes  flash, SessionStatus status) {
 		
 		if(result.hasErrors()) {
-			model.addAttribute(ConstantesController.ATT_TITULO, messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_CREAR, null, locale));
+			model.addAttribute(ConstantesController.ATT_TITULO, getMessage(ConstantesController.TXT_CLIENTE_TITULO_CREAR));
 			return VIEW_FORM;
 		}
 				
@@ -222,14 +215,14 @@ public class ClienteController {
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/form/{id}")
 	public String editar(@PathVariable(name="id") Long id, 
-			Map<String, Object> model, RedirectAttributes  flash, Locale locale ) {
+			Map<String, Object> model, RedirectAttributes  flash) {
 		
 		if(id>0) {
 			
 			var cliente = clienteService.obtenerCliente(id);
 			
 			model.put(ConstantesController.ATT_CLIENTE, cliente);
-			model.put(ConstantesController.ATT_TITULO,messageSource.getMessage(ConstantesController.TXT_CLIENTE_TITULO_ACTUALIZAR, null, locale));
+			model.put(ConstantesController.ATT_TITULO,getMessage(ConstantesController.TXT_CLIENTE_TITULO_ACTUALIZAR));
 			
 			if (cliente == null) {
 				flash.addFlashAttribute(ConstantesController.FLASH_ERROR, "Cliente inexistente con el ID: " + id);
