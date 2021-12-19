@@ -29,7 +29,7 @@ public class Factura implements Serializable {
 	private static final long serialVersionUID = 336046801481838333L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@NotNull

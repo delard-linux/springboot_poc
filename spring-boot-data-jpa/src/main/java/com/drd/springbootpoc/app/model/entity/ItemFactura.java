@@ -20,7 +20,7 @@ public class ItemFactura implements Serializable {
 	private static final long serialVersionUID = 2467472851272023977L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private Integer cantidad;
