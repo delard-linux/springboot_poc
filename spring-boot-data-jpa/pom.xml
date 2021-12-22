@@ -17,7 +17,7 @@
 		<java.version>11</java.version>
 		<!-- vulnerabilities-->
 		<log4j2.version>2.17.0</log4j2.version> 
-		<h2.version>2.0.202</h2.version>
+		<!--h2.version>2.0.202</h2.version-->
 		<thymeleaf.version>3.0.14.RELEASE</thymeleaf.version>
 		<!-- vulnerabilities-->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

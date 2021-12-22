@@ -29,7 +29,7 @@ public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1230791196947869605L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotEmpty
