@@ -22,7 +22,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-@Component("/factura/ver")
+@Component("/factura/ver.pdf")
 public class FacturaPdfView extends AbstractPdfView {
 
 	@Autowired
@@ -35,13 +35,11 @@ public class FacturaPdfView extends AbstractPdfView {
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		var factura = (FacturaDTO) model.get(ConstantesController.ATT_FACTURA);
-		
 		var locale = localeResolver.resolveLocale(request);
 		
-		var mensajes =  getMessageSourceAccessor();
+		var factura = (FacturaDTO) model.get(ConstantesController.ATT_FACTURA);
 
-		document.addTitle("asdasdsafmno");
+		document.addTitle(model.get(ConstantesController.ATT_TITULO).toString());
 		
 		var tabla = new PdfPTable(1);
 		tabla.setSpacingAfter(20);
@@ -66,19 +64,19 @@ public class FacturaPdfView extends AbstractPdfView {
 		cell.setPadding(8f);
 		
 		tabla2.addCell(cell);
-		tabla2.addCell(mensajes.getMessage("text.cliente.factura.folio") + ": " +  factura.getId());
-		tabla2.addCell(mensajes.getMessage("text.cliente.factura.descripcion") + ": " + factura.getDescripcion());
-		tabla2.addCell(mensajes.getMessage("text.cliente.factura.fecha") + ": " + factura.getCreateAt());
+		tabla2.addCell(messageSource.getMessage("text.cliente.factura.folio", null, locale) + ": " +  factura.getId());
+		tabla2.addCell(messageSource.getMessage("text.cliente.factura.descripcion", null, locale) + ": " + factura.getDescripcion());
+		tabla2.addCell(messageSource.getMessage("text.cliente.factura.fecha", null, locale) + ": " + factura.getCreateAt());
 		
 		document.add(tabla);
 		document.add(tabla2);
 		
 		var tabla3 = new PdfPTable(4);
 		tabla3.setWidths(new float [] {3.5f, 1, 1, 1});
-		tabla3.addCell(mensajes.getMessage("text.factura.form.item.nombre"));
-		tabla3.addCell(mensajes.getMessage("text.factura.form.item.precio"));
-		tabla3.addCell(mensajes.getMessage("text.factura.form.item.cantidad"));
-		tabla3.addCell(mensajes.getMessage("text.factura.form.item.total"));
+		tabla3.addCell(messageSource.getMessage("text.factura.form.item.nombre", null, locale));
+		tabla3.addCell(messageSource.getMessage("text.factura.form.item.precio", null, locale));
+		tabla3.addCell(messageSource.getMessage("text.factura.form.item.cantidad", null, locale));
+		tabla3.addCell(messageSource.getMessage("text.factura.form.item.total", null, locale));
 		
 		for(ItemFacturaDTO item: factura.getItems()) {
 			tabla3.addCell(item.getProducto().getNombre());
@@ -90,7 +88,7 @@ public class FacturaPdfView extends AbstractPdfView {
 			tabla3.addCell(item.calcularImporte().toString());
 		}
 		
-	    cell = new PdfPCell(new Phrase(mensajes.getMessage("text.factura.form.total") + ": "));
+	    cell = new PdfPCell(new Phrase(messageSource.getMessage("text.factura.form.total", null, locale) + ": "));
 	    cell.setColspan(3);
 	    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 	    tabla3.addCell(cell);

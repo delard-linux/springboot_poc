@@ -12,13 +12,14 @@
 			<div class="card-header">Cliente</div>
 			<div class="card-body">
 
-					<div class="py-2 form-group row">
-						<div class="col"></div>
-						<div class="col">
+					<div class="py-2 form-group row justify-content-between">
+						<div class="col-1">
 							<a class="btn btn-outline-primary btn-sm float-left" th:href="@{/ver/} + ${facturadto.cliente.id}" 
 								th:text="'&laquo; volver'"></a>
 						</div>
-						<div class="col">
+						<div class="col-2">
+							<a class="btn btn-outline-success btn-sm float-right mx-2" th:href="@{'/factura/ver/' + ${facturadto.id}(format=xlsx)}"
+							    th:text="EXCEL"></a>
 							<a class="btn btn-outline-danger btn-sm float-right" th:href="@{'/factura/ver/' + ${facturadto.id}(format=pdf)}" 
 								th:text="PDF" target="_blank"></a>
 						</div>
