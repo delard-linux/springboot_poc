@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -153,6 +155,14 @@ public class ClienteController extends AppController{
 		return VIEW_LISTAR;
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+	@GetMapping(value={"/listar-rest"})
+	public @ResponseBody List<ClienteDTO> listarRest() {
+		
+		return clienteService.obtenerTodosClientes();
+	}	
+	
+	
 	@Secured({"ROLE_USER","ROLE_ADMIN",})
 	@GetMapping("/buscar")
 	public String buscar(@ModelAttribute("cl_search_crit") ClienteSearchCriteria criteria, 

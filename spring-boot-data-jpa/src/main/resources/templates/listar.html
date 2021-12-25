@@ -65,10 +65,11 @@
 								class="btn btn-outline-primary btn-sm" 
 								th:href="@{/form}" th:text="#{text.global.accion.cliente.crear}"></a>
 						</div>
-						<div class="col-2">
+						<div class="col-3">
 							<a class="btn btn-outline-success btn-sm float-right mx-2" th:href="@{'/listar'(format=csv)}">CSV</a>
 							<a class="btn btn-outline-info btn-sm float-right mx-2" th:href="@{'/listar'(format=xml)}" target="_blank">XML</a>
-							<a class="btn btn-outline-warning btn-sm float-right" th:href="@{'/listar'(format=json)}" target="_blank">JSON</a>
+							<a class="btn btn-outline-warning btn-sm float-right mx-2" th:href="@{'/listar'(format=json)}" target="_blank">JSON</a>
+							<a class="btn btn-outline-warning btn-sm float-right" th:href="@{'/listar-rest'(format=json)}" target="_blank">JSON-ALL</a>
 						</div>
 					</div>
 				
