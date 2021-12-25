@@ -14,7 +14,7 @@ import org.supercsv.prefs.CsvPreference;
 import com.drd.springbootpoc.app.controllers.ConstantesController;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 
-@Component("listar")
+@Component("listar.csv")
 public class ClienteCsvView extends AbstractView {
 	
 	public ClienteCsvView() {
