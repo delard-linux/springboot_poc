@@ -9,6 +9,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 8058062057701411951L;
@@ -26,12 +29,15 @@ public class ClienteDTO implements Serializable {
 	private String email;
 
 	@NotNull
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date bornAt;
 
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date createAt;
 
 	private String foto;
 	
+	@JsonIgnore
 	private List<FacturaDTO> facturas;
 	
 	public ClienteDTO() {
