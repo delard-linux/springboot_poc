@@ -15,9 +15,9 @@ import com.drd.springbootpoc.app.controllers.ConstantesController;
 import com.drd.springbootpoc.app.model.domain.ClienteDTO;
 
 @Component("listar.csv")
-public class ClienteCsvView extends AbstractView {
+public class ClienteListCsvView extends AbstractView {
 	
-	public ClienteCsvView() {
+	public ClienteListCsvView() {
 		setContentType("text/csv");
 	}
 
