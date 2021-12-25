@@ -55,9 +55,22 @@
 
 				<div class="py-1 form-group row" sec:authorize="hasRole('ROLE_ADMIN')">
 					<div class="col">
-						<a class="btn btn-outline-primary btn-sm" th:href="@{/form}" th:text="#{text.global.accion.cliente.crear}"></a>
 					</div>
 				</div>
+				
+				
+				<div class="py-2 form-group row justify-content-between">
+						<div class="col-2">
+							<a sec:authorize="hasRole('ROLE_ADMIN')" 
+								class="btn btn-outline-primary btn-sm" 
+								th:href="@{/form}" th:text="#{text.global.accion.cliente.crear}"></a>
+						</div>
+						<div class="col-1">
+							<a class="btn btn-outline-success btn-sm float-right" th:href="@{'/listar'(format=csv)}">CSV</a>
+						</div>
+					</div>
+				
+				
 
 				<div class="py-1 form-group row">
 					<div class="col">
