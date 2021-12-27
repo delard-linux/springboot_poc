@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+
+		<div class="card bg-light">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+
+					<div class="row">
+						<div class="col-8">
+
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Nombre:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${clientedto.nombre}"></p>
+								</div>
+							</div>
+		
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Apellido:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${clientedto.apellido}"></p>
+								</div>
+							</div>
+		
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Email:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${clientedto.email}"></p>
+								</div>
+							</div>
+							
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Fecha de nacimiento:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${clientedto.bornAt}"></p>
+								</div>
+							</div>
+							
+							<div class="py-2 row">
+								<div class="col-3">
+									<h6 class="mb-3">Fecha de creación:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${clientedto.createAt}"></p>
+								</div>
+							</div>
+		
+							<div class="py-2 row" th:if="${clientedto.foto}">
+								<div class="col-3">
+									<h6 class="mb-3">Foto:</h6>
+								</div>
+								<div class="col">
+									<p th:text="${clientedto.foto}"></p>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-4">
+							<div th:if="${clientedto.foto}">
+							<img th:if="${#strings.length(clientedto.foto) > 0}" class="img-thumbnail rounded float-left"
+								style="max-width: 100%;" th:src="@{'/uploads/' + ${clientedto.foto}}"
+								th:alt="${clientedto.foto}" />
+							</div>
+						</div>
+					</div>
+			
+
+
+
+			</div>
+		</div>
+	
+
+		<div class="card bg-light mt-1">
+			<div class="card-header">Listado de Facturas</div>
+			<div class="card-body">
+
+				<div th:if="${#lists.isEmpty(clientedto.facturas)}" 
+				class="alert alert-info my-4" th:text="'No hay facturas asignadas en el cliente'"></div>
+
+				<div class="py-1 form-group row" sec:authorize="hasRole('ROLE_ADMIN')">
+					<div class="col">
+						<a class="btn btn-outline-primary btn-sm" th:href="@{/factura/form/} + ${clientedto.id}">crear
+						factura</a>
+					</div>
+				</div>
+
+				<div  th:if="${not #lists.isEmpty(clientedto.facturas)}"
+					class="py-1 form-group row">
+					<div class="col">
+						<table class="table table-bordered align-middle">
+							<caption></caption>
+							<thead>
+								<tr class="align-middle">
+									<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
+									<th scope="col">Descripcion</th>
+									<th scope="col">Observacion</th>
+									<th scope="col">Fecha</th>
+									<th scope="col">Total</th>
+									<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="factura : ${clientedto.facturas}">
+									<td sec:authorize="hasRole('ROLE_ADMIN')">
+										<a class="btn btn-outline-primary btn-sm" th:href="@{/factura/ver/} + ${factura.id}">ver</a>
+									</td>
+									<td th:text="${factura.descripcion}"></td>
+									<td th:text="${factura.observacion}"></td>
+									<td th:text="${factura.createAt}"></td>
+									<td th:text="${#numbers.formatCurrency(factura.total)}"></td>
+									<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-outline-danger btn-sm"
+										th:href="@{/factura/eliminar/} + ${factura.id}"
+										onclick="return confirm('¿Está seguro que quiere eliminar la factura?');">borrar</a></td>
+								</tr>
+							</tbody>
+						</table>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<footer th:replace="layout/layout :: footer"></footer>
+
+</body>
+</html>
