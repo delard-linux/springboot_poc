@@ -71,8 +71,6 @@
 		  				<button class="dropdown-item"
 		  					onclick="document.getElementById('logoutForm').submit();"
 		  					type="submit" th:text="#{text.menu.sign-out}"></button>
-		  				<input type="hidden" th:name="${_csrf.parameterName}"
-		  					th:value="${_csrf.token}" />
 		  			  </form>
                     </li>
 		  		</ul>
