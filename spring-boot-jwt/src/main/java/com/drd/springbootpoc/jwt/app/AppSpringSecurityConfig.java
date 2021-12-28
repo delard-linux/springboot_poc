@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.drd.springbootpoc.jwt.app.auth.handler.LoginSuccessHandler;
+import com.drd.springbootpoc.jwt.app.auth.filter.JWTAuthenticationFilter;
 import com.drd.springbootpoc.jwt.app.model.service.JpaUserDetailsService;
 
 @EnableGlobalMethodSecurity(securedEnabled=true, prePostEnabled=true)
@@ -18,9 +18,6 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private LoginSuccessHandler loginSuccessHandler; 
 
 	@Autowired
 	private JpaUserDetailsService userDetailsService; 
@@ -35,24 +32,17 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/css/**","/js/**","/images/**","/locale").permitAll()
-			//Configuracion de seguridad de la consola H2 de SpringBoot
-			.antMatchers("/h2-console/**").hasAnyRole("ADMIN")
-				.anyRequest().authenticated()
-			.and().csrf().ignoringAntMatchers("/h2-console/**")//don't apply CSRF protection to /h2-console
-			.and().headers().frameOptions().sameOrigin()//allow use of frame to same origin urls
-			.and()
-			    .formLogin()
-			    	.successHandler(loginSuccessHandler)
-			        .loginPage("/login")
-			        .permitAll()
-			.and()
-				.logout().permitAll()
-			.and()
-				.exceptionHandling().accessDeniedPage("/error_403")
-			.and()
-				.csrf().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.authorizeRequests().antMatchers("/css/**","/js/**","/images/**","/locale","/").permitAll()
+		//Configuracion de seguridad de la consola H2 de SpringBoot
+		.antMatchers("/h2-console/**").hasAnyRole("ADMIN")
+			//.anyRequest().authenticated()
+		.and().csrf().ignoringAntMatchers("/h2-console/**")//don't apply CSRF protection to /h2-console
+		.and().headers().frameOptions().sameOrigin()//allow use of frame to same origin urls
+		.and()
+			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+			.csrf().disable()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		
 	}
 	
 }
