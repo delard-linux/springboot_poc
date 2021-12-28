@@ -2,7 +2,6 @@ package com.drd.springbootpoc.jwt.app.auth.filter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -23,21 +22,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.drd.springbootpoc.jwt.app.auth.JWTConstants;
 import com.drd.springbootpoc.jwt.app.model.entity.security.Usuario;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 
 	//se manda el user/pwd usando form-data (request)
 	
 	private AuthenticationManager authenticationManager;
-	
-	public static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 	
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		super();
@@ -89,13 +85,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		LocalDateTime localDateTime = LocalDateTime.now();
 		
-		String secretKeyString = new String(SECRET_KEY.getEncoded(), StandardCharsets.UTF_16);
+		String secretKeyString = new String(JWTConstants.SECRET_KEY.getEncoded(), StandardCharsets.UTF_16);
 		logger.info("SecretKey: " + secretKeyString);
 		
 		String token = Jwts.builder()
 				.setClaims(claims)
 				.setSubject(username)
-				.signWith(SECRET_KEY)
+				.signWith(JWTConstants.SECRET_KEY)
 				.setIssuedAt(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))
 				.setExpiration(new Date(System.currentTimeMillis()+3600000L*4))
 				.compact();

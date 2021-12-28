@@ -1,6 +1,7 @@
 package com.drd.springbootpoc.jwt.app.controllers.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ public class ClienteRestController extends AppController{
 	
 
 	@GetMapping(value={"/listar"})
+	@Secured("ROLE_ADMIN")
 	public ClienteList listarRest() {
 		
 		return new ClienteList(clienteService.obtenerTodosClientes());
