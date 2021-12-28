@@ -1,7 +1,11 @@
 package com.drd.springbootpoc.jwt.app.auth.filter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +25,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -65,10 +70,23 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		String username = ((User)authResult.getPrincipal()).getUsername();
 		
+		var roles = authResult.getAuthorities();
+		
+		Claims claims =  Jwts.claims();
+		claims.put("authorities", new ObjectMapper().writeValueAsString(roles));
+		
+		LocalDateTime localDateTime = LocalDateTime.now();
+		
+		String secretKeyString = new String(SECRET_KEY.getEncoded(), StandardCharsets.UTF_16);
+		logger.info("SecretKey: " + secretKeyString);
+		
 		String token = Jwts.builder()
-						.setSubject(username)
-						.signWith(SECRET_KEY)
-						.compact();
+				.setClaims(claims)
+				.setSubject(username)
+				.signWith(SECRET_KEY)
+				.setIssuedAt(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))
+				.setExpiration(new Date(System.currentTimeMillis()+3600000L*4))
+				.compact();
 		
 		response.addHeader("Authorization","Bearer " + token);
 		
