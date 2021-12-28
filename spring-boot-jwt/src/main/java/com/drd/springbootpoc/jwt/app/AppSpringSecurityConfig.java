@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.drd.springbootpoc.jwt.app.auth.filter.JWTAuthenticationFilter;
 import com.drd.springbootpoc.jwt.app.auth.filter.JWTAuthorizationFilter;
+import com.drd.springbootpoc.jwt.app.auth.service.IJWTService;
 import com.drd.springbootpoc.jwt.app.model.service.JpaUserDetailsService;
 
 @EnableGlobalMethodSecurity(securedEnabled=true, prePostEnabled=true)
@@ -22,6 +23,9 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
 	private JpaUserDetailsService userDetailsService; 
+
+	@Autowired
+	private IJWTService jwtService; 
 	
 	@Autowired
 	public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
@@ -40,8 +44,8 @@ public class AppSpringSecurityConfig extends WebSecurityConfigurerAdapter{
 		.and().csrf().ignoringAntMatchers("/h2-console/**")//don't apply CSRF protection to /h2-console
 		.and().headers().frameOptions().sameOrigin()//allow use of frame to same origin urls
 		.and()
-			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
-			.addFilter(new JWTAuthorizationFilter(authenticationManager()))
+			.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtService))
+			.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtService))
 			.csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		

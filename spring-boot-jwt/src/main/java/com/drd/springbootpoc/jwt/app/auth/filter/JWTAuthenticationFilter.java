@@ -1,10 +1,6 @@
 package com.drd.springbootpoc.jwt.app.auth.filter;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,22 +18,21 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.drd.springbootpoc.jwt.app.auth.JWTConstants;
+import com.drd.springbootpoc.jwt.app.auth.service.IJWTService;
 import com.drd.springbootpoc.jwt.app.model.entity.security.Usuario;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 
 	//se manda el user/pwd usando form-data (request)
 	
 	private AuthenticationManager authenticationManager;
+	IJWTService jwtservice;
 	
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, IJWTService jwtservice) {
 		super();
 		this.authenticationManager = authenticationManager;
+		this.jwtservice = jwtservice;
 		setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/login","POST"));
 	}
 
@@ -76,25 +71,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 
-		String username = ((User)authResult.getPrincipal()).getUsername();
-		
-		var roles = authResult.getAuthorities();
-		
-		Claims claims =  Jwts.claims();
-		claims.put("authorities", new ObjectMapper().writeValueAsString(roles));
-		
-		LocalDateTime localDateTime = LocalDateTime.now();
-		
-		String secretKeyString = new String(JWTConstants.SECRET_KEY.getEncoded(), StandardCharsets.UTF_16);
-		logger.info("SecretKey: " + secretKeyString);
-		
-		String token = Jwts.builder()
-				.setClaims(claims)
-				.setSubject(username)
-				.signWith(JWTConstants.SECRET_KEY)
-				.setIssuedAt(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()))
-				.setExpiration(new Date(System.currentTimeMillis()+3600000L*4))
-				.compact();
+		String token = jwtservice.create(authResult);
 		
 		response.addHeader("Authorization","Bearer " + token);
 		
@@ -102,7 +79,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		body.put("token", token);
 		body.put("user", authResult.getPrincipal());
-		body.put("mensaje", String.format("Hola %s, has iniciado sesion con éxito", username));
+		body.put("mensaje", String.format("Hola %s, has iniciado sesion con éxito", ((User)authResult.getPrincipal()).getUsername()));
 		
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 		response.setStatus(HttpStatus.OK.value());

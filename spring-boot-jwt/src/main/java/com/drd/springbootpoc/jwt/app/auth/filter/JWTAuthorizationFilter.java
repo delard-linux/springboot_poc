@@ -1,8 +1,6 @@
 package com.drd.springbootpoc.jwt.app.auth.filter;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -11,24 +9,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.drd.springbootpoc.jwt.app.auth.JWTConstants;
-import com.drd.springbootpoc.jwt.app.auth.SimpleGrantedAuthorityMixin;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.drd.springbootpoc.jwt.app.auth.service.IJWTService;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	
-
-	public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+	IJWTService jwtservice;
+	
+	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, IJWTService jwtservice) {
 		super(authenticationManager);
+		this.jwtservice = jwtservice;
 	}
 
 	@Override
@@ -42,30 +35,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 			return;
 		}
 
-		boolean validoToken;
-		Claims token = null;
-
-		try {
-			token = Jwts.parserBuilder().setSigningKey(JWTConstants.SECRET_KEY).build()
-					.parseClaimsJws(header.replace("Bearer ", "")).getBody();
-			validoToken = true;
-		} catch (JwtException e) {
-			e.printStackTrace();
-			validoToken = false;
-		}
-		
 		UsernamePasswordAuthenticationToken authentication = null;
 
-		if (validoToken) {
-			String username = token.getSubject();
-			var roles = token.get("authorities");
-			
-			Collection<? extends GrantedAuthority> authorities = 
-					Arrays.asList(new ObjectMapper()
-							.addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityMixin.class)
-							.readValue(roles.toString().getBytes(), SimpleGrantedAuthority[].class));
-			
-			authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+		if (jwtservice.validate(header)) {
+			authentication = new UsernamePasswordAuthenticationToken(jwtservice.getUsername(header), null, jwtservice.getRoles(header));
 		}
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
