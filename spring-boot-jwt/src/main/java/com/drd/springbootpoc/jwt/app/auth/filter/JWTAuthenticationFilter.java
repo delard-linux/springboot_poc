@@ -1,6 +1,7 @@
 package com.drd.springbootpoc.jwt.app.auth.filter;
 
 import java.io.IOException;
+import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,12 +23,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 
 	//se manda el user/pwd usando form-data (request)
 	
 	private AuthenticationManager authenticationManager;
+	
+	public static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 	
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		super();
@@ -60,19 +64,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			Authentication authResult) throws IOException, ServletException {
 
 		String username = ((User)authResult.getPrincipal()).getUsername();
-
 		
 		String token = Jwts.builder()
 						.setSubject(username)
-						.signWith(SignatureAlgorithm.HS512,
-								("Alguna.Clave.Secreta.12346464646464656"
-								+ "123464646464646561234646464646465612346464646464656123464646464646561234646464646465612346"
-								+ "464646464656123464646464646561234646464646465612346464646464656123464646464646561234646464"
-								+ "646465612346464646464656123464646464646561234646464646465612346464646464656123464646464646"
-								+ "561234646464646465612346464646464656123464646464646561234646464646465612346464646464656123"
-								+ "464646464646561234646464646465612346464646464656123464646464646561234646464646465612346464"
-								+ "64646465612346464646464656123464646464646561234646464646465612346464646464656")
-								.getBytes())
+						.signWith(SECRET_KEY)
 						.compact();
 		
 		response.addHeader("Authorization","Bearer " + token);
