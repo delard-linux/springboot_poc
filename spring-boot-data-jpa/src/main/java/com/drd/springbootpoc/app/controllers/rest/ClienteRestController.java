@@ -1,7 +1,6 @@
 package com.drd.springbootpoc.app.controllers.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +16,6 @@ public class ClienteRestController extends AppController{
 	@Autowired
 	private IClienteService clienteService;
 	
-
-	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	@GetMapping(value={"/clientes/listar"})
 	public ClienteList listarRest() {
 		
