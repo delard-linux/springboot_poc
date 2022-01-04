@@ -22,13 +22,19 @@ public class SpringBootReactorPocApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		Flux<Usuario> nombres = Flux.just("Andres", "Pedro", "Maria", "David", "Rodrigo")
-				.map( nombre -> new Usuario(nombre.toUpperCase(), null) )
+		Flux<Usuario> nombres = Flux.just("Andres Pelaez", "Pedro Martinez", "Maria Dorsal", 
+											"David the Best", "Rodrigo la Liaste", 
+											"Kevin Choni", "Pedro Fulano")
+				.map( nombre -> new Usuario(
+						nombre.substring(0,nombre.indexOf(' ')).toUpperCase(),
+						nombre.substring(nombre.indexOf(' ')+1).toUpperCase()
+						))
+				.filter( usuario -> usuario.getNombre().equalsIgnoreCase("Pedro"))
 				.doOnNext(usuario-> {
 					if (usuario == null) {
 						throw new RuntimeException("Los usuarios no pueden ser nulos");
 					} else {
-						System.out.println("doOnNext -> " + usuario.getNombre());
+						System.out.println("doOnNext -> " + usuario.toString());
 					}})
 				.map( usuario -> {
 					String nombre = usuario.getNombre().toLowerCase();
