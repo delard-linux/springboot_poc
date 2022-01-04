@@ -22,10 +22,10 @@ public class SpringBootReactorPocApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		Flux<Usuario> nombres = Flux.just("Andres Pelaez", "Pedro Martinez", "Maria Dorsal", 
+		Flux<String> nombres = Flux.just("Andres Pelaez", "Pedro Martinez", "Maria Dorsal", 
 											"David the Best", "Rodrigo la Liaste", 
-											"Kevin Choni", "Pedro Fulano")
-				.map( nombre -> new Usuario(
+											"Kevin Choni", "Pedro Fulano");
+		nombres.map( nombre -> new Usuario(
 						nombre.substring(0,nombre.indexOf(' ')).toUpperCase(),
 						nombre.substring(nombre.indexOf(' ')+1).toUpperCase()
 						))
@@ -43,7 +43,7 @@ public class SpringBootReactorPocApplication implements CommandLineRunner{
 					});
 		
 		nombres.subscribe(
-				elem -> log.info(elem.toString()),
+				log::info,
 				err -> log.error(String.format("Se ha producido un error: %s", err.toString())),
 				new Runnable() {
 					@Override
