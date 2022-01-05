@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="es">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+
+	<div class="container-md">
+
+		<div class="card bg-light mt-4">
+			<div class="card-header bg-info fs-4 fw-bold" th:text="${titulo}"></div>
+			<div class="card-body">
+
+				<div th:if="${productos != null}">
+					<div class="py-1 form-group row justify-content-center bg-warning" th:if="${productos.isEmpty()}">La lista de productos
+						está vacía!</div>
+				</div>
+				<div class="py-1 form-group row justify-content-center bg-warning" th:if="${productos == null}">No hay lista de productos!</div>
+
+				<div class="py-1 form-group row" th:if="${productos.size()>0}">
+					<div class="col">
+						<table class="table table-bordered align-middle">
+							<caption></caption>
+							<thead>
+								<tr class="align-middle">
+									<th scope="col">ID</th>
+									<th scope="col">Nombre</th>
+									<th scope="col">Precio</th>
+									<th scope="col">Creacion</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="producto : ${productos}">
+									<td th:text="${producto.id}"></td>
+									<td th:text="${producto.nombre}"></td>
+									<td th:text="${producto.precio}"></td>
+									<td th:text="${producto.createAt}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<br>
+</body>
+</html>
