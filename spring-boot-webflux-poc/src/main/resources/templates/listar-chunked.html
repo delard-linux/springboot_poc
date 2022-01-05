@@ -10,7 +10,7 @@
 	<div class="container-md">
 
 		<div class="card bg-light mt-4">
-			<div class="card-header bg-info fs-4 fw-bold" th:text="${titulo}"></div>
+			<div class="card-header bg-info fs-4 fw-bold" th:text="${titulo} + ' CHUNKED'"></div>
 			<div class="card-body">
 
 				<div class="py-1 form-group row justify-content-center bg-warning" th:if="${productos == null}">No hay lista de productos!</div>
