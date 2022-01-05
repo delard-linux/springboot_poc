@@ -1,5 +1,7 @@
 package com.drd.springbootpoc.webfluxpoc.app;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,11 @@ public class SpringBootWebfluxPocApplication implements CommandLineRunner {
 				new Producto("Apple Iphone 8", 437.55),
 				new Producto("Monitor Samsung 27LCD", 488.85),
 				new Producto("Bicicleta Trek ", 1450.99))
-			.flatMap(producto -> productoDao.save(producto))
+			.flatMap(producto -> {
+						producto.setCreateAt(new Date());
+						return productoDao.save(producto);
+						}
+					)
 			.subscribe(producto -> log.info(String.format("Insert: %s",producto.getNombre())));
 		
 	}
