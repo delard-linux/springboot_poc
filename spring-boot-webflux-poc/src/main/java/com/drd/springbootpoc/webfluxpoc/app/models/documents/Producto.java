@@ -56,5 +56,13 @@ public class Producto {
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Producto [id=").append(id).append(", nombre=").append(nombre).append(", precio=").append(precio)
+				.append(", createAt=").append(createAt).append("]");
+		return builder.toString();
+	}
 	
 }
