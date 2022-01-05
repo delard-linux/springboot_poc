@@ -35,11 +35,38 @@ public class SpringBootWebfluxPocApplication implements CommandLineRunner {
 		
 		mongoTemplate.dropCollection("productos").subscribe();
 	
-		Flux.just(new Producto("Samsung Galaxy Note 20", 700.99),
+		Flux.just(
+				new Producto("Samsung Galaxy Note 20", 700.99),
 				new Producto("Laptop HP Elitebook G4", 1200.50),
 				new Producto("Apple Iphone 8", 437.55),
 				new Producto("Monitor Samsung 27LCD", 488.85),
-				new Producto("Bicicleta Trek ", 1450.99))
+				new Producto("Bicicleta Trek ", 1450.99),
+				new Producto("Samsung Galaxy Note 20", 700.99),
+				new Producto("Laptop HP Elitebook G4", 1200.50),
+				new Producto("Apple Iphone 8", 437.55),
+				new Producto("Monitor Samsung 27LCD", 488.85),
+				new Producto("Bicicleta Trek ", 1450.99),
+				new Producto("Samsung Galaxy Note 20", 700.99),
+				new Producto("Laptop HP Elitebook G4", 1200.50),
+				new Producto("Apple Iphone 8", 437.55),
+				new Producto("Monitor Samsung 27LCD", 488.85),
+				new Producto("Bicicleta Trek ", 1450.99),
+				new Producto("Samsung Galaxy Note 20", 700.99),
+				new Producto("Laptop HP Elitebook G4", 1200.50),
+				new Producto("Apple Iphone 8", 437.55),
+				new Producto("Monitor Samsung 27LCD", 488.85),
+				new Producto("Bicicleta Trek ", 1450.99),
+				new Producto("Samsung Galaxy Note 20", 700.99),
+				new Producto("Laptop HP Elitebook G4", 1200.50),
+				new Producto("Apple Iphone 8", 437.55),
+				new Producto("Monitor Samsung 27LCD", 488.85),
+				new Producto("Bicicleta Trek ", 1450.99),
+				new Producto("Samsung Galaxy Note 20", 700.99),
+				new Producto("Laptop HP Elitebook G4", 1200.50),
+				new Producto("Apple Iphone 8", 437.55),
+				new Producto("Monitor Samsung 27LCD", 488.85),
+				new Producto("Bicicleta Trek ", 1450.99)
+				)
 			.flatMap(producto -> {
 						producto.setCreateAt(new Date());
 						return productoDao.save(producto);
