@@ -4,11 +4,12 @@ import org.delard.poc.springboot.aop.sample.app.model.domain.dao.ClienteDao;
 import org.delard.poc.springboot.aop.sample.app.model.domain.dao.ClienteVipDao;
 import org.delard.poc.springboot.aop.sample.app.model.domain.dao.SimpleClienteDao;
 import org.delard.poc.springboot.aop.sample.app.model.domain.entity.Cliente;
+import org.delard.poc.springboot.aop.sample.app.model.service.IMockServicio;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MainTestClass {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		
 		//Read SpringBoot application context 
 		var contexto = new AnnotationConfigApplicationContext(ConfiguracionAOP.class);
@@ -28,6 +29,10 @@ public class MainTestClass {
 
 		System.out.println("\n## PRUEBA EJECUCION POSTERIOR A EXCEPCION:\n");
 		pruebaEjecucionPosteriorException(contexto);
+		System.out.println("");
+
+		System.out.println("\n## PRUEBA EJECUCION ALREDEDOR DE SERVICIO:\n");
+		pruebaEjecucionAlrededor(contexto);
 		System.out.println("");
 		
 		//close context
@@ -83,5 +88,13 @@ public class MainTestClass {
 		
 	}
 	
+	public static void pruebaEjecucionAlrededor(AnnotationConfigApplicationContext contexto) throws InterruptedException {
+
+		//get DAO's beans from context
+		var elServicio = contexto.getBean("mockServicioImpl", IMockServicio.class);
+
+		System.out.println("Finalización del Test con resultado: " + elServicio.tareaMock());
+		
+	}
 	
 }
