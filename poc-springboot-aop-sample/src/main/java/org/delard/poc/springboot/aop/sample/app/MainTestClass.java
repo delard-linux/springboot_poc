@@ -22,7 +22,7 @@ public class MainTestClass {
 		pruebaOrdenacionAspectos(contexto);
 		System.out.println("");
 
-		System.out.println("\n## PRUEBA EJECUCION POSTERIOR DE ASPECTO:\n");
+		System.out.println("\n## PRUEBA EJECUCION POSTERIOR DE ASPECTO Y POST PROCESADO:\n");
 		pruebaEjecucionPosterior(contexto);
 		System.out.println("");
 		
@@ -62,7 +62,7 @@ public class MainTestClass {
 		//get DAO's beans from context
 		var elClienteSimple = contexto.getBean("simpleClienteDao", SimpleClienteDao.class);
 
-		elClienteSimple.obtenerClientes();
+		elClienteSimple.obtenerClientes().forEach(System.out::println);
 	}
 	
 }

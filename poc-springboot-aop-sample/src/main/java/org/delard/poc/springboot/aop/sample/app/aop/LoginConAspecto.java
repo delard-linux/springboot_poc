@@ -51,6 +51,14 @@ public class LoginConAspecto {
 				.toList().isEmpty()))
 			System.out.println("ASPECT-tareaTrasEjecutarMetodo: ... hay uno verde al menos");	
 		
+		procesadoDeDatosAfterReturning(listaClientes);
+		
+	}
+
+	private void procesadoDeDatosAfterReturning(List<Cliente> listaClientes) {
+		
+		listaClientes.forEach(cl -> cl.setNombre("MASAJEADO "+ cl.getNombre()));
+		
 	}
 	
 }
