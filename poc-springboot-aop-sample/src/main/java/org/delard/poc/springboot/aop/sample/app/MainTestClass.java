@@ -36,8 +36,8 @@ public class MainTestClass {
 		elCliente.insertaCliente(new Cliente("yo", "claudio"), "ee");
 		elCliente.setCodigoClienteNormal("MyCode");
 		elCliente.setValoracionClienteNormal("5 STARS");
-		var codCliente = elCliente.getCodigoClienteNormal(); 
-		var valCliente = elCliente.getValoracionClienteNormal(); 
+		elCliente.getCodigoClienteNormal(); 
+		elCliente.getValoracionClienteNormal(); 
 		
 		elClienteVip.insertaClienteVip();
 		
@@ -47,9 +47,10 @@ public class MainTestClass {
 
 		//get DAO's beans from context
 		var elClienteSimple = contexto.getBean("simpleClienteDao", SimpleClienteDao.class);
+		var elClienteVip = contexto.getBean("clienteVipDao", ClienteVipDao.class);
 
 		elClienteSimple.insertaCliente(new Cliente("yo", "claudio"), "ee");
-		
+		elClienteVip.insertaClienteVip();
 	}
 	
 }
