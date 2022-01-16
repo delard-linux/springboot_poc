@@ -21,6 +21,10 @@ public class MainTestClass {
 		System.out.println("\n## PRUEBA ORDENACION ASPECTOS:\n");
 		pruebaOrdenacionAspectos(contexto);
 		System.out.println("");
+
+		System.out.println("\n## PRUEBA EJECUCION POSTERIOR DE ASPECTO:\n");
+		pruebaEjecucionPosterior(contexto);
+		System.out.println("");
 		
 		//close context
 		contexto.close();
@@ -51,6 +55,14 @@ public class MainTestClass {
 
 		elClienteSimple.insertaCliente(new Cliente("yo", "claudio"), "ee");
 		elClienteVip.insertaClienteVip();
+	}	
+	
+	public static void pruebaEjecucionPosterior(AnnotationConfigApplicationContext contexto) {
+
+		//get DAO's beans from context
+		var elClienteSimple = contexto.getBean("simpleClienteDao", SimpleClienteDao.class);
+
+		elClienteSimple.obtenerClientes();
 	}
 	
 }

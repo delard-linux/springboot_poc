@@ -1,8 +1,12 @@
 package org.delard.poc.springboot.aop.sample.app.aop;
 
+import java.util.List;
+
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.delard.poc.springboot.aop.sample.app.model.domain.entity.Cliente;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -10,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class LoginConAspecto {
 
 	
-	@Pointcut("execution(* org.delard.poc.springboot.aop.sample.app.model.domain.dao.Cliente*Dao.*(..))")
+	@Pointcut("execution(* org.delard.poc.springboot.aop.sample.app.model.domain.dao.Cliente*Dao.inser*(..))")
 	private void nombreDelPointCutParaClientes(){}
 
 	@Pointcut("execution(* org.delard.poc.springboot.aop.sample.app.model.domain.dao.Cliente*Dao.get*(..))")
@@ -32,7 +36,6 @@ public class LoginConAspecto {
 	@Before("setterDelPointCutParaClientes()")
 	public void aspectoSoloSetters() {
 		System.out.println("ASPECT-LoginConAspecto-2: Solo Setters");
-		
 	}
 	
 	@Before("getterDelPointCutParaClientes()")
@@ -40,7 +43,14 @@ public class LoginConAspecto {
 		System.out.println("ASPECT-LoginConAspecto-3: Solo Getters");
 	}
 	
-
-
+	@AfterReturning(pointcut = "execution(* org.delard.poc.springboot.aop.sample.app.model.domain.dao.SimpleClienteDao.obtenerClientes(..))",returning = "listaClientes")
+	public void tareaTrasEjecutarMetodo(List<Cliente> listaClientes) {
+		
+		if (!(listaClientes.stream()
+				.filter(cl -> cl.getTipo().contains("verde"))
+				.toList().isEmpty()))
+			System.out.println("ASPECT-tareaTrasEjecutarMetodo: ... hay uno verde al menos");	
+		
+	}
 	
 }
