@@ -25,6 +25,10 @@ public class MainTestClass {
 		System.out.println("\n## PRUEBA EJECUCION POSTERIOR DE ASPECTO Y POST PROCESADO:\n");
 		pruebaEjecucionPosterior(contexto);
 		System.out.println("");
+
+		System.out.println("\n## PRUEBA EJECUCION POSTERIOR A EXCEPCION:\n");
+		pruebaEjecucionPosteriorException(contexto);
+		System.out.println("");
 		
 		//close context
 		contexto.close();
@@ -62,7 +66,22 @@ public class MainTestClass {
 		//get DAO's beans from context
 		var elClienteSimple = contexto.getBean("simpleClienteDao", SimpleClienteDao.class);
 
-		elClienteSimple.obtenerClientes().forEach(System.out::println);
+		elClienteSimple.obtenerClientes(false).forEach(System.out::println);
 	}
+	
+	
+	public static void pruebaEjecucionPosteriorException(AnnotationConfigApplicationContext contexto) {
+
+		//get DAO's beans from context
+		var elClienteSimple = contexto.getBean("simpleClienteDao", SimpleClienteDao.class);
+
+		try {
+			elClienteSimple.obtenerClientes(true).forEach(System.out::println);
+		} catch (Exception e) {
+			System.out.println("Control de la Exception en Main de obtenerClientes por salud mental: " + e.toString());
+		}
+		
+	}
+	
 	
 }

@@ -3,6 +3,7 @@ package org.delard.poc.springboot.aop.sample.app.aop;
 import java.util.List;
 
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -60,5 +61,14 @@ public class LoginConAspecto {
 		listaClientes.forEach(cl -> cl.setNombre("MASAJEADO "+ cl.getNombre()));
 		
 	}
+	
+	@AfterThrowing(pointcut = "execution(* org.delard.poc.springboot.aop.sample.app.model.domain.dao.SimpleClienteDao.obtenerClientes(..))",
+			throwing = "excep")
+	public void tareaTrasEjecutarMetodoConException(Throwable excep) {
+		
+		System.out.println("ASPECT-tareaTrasEjecutarMetodoConException: ... Exception: " + excep);	
+		
+	}
+	
 	
 }

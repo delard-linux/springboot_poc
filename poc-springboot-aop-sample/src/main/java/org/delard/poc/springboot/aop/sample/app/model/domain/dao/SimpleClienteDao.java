@@ -13,7 +13,10 @@ public class SimpleClienteDao {
 		return "cliente insertado";
 	}
 	
-	public List<Cliente> obtenerClientes() {
+	public List<Cliente> obtenerClientes(boolean checkLanzaException) {
+		
+		if(checkLanzaException) throw new RuntimeException("La cagaste Burt Lancaster");
+		
 		System.out.println("Obtencion de clientes ejecutada con exito");
 		return List.of(
 			new Cliente("Marti", "futurible"),
