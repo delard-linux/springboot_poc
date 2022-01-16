@@ -9,22 +9,22 @@ public class ClasePrincipal {
 
 	public static void main(String[] args) {
 		
-		//Leer configuracion de spring 
+		//Read SpringBoot application context 
 		var contexto = new AnnotationConfigApplicationContext(ConfiguracionAOP.class);
-		
-		//Obtener los bean contenedor de Spring
+		//get DAO's beans from context
 		var elCliente = contexto.getBean("clienteDao", ClienteDao.class);
 		var elClienteVip = contexto.getBean("clienteVipDao", ClienteVipDao.class);
 		
-		//Llamar al metodo
 		elCliente.insertaCliente(new Cliente("yo", "claudio"), "ee");
+		elCliente.setCodigoClienteNormal("MyCode");
+		elCliente.setValoracionClienteNormal("5 STARS");
+		var codCliente = elCliente.getCodigoClienteNormal(); 
+		var valCliente = elCliente.getValoracionClienteNormal(); 
+		
 		elClienteVip.insertaClienteVip();
 		
-		
-		//Cerrar contexto
+		//close context
 		contexto.close();
-		
-		
 		
 	}
 	

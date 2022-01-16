@@ -10,26 +10,37 @@ import org.springframework.stereotype.Component;
 public class LoginConAspecto {
 
 	
-	@Pointcut("execution(* insertaCliente(..))")
+	@Pointcut("execution(* org.delard.poc.springboot.aop.sample.app.model.domain.dao.*.*(..))")
 	private void nombreDelPointCutParaClientes(){}
+
+	@Pointcut("execution(* org.delard.poc.springboot.aop.sample.app.model.domain.dao.*.get*(..))")
+	private void getterDelPointCutParaClientes(){}
+
+	@Pointcut("execution(* org.delard.poc.springboot.aop.sample.app.model.domain.dao.*.set*(..))")
+	private void setterDelPointCutParaClientes(){}
+
+	@Pointcut("nombreDelPointCutParaClientes() && !(getterDelPointCutParaClientes() || setterDelPointCutParaClientes())")
+	private void paqueteExceptoGetterSetter(){}
 	
-	@Before("nombreDelPointCutParaClientes()")
+	@Before("paqueteExceptoGetterSetter()")
 	public void antesInsertarCliente() {
 		System.out.println("ASPECT-1: El usuario está logeado");
 		
 		System.out.println("ASPECT-1: El perfil para insertar clientes es correcto");
 	}
 	
-	@Before("nombreDelPointCutParaClientes()")
-	public void requisitosCliente() {
-		System.out.println("ASPECT-2: El cliente cumple los requisitos para ser insertado en BD");
-	}
-	
-	@Before("nombreDelPointCutParaClientes()")
-	public void requisitosTabla() {
-		System.out.println("ASPECT-3: Comprobar que la tabla tenga menos de 3000 reguistos");
+	@Before("setterDelPointCutParaClientes()")
+	public void aspectoSoloSetters() {
+		System.out.println("ASPECT-2: Solo Setters");
 		
 	}
+	
+	@Before("getterDelPointCutParaClientes()")
+	public void aspectoSoloGetters() {
+		System.out.println("ASPECT-3: Solo Getters");
+	}
+	
+
 
 	
 }
