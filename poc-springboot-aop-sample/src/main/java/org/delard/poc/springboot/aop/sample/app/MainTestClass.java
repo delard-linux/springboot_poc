@@ -47,10 +47,8 @@ public class MainTestClass {
 
 		//get DAO's beans from context
 		var elClienteSimple = contexto.getBean("simpleClienteDao", SimpleClienteDao.class);
-		var elClienteVip = contexto.getBean("clienteVipDao", ClienteVipDao.class);
 
 		elClienteSimple.insertaCliente(new Cliente("yo", "claudio"), "ee");
-		elClienteVip.insertaClienteVip();
 		
 	}
 	
