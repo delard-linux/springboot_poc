@@ -2,6 +2,7 @@ package org.delard.poc.springboot.aop.sample.app.aop;
 
 import java.util.List;
 
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -70,5 +71,11 @@ public class LoginConAspecto {
 		
 	}
 	
+	@After("execution(* org.delard.poc.springboot.aop.sample.app.model.domain.dao.SimpleClienteDao.obtenerClientes(..))")
+	public void tareaTrasEjecutarMetodoSiempre() {
+		
+		System.out.println("ASPECT-tareaTrasEjecutarMetodoSiempre: ... THIS IS THE END.. my only friend THE END");	
+		
+	}
 	
 }
