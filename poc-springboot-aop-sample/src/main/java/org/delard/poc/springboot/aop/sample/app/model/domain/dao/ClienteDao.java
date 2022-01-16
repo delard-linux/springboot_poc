@@ -26,10 +26,10 @@ public class ClienteDao {
 		this.codigoClienteNormal = codigoClienteNormal;
 	}
 	
-	public String insertaCliente(Cliente cl, String cls) {
-		System.out.println("Cliente insertado con exito: " + cl);
+	public String insertaCliente(Cliente cl, String texto) {
+		System.out.println("Cliente insertado con exito: " + cl + " texto: " + texto);
 		return "cliente insertado";
 	}
-	
+
 	
 }
